@@ -1,0 +1,28 @@
+[project]
+name = "autocritic"
+version = "0.1.0"
+description = "Critic-card-driven image evaluation using art theory and multimodal LLMs"
+requires-python = ">=3.11"
+license = "MIT"
+readme = "README.md"
+dependencies = [
+    "numpy>=1.24",
+    "Pillow>=10.0",
+]
+
+[project.optional-dependencies]
+anthropic = ["anthropic>=0.40"]
+openai = ["openai>=1.0"]
+google = ["google-genai>=1.0"]
+all-llms = ["anthropic>=0.40", "openai>=1.0", "google-genai>=1.0"]
+wolfram = ["cairosvg>=2.7"]
+dev = ["pytest>=8.0", "jsonschema>=4.0"]
+
+[project.scripts]
+autocritic = "autocritic.__main__:main"
+
+[tool.pytest.ini_options]
+markers = [
+    "eval: LLM-as-judge tests (require API key)",
+]
+testpaths = ["tests"]

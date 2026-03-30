@@ -1,0 +1,323 @@
+{
+  "critic_id": "wolfflin",
+  "theorist": "Heinrich Wölfflin",
+  "book": "Principles of Art History",
+  "thesis": "All visual representation can be analysed along five independent axes, each a spectrum between two poles. These poles describe not better or worse but fundamentally different modes of seeing — different orientations of taste and interest in the world. The shift from one pole to its opposite is not progress or decay but a transformation in decorative feeling that runs deeper than subject matter or technique. The five axes are: linear vs. painterly, plane vs. recession, closed vs. open form, multiplicity vs. unity, and absolute clarity vs. relative clarity.",
+  "criteria": [
+    {
+      "criterion_id": "linear_painterly",
+      "label": "Linear vs. Painterly",
+      "pole_a": "linear",
+      "pole_b": "painterly",
+      "definition": "Linear style sees in lines — the sense and beauty of things is sought in the outline. The eye is led along boundaries and induced to feel along the edges. Form is apprehended as tangible, plastically felt, with every contour a confident track the spectator can entrust himself to. Painterly style sees in masses — attention withdraws from edges, and the primary impression is of patches of light, shadow, and colour. Forms are no longer bounded but participate in a ceaselessly emanating movement. The painterly eye perceives everything as vibrating and suffers nothing to settle into definite lines and surfaces.",
+      "diagnostic_questions": [
+        "Are contours carrying the composition, or are tonal masses?",
+        "Can you trace a confident edge around each form, or do forms bleed into each other through light and shadow?",
+        "Does the image appeal to the tactile sense (you could feel along the edges) or purely to the visual sense (you see light and atmosphere)?",
+        "Do separate forms remain distinct, or do they coalesce in a general tonal movement?"
+      ],
+      "indicators": {
+        "pole_a": [
+          "Sharp, evenly firm boundaries around forms",
+          "Silhouettes that coincide with the plastic form of the object",
+          "Modelling shadows that follow the form completely",
+          "Distinct separation of figure and ground",
+          "Each form can be isolated and still reads clearly"
+        ],
+        "pole_b": [
+          "Edges that are unstressed or indeterminate",
+          "Lights and shadows pursuing each other independently of form boundaries",
+          "Forms dissolving into a common tonal or chromatic movement",
+          "Figure and ground sharing a visual substance — 'as if everything were of the same stuff'",
+          "The total picture, not the separate form, is what counts"
+        ]
+      },
+      "feedback_directions": {
+        "toward_a": [
+          "Strengthen and clarify contour edges",
+          "Make modelling shadows follow the plastic form more closely",
+          "Separate figure from ground more decisively",
+          "Give each form a self-sufficient silhouette"
+        ],
+        "toward_b": [
+          "Soften or dissolve boundary edges",
+          "Let light and shadow move across forms independently of their contours",
+          "Create tonal connections between separate forms",
+          "Reduce the tactile clarity of individual shapes in favour of atmospheric unity"
+        ]
+      },
+      "common_misreadings": [
+        "Treating 'painterly' as a compliment and 'linear' as rigid — both are complete modes of seeing",
+        "Confusing 'painterly' with 'blurry' or 'soft focus' — the painterly has its own rigorous order of masses",
+        "Confusing 'linear' with 'outline drawing' — linear includes fully modelled form where edges still dominate",
+        "The painterly is not a higher stage in the imitation of nature, but a totally different solution"
+      ]
+    },
+    {
+      "criterion_id": "plane_recession",
+      "label": "Plane vs. Recession",
+      "pole_a": "planar",
+      "pole_b": "recessional",
+      "definition": "Planar style organises the composition in layers parallel to the picture surface — forms are stratified in bands and the picture space reads as a sequence of discrete planes (front, middle, back). Colour lies in layers; spatial relations are presented as a stacking of strips. Recessional style draws the eye into continuous depth — diagonals, overlapping, exaggerated foregrounds, and atmospheric perspective enforce an immediate experience of recession rather than a series of discrete strata.",
+      "diagnostic_questions": [
+        "Do the main forms line up in parallel planes, or do diagonals pull the eye inward?",
+        "Can the composition be described as a stack of horizontal strips?",
+        "Is depth experienced as discrete layers or as a continuous flow?",
+        "Are foreground and background linked by visual forces, or do they remain separate strata?"
+      ],
+      "indicators": {
+        "pole_a": [
+          "Figures and forms arranged in a stage-like frieze parallel to the picture surface",
+          "Colour gradations proceeding in clear, quiet zones from front to back",
+          "Spatial depth achieved through stratification, not through continuous flow",
+          "No violent perspective diminution; sizes graduate gently across planes"
+        ],
+        "pole_b": [
+          "Diagonal movements drawing the eye from foreground into depth",
+          "Exaggerated foreground scale forcing a recessional reading",
+          "Light passing freely across depth without respecting planar strata",
+          "Overlapping and enframing used to drive things backward",
+          "Colour perspective creating continuous spatial flow rather than bands"
+        ]
+      },
+      "feedback_directions": {
+        "toward_a": [
+          "Align major forms parallel to the picture plane",
+          "Organise depth into clear, separate horizontal strata",
+          "Reduce diagonal movements that pull the eye inward",
+          "Let colour grade in distinct zones from front to back"
+        ],
+        "toward_b": [
+          "Introduce diagonal movements linking foreground and background",
+          "Exaggerate scale differences between near and far elements",
+          "Let light and colour flow continuously through depth rather than in bands",
+          "Use overlapping to enforce a recessional reading"
+        ]
+      },
+      "common_misreadings": [
+        "Confusing 'planar' with 'flat' — planar images have depth, but it is organised in discrete layers",
+        "Treating recession as automatically more sophisticated or skilful",
+        "Every picture has recession; the question is whether space organises itself into planes or is experienced as a homogeneous recessional movement"
+      ]
+    },
+    {
+      "criterion_id": "closed_open",
+      "label": "Closed Form vs. Open Form",
+      "pole_a": "closed (tectonic)",
+      "pole_b": "open (a-tectonic)",
+      "definition": "Closed form makes of the picture a self-contained entity, pointing everywhere back to itself. Verticals and horizontals dominate, the contents are disposed so that edge lines and corner angles re-echo in the composition, and the picture is built on stable equilibrium. Open form everywhere points beyond itself and purposely looks limitless. The diagonal undermines the rectangularity of the picture space; symmetry is replaced by oscillating balance; the picture looks like a piece cut from the visible world rather than a composition invented for its surface.",
+      "diagnostic_questions": [
+        "Does the composition resolve within its borders, or does it suggest continuation beyond the frame?",
+        "Do major axes echo the frame edges (vertical/horizontal dominance) or cut across them (diagonal dominance)?",
+        "Is the equilibrium stable (closed) or oscillating/unstable (open)?",
+        "Does the picture look like it was composed for its surface, or like a passing show?"
+      ],
+      "indicators": {
+        "pole_a": [
+          "Verticals and horizontals dominate as directions",
+          "Symmetry or clear bilateral balance",
+          "Edge lines and corner angles echoed in the composition",
+          "Pure aspects (full-face, profile) used deliberately",
+          "Every element looks intentional and placed for this surface",
+          "The form has the character of inevitability — nothing could be moved"
+        ],
+        "pole_b": [
+          "Diagonal as the main direction",
+          "Asymmetric distribution with unstable, oscillating balance",
+          "Content parting company with the frame — things cut off at edges",
+          "Avoidance of pure full-face and profile in favour of intermediate aspects",
+          "The picture looks accidental, a passing moment, not staged",
+          "Geometry concealed; the tectonic scaffolding hidden"
+        ]
+      },
+      "feedback_directions": {
+        "toward_a": [
+          "Strengthen vertical and horizontal axes",
+          "Let the composition echo the geometry of its frame",
+          "Stabilise the balance toward bilateral equilibrium",
+          "Show forms in their clearest, most characteristic aspects"
+        ],
+        "toward_b": [
+          "Introduce diagonal movement that cuts across the frame geometry",
+          "Shift balance from stable to oscillating",
+          "Let elements at the edges suggest a world continuing beyond the frame",
+          "Conceal the tectonic scaffolding so the composition looks less staged"
+        ]
+      },
+      "common_misreadings": [
+        "Confusing closed form with rigidity — closed compositions can be powerfully dynamic within their self-containment",
+        "Confusing open form with poor composition — open form has secret limits and is self-contained in the aesthetic sense",
+        "This is not only about edge behaviour but about the whole compositional logic: revealed law vs. concealed law"
+      ]
+    },
+    {
+      "criterion_id": "multiplicity_unity",
+      "label": "Multiplicity vs. Unity",
+      "pole_a": "multiplicity (multiple unity)",
+      "pole_b": "unity (unified unity)",
+      "definition": "Multiplicity is an articulated system in which the parts, though harmoniously interdependent, maintain independent significance — each is a self-sufficient element that can be separately apprehended. Unity is a homogeneous flow in which the individual part has abdicated its independence to the whole; a dominating total motive governs, and forms cannot be extracted without loss. The sixteenth century is not discredited by the seventeenth, for this is not a qualitative difference but something totally new.",
+      "diagnostic_questions": [
+        "Can individual elements be isolated and still 'work,' or does meaning collapse without the whole?",
+        "Is the image an 'articulated system with independent parts' or a 'unified stream'?",
+        "Is there a dominating total motive to which everything subordinates, or do parts co-ordinate as equals?",
+        "Has the separate detail abdicated its independence, or does it speak for itself?"
+      ],
+      "indicators": {
+        "pole_a": [
+          "Each element is worked out with independent significance",
+          "Parts condition each other but maintain their own centre of gravity",
+          "Co-ordination of equivalent components",
+          "The beauty of the separate part — a column, a panel, a figure — at rest within itself",
+          "The whole is a team of soloists"
+        ],
+        "pole_b": [
+          "One dominant motive governs the entire composition",
+          "Individual forms cannot be detached without the whole losing coherence",
+          "Parts are fused in a mass effect — a unified stream",
+          "Light, colour, or compositional movement creates a single current",
+          "The whole is an orchestra — every part draws life only from the ensemble"
+        ]
+      },
+      "feedback_directions": {
+        "toward_a": [
+          "Give individual elements more independent presence and self-sufficiency",
+          "Let parts maintain their own proportional beauty rather than serving only the whole",
+          "Develop co-ordination among equals rather than subordination to a dominant motive"
+        ],
+        "toward_b": [
+          "Develop a dominating total motive that governs all elements",
+          "Fuse separate elements into a unified mass or stream",
+          "Let individual forms abdicate independence in favour of the overall effect",
+          "Create a single dominant movement of light, tone, or form that carries the composition"
+        ]
+      },
+      "common_misreadings": [
+        "Treating unity as always superior to multiplicity — 'the sixteenth century is not discredited by the seventeenth'",
+        "Confusing multiplicity with clutter — multiplicity is an articulated system, not disorder",
+        "Confusing unity with simplicity — a unified composition can be very complex"
+      ]
+    },
+    {
+      "criterion_id": "clearness_unclearness",
+      "label": "Absolute Clarity vs. Relative Clarity",
+      "pole_a": "absolute clarity",
+      "pole_b": "relative clarity",
+      "definition": "Absolute clarity presents every form in its most complete, exhaustive, and characteristic aspect — nothing is hidden, foreshortened past recognition, or left ambiguous. The form and its representation coincide; the image explains itself fully. Relative clarity withdraws from exhaustive presentation — forms are partially concealed, overlapping, in shadow, or shown in aspects that do not fully disclose them. The image withholds and relies on the viewer to complete what is suggested.",
+      "diagnostic_questions": [
+        "Is every element shown in its most legible, characteristic aspect?",
+        "Are forms partially hidden, overlapping, in shadow, or foreshortened?",
+        "Does the image explain itself fully or ask the viewer to complete it?",
+        "Does the lighting serve the distinctness of objects, or does it pass over them?"
+      ],
+      "indicators": {
+        "pole_a": [
+          "Forms shown in their most characteristic aspects (frontal, profile)",
+          "Lighting subserves the distinctness of objects",
+          "Nothing essential is hidden or cut off",
+          "The form and its picture coincide — tactile and visual agree",
+          "Each element invites exhaustive scrutiny"
+        ],
+        "pole_b": [
+          "Forms partially concealed by overlapping, shadow, or oblique aspect",
+          "Lighting passes over forms, partially veiling them",
+          "A sense of 'a secret remains to be guessed'",
+          "The picture gives only as much as a general view yields — not pursuing every detail",
+          "Unified visual perception from one distance rather than separate scrutiny of each part"
+        ]
+      },
+      "feedback_directions": {
+        "toward_a": [
+          "Show each form in its most legible, characteristic aspect",
+          "Let lighting fully reveal the structure of objects",
+          "Remove obscuring overlaps or shadows that hide essential features",
+          "Make the image fully self-explanatory"
+        ],
+        "toward_b": [
+          "Partially veil forms through overlapping, shadow, or oblique angles",
+          "Let lighting move across forms independently of their structure",
+          "Create areas that suggest rather than fully disclose",
+          "Design for a general impression at one viewing distance rather than part-by-part scrutiny"
+        ]
+      },
+      "common_misreadings": [
+        "Wölfflin uses 'unclearness' (Unklarheit) non-pejoratively — it is a deliberate aesthetic strategy, not a flaw",
+        "Absolute clarity does not mean photographic detail — it means showing the form in its most exhaustive aspect",
+        "Relative clarity is not poor execution — it is the active withholding of full disclosure for aesthetic effect"
+      ]
+    }
+  ],
+  "anti_goals": [
+    "Must not rank one pole above the other — 'the linear style developed values which the painterly style no longer possessed and no longer wanted to possess'",
+    "Must not reduce the analysis to a period classification ('is this Renaissance or Baroque?') — the categories describe visual properties, not historical labels",
+    "Must not treat the five axes as a checklist of features to have or lack — they are spectra to locate a position on",
+    "Must not conflate the axes — they are independent. An image can be linear but recessional, closed but unified",
+    "Must not give generic composition advice unrelated to the five polarities",
+    "Must not confuse these categories with other frameworks (Gestalt grouping, colour theory, design principles)",
+    "Must not treat the painterly as 'more advanced' or 'more realistic' — it is 'not a higher stage in the solution of the one problem of the imitation of nature, but a totally different solution'"
+  ],
+  "tensions": [
+    {
+      "label": "Description vs. prescription",
+      "description": "Wölfflin's categories are descriptive — they map where an image falls, not where it should fall. A critic must locate, not prescribe. But in a generative feedback loop, some directional guidance is needed. The tension: use the axes to diagnose and suggest movement along a spectrum, not to grade."
+    },
+    {
+      "label": "Independence of axes vs. coherence",
+      "description": "The five axes are theoretically independent, yet historically they tend to correlate (linear + planar + closed + multiple + clear = 'classic'; their opposites = 'baroque'). An image that mixes poles across axes may be intentionally hybrid or may be incoherent. The critic must note the mixture without automatically treating it as a defect."
+    },
+    {
+      "label": "Visual properties vs. subject matter",
+      "description": "Wölfflin insists the categories describe visual organisation, not content. But some subject matter naturally invites one pole (a crowd scene is 'picturesque'). The critic must separate the visual analysis from the thematic affordance."
+    },
+    {
+      "label": "Period-bound origins vs. general applicability",
+      "description": "Wölfflin derived his categories from Renaissance→Baroque comparison, but he claims they describe universal visual possibilities. Applying them to non-Western or contemporary art requires care — the axes are reusable, but the historical narrative is not."
+    }
+  ],
+  "citations": [
+    {
+      "claim": "Linear sees in lines, painterly sees in masses",
+      "quote_or_paraphrase": "Linear vision means that the sense and beauty of things is first sought in the outline — interior forms have their outline too — that the eye is led along the boundaries and induced to feel along the edges, while seeing in masses takes place where the attention withdraws from the edges.",
+      "location": "Chapter I, General Observations, section 1"
+    },
+    {
+      "claim": "The painterly is not a higher stage but a different solution",
+      "quote_or_paraphrase": "The painterly is not a higher stage in the solution of the one problem of the imitation of nature, but a totally different solution. Only where decorative feeling has changed can we expect a transformation of the mode of representation.",
+      "location": "Chapter I, General Observations, section 3 (Synthesis)"
+    },
+    {
+      "claim": "Neither pole is superior",
+      "quote_or_paraphrase": "The linear style developed values which the painterly style no longer possessed and no longer wanted to possess. They are two conceptions of the world, differently orientated in taste and in their interest in the world, and yet each capable of giving a perfect picture of visible things.",
+      "location": "Chapter I, General Observations, section 1"
+    },
+    {
+      "claim": "Tactile vs. visual picture",
+      "quote_or_paraphrase": "Linear style is the style of distinctness plastically felt. The evenly firm and clear boundaries of solid objects give the spectator a feeling of security, as if he could move along them with his fingers. The tactile picture has become the visual picture — the most decisive revolution which art history knows.",
+      "location": "Chapter I, General Observations, section 1"
+    },
+    {
+      "claim": "Plane composition as stratification in bands",
+      "quote_or_paraphrase": "Every picture has recession, but the recession has a very different effect according to whether the space organises itself into planes or is experienced as a homogeneous recessional movement.",
+      "location": "Chapter II, Painting"
+    },
+    {
+      "claim": "Closed form as self-contained entity",
+      "quote_or_paraphrase": "A style of composition which, with more or less tectonic means, makes of the picture a self-contained entity, pointing everywhere back to itself, while the style of open form everywhere points out beyond itself and purposely looks limitless.",
+      "location": "Chapter III, General Remarks"
+    },
+    {
+      "claim": "Multiplicity as articulated independence of parts",
+      "quote_or_paraphrase": "There stand opposed the multiple unity of the sixteenth century and the unified unity of the seventeenth: in other words, the articulated system of forms of classic art and the (endless) flow of the baroque.",
+      "location": "Chapter IV, Painting"
+    },
+    {
+      "claim": "The five categories are independent",
+      "quote_or_paraphrase": "There is no such thing as objective vision, and form and colour are always apprehended differently according to temperament.",
+      "location": "Introduction"
+    }
+  ],
+  "confidence_notes": [
+    "The 'clearness/unclearness' axis is the most difficult to operationalize for generated images, since it partly depends on intentional concealment and suggestion, which are hard to quantify.",
+    "Wölfflin's examples are all representational painting, sculpture, and architecture. Applying his categories to fully abstract or non-Western images requires extrapolation beyond his explicit scope.",
+    "The correlation between axes (linear tends to go with planar, closed, multiple, and clear) is historically observed but not theoretically necessary. The critic should note but not enforce this correlation."
+  ]
+}

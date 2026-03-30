@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/autocritic/schemas/critic_card.schema.json",
+  "title": "Autocritic Critic Card",
+  "description": "A JSON file encoding one art theorist's evaluative framework for machine use.",
+  "type": "object",
+  "required": ["critic_id", "theorist", "book", "thesis", "anti_goals", "tensions"],
+  "properties": {
+    "critic_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Unique snake_case identifier. Must match the filename stem."
+    },
+    "theorist": {
+      "type": "string",
+      "description": "Full name of the art theorist."
+    },
+    "book": {
+      "type": "string",
+      "description": "Title of the source text."
+    },
+    "thesis": {
+      "type": "string",
+      "minLength": 20,
+      "description": "One paragraph: the core evaluative logic of this theorist's framework."
+    },
+    "criteria": { "$ref": "#/$defs/items_array" },
+    "core_concepts": { "$ref": "#/$defs/items_array" },
+    "elements": { "$ref": "#/$defs/items_array" },
+    "impulses": { "$ref": "#/$defs/items_array" },
+    "principles": { "$ref": "#/$defs/items_array" },
+    "anti_goals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Things this critic must never do."
+    },
+    "tensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "description"],
+        "properties": {
+          "label": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      },
+      "minItems": 1,
+      "description": "Internal tensions or ambiguities within the theory."
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim"],
+        "properties": {
+          "claim": { "type": "string" },
+          "quote_or_paraphrase": { "type": "string" },
+          "source_locator": { "type": "string" },
+          "location": { "type": "string" },
+          "excerpt": { "type": "string" }
+        }
+      },
+      "description": "Cited evidence from the source text supporting the card's claims."
+    },
+    "confidence_notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Where the theory is hard to operationalize or the distillation is uncertain."
+    }
+  },
+  "anyOf": [
+    { "required": ["criteria"] },
+    { "required": ["core_concepts"] },
+    { "required": ["elements"] },
+    { "required": ["impulses"] },
+    { "required": ["principles"] }
+  ],
+  "$defs": {
+    "items_array": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The main evaluative items — criteria, concepts, elements, impulses, or principles.",
+      "items": {
+        "type": "object",
+        "required": ["label", "definition"],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Human-readable name for this item."
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 20,
+            "description": "What this item assesses, in the theorist's own terms."
+          },
+          "diagnostic_questions": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "description": "Questions to ask when evaluating an image on this item."
+          },
+          "indicators": {
+            "type": "object",
+            "description": "Observable visual evidence. Keys vary: pole_a/pole_b for bipolar axes, strong_X/weak_X for unipolar concepts.",
+            "additionalProperties": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "feedback_directions": {
+            "type": "object",
+            "description": "Actionable changes. Keys vary: toward_a/toward_b, strengthen/reduce, etc.",
+            "additionalProperties": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "common_misreadings": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "How this item is often misunderstood or misapplied."
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

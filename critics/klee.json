@@ -1,0 +1,343 @@
+{
+  "critic_id": "klee",
+  "theorist": "Paul Klee",
+  "book": "Pedagogical Sketchbook",
+  "thesis": "Every form is a record of movement and energy — a trace of its own genesis. An active line is a point shifting its position forward, a walk for a walk's sake. Forms have three conjugations: active (I fell the tree), medial (the tree falls), passive (the tree lies felled). Structural rhythm is purely repetitive; individual articulation resists reduction and demands proportion. Balance is non-symmetrical — achieved through counterweights and correction, not mirror symmetry. The contrast between man's ideological capacity to move through material and metaphysical spaces and his physical limitations is the origin of all human tragedy. Half winged — half imprisoned, this is man. The work as human action is productive as well as receptive. It is continuity.",
+  "core_concepts": [
+    {
+      "concept_id": "line_as_movement",
+      "label": "Line as Movement (Active, Medial, Passive)",
+      "definition": "An active line on a walk, moving freely, without goal. A walk for a walk's sake. The mobility agent is a point, shifting its position forward. A medial line is both point progression and planar effect — it participates in both linear and areal character simultaneously. Passive lines are the result of an activation of planes: once the figure is completed, linearity is replaced by planarity. These three conjugations — active, medial, passive — form the grammar of visual energy.",
+      "key_concepts": [
+        "Active line: a point in motion, the agent of movement — carries the energy of its genesis in its character",
+        "Medial line: participates in both linear progression and planar effect — the middle voice between doing and being done to",
+        "Passive line: the residue of plane activation — once complete, the line is no longer an act but a boundary",
+        "Three conjugations: active (I fell), medial (I fall), passive (I am felled) — every form participates in this grammar",
+        "The line is not a thing but an act — it records the movement that created it"
+      ],
+      "diagnostic_questions": [
+        "Do lines read as records of movement — can you feel the energy of their genesis?",
+        "Which lines are active (agents of movement), which are medial (movement becoming plane), which are passive (boundaries of completed forms)?",
+        "Is the conjugation grammar coherent — does the composition have a clear distribution of active, medial, and passive elements?",
+        "Does line character (weight, speed, direction change) convey the energy of its making?",
+        "Is there a dominant line that 'takes a walk' — an active line that carries the eye through the composition?"
+      ],
+      "indicators": {
+        "strong_line_as_movement": [
+          "Active lines carry visible energy — their weight, speed, and direction changes record the movement that made them",
+          "The three conjugations are distributed: some lines act, some mediate, some rest as boundaries",
+          "A dominant active line leads the eye through the composition — a walk for a walk's sake",
+          "Line character is varied and expressive — thick/thin, fast/slow, smooth/jagged convey different energies"
+        ],
+        "weak_line_as_movement": [
+          "Lines read as static boundaries rather than records of movement — no sense of genesis",
+          "All lines have the same conjugation — either all active (chaos) or all passive (dead)",
+          "No dominant movement — the eye has no path to follow",
+          "Line character is uniform and mechanical — no trace of the energy that made it"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Introduce at least one clearly active line — a point taking a walk — that carries the eye through the composition",
+          "Vary line conjugation: let some lines act, some mediate between line and plane, some rest as completed boundaries",
+          "Let line character record its genesis: a fast line looks different from a slow line, a heavy stroke from a light one",
+          "Read the composition as a sequence of movements, not a collection of shapes — where does movement begin, transfer, and come to rest?"
+        ],
+        "refine": [
+          "Check whether the balance of conjugations serves the composition: too many active lines create restlessness; too many passive lines create inertia",
+          "Ensure medial lines function as true mediators — they should connect linear energy to planar structure",
+          "Test whether the dominant active line sustains its energy or dies prematurely"
+        ]
+      },
+      "common_misreadings": [
+        "Treating lines as static geometric elements rather than as traces of movement and energy",
+        "Ignoring the three conjugations — all lines are not equal; their role in the energy grammar matters",
+        "Confusing line activity with literal motion (depicting a running figure) — Klee means the line itself as an act of movement"
+      ]
+    },
+    {
+      "concept_id": "structural_rhythm",
+      "label": "Structural Rhythm and Individual Articulation",
+      "definition": "Repetition of units creates structural rhythm — purely repetitive and therefore structural. Any number of parts can be added or taken away without changing rhythmic character. Individual articulation, by contrast, resists reduction: it demands specific proportions such as 2:3:5 or the Golden Section. The tension between structural rhythm (additive, repeatable) and individual articulation (irreducible, proportioned) is a fundamental compositional resource.",
+      "key_concepts": [
+        "Structural rhythm: purely repetitive — units can be added or removed without altering rhythmic character",
+        "Individual articulation: irreducible proportions — cannot be simplified below a specific ratio",
+        "Divisional articulation: the grid, the chessboard, units moving from one to two dimensions",
+        "The Golden Section: the proportional basis of individual articulation — a:b = b:(a+b)",
+        "Genesis of structure: work grows stone upon stone (additive) or is hewn chip from chip (subtractive)"
+      ],
+      "diagnostic_questions": [
+        "Is the rhythmic structure purely repetitive (structural) or based on irreducible proportions (individual)?",
+        "Could units be added or removed without changing the composition's character — or is every part necessary?",
+        "Is the relationship between structural and individual articulation deliberate?",
+        "Does the composition grow additively (stone upon stone) or subtractively (chip from chip)?",
+        "Are proportional relationships (Golden Section, specific ratios) governing the articulation?"
+      ],
+      "indicators": {
+        "strong_rhythm": [
+          "A clear structural rhythm is legible — the repeat unit and its logic are identifiable",
+          "Individual articulation appears where the composition demands specificity — irreducible proportions at focal points",
+          "The interplay between structural repetition and individual proportion creates variety within order",
+          "The genesis principle is visible: the work reads as grown (additive) or carved (subtractive)"
+        ],
+        "weak_rhythm": [
+          "No legible rhythmic principle — neither repetitive structure nor proportional articulation",
+          "Repetition without structural logic — mechanical pattern with no governing rhythm",
+          "Individual articulation at every point — no rest, no structural ground for the specific to stand against",
+          "The composition reads as neither grown nor carved — no sense of its genesis"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Establish a base structural rhythm — a repeating unit that provides the compositional ground",
+          "Introduce individual articulation at focal points — proportions that resist reduction and demand attention",
+          "Decide whether the composition grows (additive) or is carved (subtractive) — commit to a genesis principle",
+          "Use the Golden Section or another specific ratio to govern key proportional relationships"
+        ],
+        "refine": [
+          "Check whether the structural rhythm is too rigid (mechanical) or too loose (disordered)",
+          "Ensure individual articulations are genuinely irreducible — if they can be simplified, they are not yet individual",
+          "Balance the proportion of structural (ground) to individual (figure) across the composition"
+        ]
+      },
+      "common_misreadings": [
+        "Confusing structural rhythm with any repetition — Klee means purely repetitive units whose addition or removal doesn't change character",
+        "Treating the Golden Section as a rule to apply rather than as the proportional basis of individual articulation",
+        "Ignoring the additive/subtractive genesis distinction — it shapes how the composition reads"
+      ]
+    },
+    {
+      "concept_id": "non_symmetrical_balance",
+      "label": "Non-Symmetrical Balance",
+      "definition": "Balance achieved not through mirror symmetry but through counterweights — metric balance, weight balance, character balance. The tightrope walker is the scale: the essence of the scale is the crossing of perpendicular and horizontal. Building a tower: each stone creates a disturbance corrected by the next. The vertical signifies the logical direction on a plane; the horizontal signifies proportionate height and the horizon. Every creature, to preserve its balance, insists on seeing actual verticals projected as such.",
+      "key_concepts": [
+        "The tightrope walker as the scale: balance through dynamic equilibrium, not static symmetry",
+        "Counterweight balance: each element creates a disturbance that the next corrects",
+        "Metric balance: equilibrium of measurable quantities (size, area, distance)",
+        "Weight balance: equilibrium of visual heaviness (tone, density, complexity)",
+        "Character balance: equilibrium of qualitative character (active/passive, warm/cool, smooth/rough)"
+      ],
+      "diagnostic_questions": [
+        "Is balance achieved symmetrically or through counterweights — and is the choice deliberate?",
+        "Can you identify the 'tightrope walker' moment — the point of maximum equilibrium tension?",
+        "Is the balance metric (measurable quantities), weight-based (visual heaviness), or character-based (qualitative)?",
+        "Does the composition build like a tower — each element disturbing and then correcting equilibrium?",
+        "Is the vertical-horizontal crossing (the scale) legible as the compositional backbone?"
+      ],
+      "indicators": {
+        "strong_balance": [
+          "Counterweight equilibrium is palpable — the composition balances without symmetry",
+          "The tower-building principle operates: elements create and correct disturbance in sequence",
+          "Multiple kinds of balance (metric, weight, character) operate simultaneously",
+          "The vertical-horizontal crossing provides a structural backbone"
+        ],
+        "weak_balance": [
+          "Mechanical symmetry substitutes for dynamic equilibrium — balance without tension",
+          "No counterweight logic — elements neither disturb nor correct",
+          "Balance is one-dimensional: only metric, or only weight, without the others",
+          "The composition has no 'tightrope' moment — no point of dynamic equilibrium"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Replace symmetrical balance with counterweight: offset a heavy element with a distant light one of different character",
+          "Build the tower: place each major element so that it disturbs equilibrium, then correct with the next",
+          "Establish the vertical-horizontal crossing as the compositional skeleton — the scale against which everything tilts",
+          "Layer balance types: metric, weight, and character balance operating simultaneously"
+        ],
+        "refine": [
+          "Check whether the counterweight is sufficient — a tightrope walker with too little counterbalance reads as falling, not balancing",
+          "Ensure the tower-building sequence is perceivable: the eye should sense disturbance and correction",
+          "Test whether the balance would survive removing an element — if it collapses, that element is structurally critical"
+        ]
+      },
+      "common_misreadings": [
+        "Equating balance with symmetry — Klee's balance is dynamic equilibrium through counterweights",
+        "Treating balance as a single property rather than three (metric, weight, character)",
+        "Ignoring the tower-building principle: each element both disturbs and corrects, creating progressive equilibrium"
+      ]
+    },
+    {
+      "concept_id": "gravitational_dynamics",
+      "label": "Gravitational Dynamics and the Arrow",
+      "definition": "There are regions with different laws and new symbols, signifying freer movement and dynamic position. Earth binds with gravity — the plummet aims at the earth center where all materially-bound existence is anchored. Water and atmosphere are transitional regions where movement becomes freer. The arrow is the father of thought: how do I expand my reach? Over this river? This lake? That mountain? The contrast between ideological capacity to move through material and metaphysical spaces and physical limitations is the origin of all human tragedy. Half winged — half imprisoned, this is man.",
+      "key_concepts": [
+        "Gravity as the binding force: the plummet, the fall, material constraint — the earth-bound condition",
+        "Transitional regions: water and air as zones of progressive liberation from gravity",
+        "The arrow: the thought-form of expansion — how do I reach beyond my physical limits?",
+        "Continuity types: loose continuity (bullet trajectory), rigid continuity (stair climbing), rhythmic continuity (swimming)",
+        "Half winged, half imprisoned: the fundamental human tension between aspiration and limitation"
+      ],
+      "diagnostic_questions": [
+        "What is the gravitational orientation of the composition — earth-bound, transitional, or liberated?",
+        "Are there arrow-like directed energies — forms that aspire beyond their physical limits?",
+        "Does the composition express the tension between gravity (constraint) and kinetic freedom (aspiration)?",
+        "What continuity types are present — loose, rigid, or rhythmic?",
+        "Is the 'half winged, half imprisoned' tension palpable — does the composition reach for something it cannot fully achieve?"
+      ],
+      "indicators": {
+        "strong_dynamics": [
+          "Gravitational orientation is clear and structured — the viewer feels weight, ascent, and resistance",
+          "Arrow-like energies direct the composition toward aspiration or expansion",
+          "The tension between constraint and freedom is the composition's expressive core",
+          "Continuity types vary: some movements are loose (ballistic), some rigid (stepped), some rhythmic (oscillating)"
+        ],
+        "weak_dynamics": [
+          "No gravitational orientation — forms float without weight or aspiration",
+          "No arrow-like directed energy — the composition has no sense of reaching or expanding",
+          "No tension between constraint and freedom — either entirely bound or entirely free, with no drama",
+          "Movement, if present, is uniform — no variation in continuity type"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Establish a gravitational anchor: something in the composition must be bound, weighted, pulled downward",
+          "Introduce the arrow: at least one element should aspire beyond its condition — reaching, expanding, overcoming",
+          "Create the 'half winged, half imprisoned' tension: let aspiration and constraint coexist within a single form or pair",
+          "Vary continuity: introduce both loose (flowing, ballistic) and rigid (stepped, constructed) movement"
+        ],
+        "refine": [
+          "Check whether the gravitational logic is consistent — does weight increase downward and freedom increase upward?",
+          "Ensure arrows have both shaft and feathering — direction and stabilization — not just vague upward energy",
+          "Balance the tragic tension: too much imprisonment without aspiration is inert; too much freedom without constraint is weightless"
+        ]
+      },
+      "common_misreadings": [
+        "Treating gravitational dynamics as literal physics rather than as a metaphor for the tension between constraint and aspiration",
+        "Ignoring the arrow as Klee's central metaphor — it is not about depicted arrows but about directed energy that expands reach",
+        "Missing the tragic dimension: for Klee, the gap between aspiration and limitation is not a flaw to fix but the origin of all human expression"
+      ]
+    },
+    {
+      "concept_id": "kinetic_chromatic_energy",
+      "label": "Kinetic and Chromatic Energy",
+      "definition": "The pendulum creates equilibration of movement — motion and counter-motion. The spinning top replaces material support with gyration: horizontal rotation saves it from falling. The spiral transforms the circle through changing radius. The purest mobile form, the cosmic one, is created through the liquidation of gravity. Chromatic energy operates through arrows of color — heating and cooling, incandescence and extinguishing. When direction becomes irrelevant, heating and cooling become one: pathos turns into ethos, which encompasses energy and counter-energy within itself.",
+      "key_concepts": [
+        "The pendulum: motion and counter-motion producing equilibration — the simplest kinetic form",
+        "The spinning top: material instability overcome by rotational energy — the principle of dynamic stability",
+        "The spiral: the circle transformed by changing radius — growth through rotation",
+        "Chromatic arrows: color as directed energy — warm/cool, intensifying/extinguishing",
+        "The transcendence of direction: when the arrow becomes superfluous, energy and counter-energy unite — 'to be everywhere'"
+      ],
+      "diagnostic_questions": [
+        "Are pendulum-like oscillations present — motion and counter-motion creating equilibration?",
+        "Is there spinning-top stability — dynamic equilibrium maintained by energy rather than by structure?",
+        "Does the spiral principle operate — growth through rotation rather than linear extension?",
+        "Are chromatic energies directed — do colors carry arrow-like force (heating, cooling, intensifying)?",
+        "Does the composition achieve the transcendence of direction — where opposing energies unite into a single state?"
+      ],
+      "indicators": {
+        "strong_kinetic_energy": [
+          "Oscillatory movements are structured: pendulum-like reciprocation creates felt equilibrium",
+          "Dynamic stability is present: forms maintain balance through energy, not through inertia",
+          "Spiral growth is visible: forms expand through rotation, not just repetition",
+          "Chromatic energies carry direction: warm and cool areas function as force-arrows"
+        ],
+        "weak_kinetic_energy": [
+          "No oscillation or reciprocation — movement is one-directional without counter-motion",
+          "Stability depends on structure alone, not on dynamic energy — forms are balanced by placement, not by gyration",
+          "No spiral growth — repetition without transformation, or linear extension without rotation",
+          "Color lacks directional energy — warm and cool exist but do not push or pull"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Introduce pendulum logic: for every major movement, create a counter-movement that equilibrates it",
+          "Let at least one element sustain itself through dynamic energy (the spinning-top principle) rather than static support",
+          "Use the spiral: let a repeated element grow or shrink through successive iterations, transforming as it rotates",
+          "Direct chromatic energy: let warm colors advance and cool colors recede as force-arrows, not just as mood"
+        ],
+        "refine": [
+          "Check that pendulum oscillations are balanced: too much counter-motion cancels the original energy; too little leaves it unresolved",
+          "Ensure the spiral has both rotation and radius change — a circle without transformation is not a spiral",
+          "Test whether chromatic arrows support or contradict kinetic movement — color direction and form direction should be coordinated or deliberately tensioned"
+        ]
+      },
+      "common_misreadings": [
+        "Treating kinetic energy as depicted motion rather than as structural dynamics — Klee means the energy principle, not a picture of a spinning top",
+        "Ignoring chromatic energy as a directional force — color is not just mood but an arrow that points and pushes",
+        "Missing the transcendence principle: the highest state is where opposing energies unite and direction becomes irrelevant"
+      ]
+    }
+  ],
+  "anti_goals": [
+    "Must not treat forms as static geometric shapes — every form is a record of movement and energy, a trace of its own genesis",
+    "Must not ignore the three conjugations (active, medial, passive) — they reveal the energy grammar of the composition",
+    "Must not reduce balance to symmetry — Klee's balance is achieved through counterweights, correction, and dynamic equilibrium",
+    "Must not separate form from process — the line is an act, not a thing",
+    "Must not ignore gravitational and kinetic dynamics — forms exist in relation to gravity, momentum, and energy",
+    "Must not treat the arrow as literal — it is a metaphor for directed energy and the aspiration to expand reach",
+    "Must not miss the tragic dimension: the tension between aspiration and limitation is the heart of Klee's vision, not a problem to resolve"
+  ],
+  "tensions": [
+    {
+      "label": "Process vs. product",
+      "description": "Klee insists that forms are records of their genesis — but the critic encounters the finished product, not the process. The challenge is to read backward from the work to the energies that created it, recognizing that 'the eye travels along the paths cut out for it in the work.'"
+    },
+    {
+      "label": "Exactitude and intuition",
+      "description": "Klee's goal was 'exactitude winged by intuition' — systematic analysis that remains open to the irrational. The critic must use the structural vocabulary (conjugation, rhythm, articulation) without reducing the work to a diagram. The analytical tools should illuminate, not domesticate."
+    },
+    {
+      "label": "Universal grammar and individual expression",
+      "description": "The Pedagogical Sketchbook presents a universal grammar of visual energy (active/medial/passive, structural/individual, gravitational/kinetic). But art resists universal grammar — each work invents its own language. The critic should use Klee's categories as diagnostic tools, not as a scoring rubric."
+    },
+    {
+      "label": "Nature and abstraction",
+      "description": "Klee insists 'communication with nature remains the most essential condition' yet works with highly abstracted forms. For Klee, abstraction IS nature — the structural laws of growth, movement, and energy that underlie appearances. The critic should look for natural law in abstract form, not for depicted nature."
+    }
+  ],
+  "citations": [
+    {
+      "claim": "The active line is a point shifting its position forward",
+      "quote_or_paraphrase": "An active line on a walk, moving freely, without goal. A walk for a walk's sake. The mobility agent is a point, shifting its position forward.",
+      "location": "Section I, I.1"
+    },
+    {
+      "claim": "Three conjugations of line",
+      "quote_or_paraphrase": "Active: I fell (the man fells a tree with his ax). Medial: I fall (the tree falls under the ax stroke of the man). Passive: I am being felled (the tree lies felled).",
+      "location": "Section I, I.5"
+    },
+    {
+      "claim": "Structural rhythm is purely repetitive",
+      "quote_or_paraphrase": "Since these figure arrangements rest on the principle of repetition, any number of parts can be added or taken away without changing their rhythmic character.",
+      "location": "Section I, I.6"
+    },
+    {
+      "claim": "The tightrope walker is the scale",
+      "quote_or_paraphrase": "The tightrope walker is emphatically concerned about his balance. He is the scale. The essence of the scale is the crossing of perpendicular and horizontal.",
+      "location": "Section II, II.22"
+    },
+    {
+      "claim": "Half winged, half imprisoned — the human condition",
+      "quote_or_paraphrase": "The contrast between man's ideological capacity to move at random through material and metaphysical spaces and his physical limitations, is the origin of all human tragedy. Half winged — half imprisoned, this is man!",
+      "location": "Section IV, IIII.37"
+    },
+    {
+      "claim": "The arrow is the father of thought",
+      "quote_or_paraphrase": "The father of the arrow is the thought: how do I expand my reach? Over this river? This lake? That mountain?",
+      "location": "Section IV, IIII.37"
+    },
+    {
+      "claim": "The work is continuity — productive and receptive",
+      "quote_or_paraphrase": "The work as human action (genesis) is productive as well as receptive. It is continuity. The eye travels along the paths cut out for it in the work.",
+      "location": "Section I, I.13"
+    },
+    {
+      "claim": "Regions of freer movement beyond gravity",
+      "quote_or_paraphrase": "There are regions with different laws and new symbols, signifying freer movement and dynamic position. Water and atmosphere are transitional regions.",
+      "location": "Section III, III.26"
+    },
+    {
+      "claim": "When direction becomes irrelevant, pathos turns into ethos",
+      "quote_or_paraphrase": "Through this act heating and cooling-off become one. Pathos turns into ethos which encompasses energy and counter-energy within itself.",
+      "location": "Section IV, IIII.43"
+    }
+  ],
+  "confidence_notes": [
+    "The Pedagogical Sketchbook is extremely compressed — 32 pages of aphoristic text and diagrams. Klee's full teaching at the Bauhaus was far more extensive. The critic should treat this as a concentrated vocabulary, not an exhaustive system.",
+    "Klee's metaphors (arrow, tightrope walker, spinning top, pendulum) are structural concepts, not decorative analogies. They describe real principles of visual energy. The critic should apply them as analytical tools.",
+    "The three conjugations (active, medial, passive) are the most operationally distinctive feature of Klee's framework. They provide a grammar of energy that no other theorist in this system offers.",
+    "Klee's framework applies most naturally to works with visible mark-making, gestural energy, and organic growth. It is less diagnostic for geometric, mechanical, or photographic images where the genesis is hidden."
+  ]
+}

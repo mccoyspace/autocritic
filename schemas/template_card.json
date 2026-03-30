@@ -1,0 +1,76 @@
+{
+  "_comment": "Template critic card. Copy to critics/<your_id>.json and fill in. Delete this _comment field and all _note fields when done.",
+
+  "critic_id": "your_theorist_id",
+  "theorist": "Full Name",
+  "book": "Book Title (Year)",
+
+  "thesis": "One paragraph: the core evaluative logic of this theorist's framework. What does this theorist think makes an image work or fail? Use the theorist's own vocabulary.",
+
+  "_note_items_key": "Choose ONE items key that fits the theory's structure. Use 'criteria' for bipolar axes (like Wölfflin), 'elements' for element-based frameworks (like Kandinsky), 'core_concepts' for concept-based frameworks (like Arnheim), 'principles' for principle-based frameworks (like Dow), or 'impulses' for drive-based frameworks (like Worringer). Register new keys in critic.py _ITEMS_KEYS and _ID_FIELDS.",
+
+  "criteria": [
+    {
+      "criterion_id": "example_axis",
+      "label": "Example Axis or Concept",
+
+      "_note_bipolar": "For bipolar axes, add pole_a and pole_b fields (see wolfflin.json). For unipolar concepts, omit them.",
+
+      "definition": "What does this criterion assess, in the theorist's own terms? Quote directly where possible.",
+
+      "diagnostic_questions": [
+        "What should the evaluator ask when looking at an image?",
+        "Include 3-5 questions that operationalize this criterion."
+      ],
+
+      "indicators": {
+        "_note": "For bipolar: use pole_a/pole_b keys. For unipolar: use strong_<concept>/weak_<concept> keys. Delete this _note.",
+        "strong": [
+          "Observable visual evidence that this criterion is strongly present"
+        ],
+        "weak": [
+          "Observable visual evidence that this criterion is weakly present or absent"
+        ]
+      },
+
+      "feedback_directions": {
+        "_note": "For bipolar: use toward_a/toward_b. For unipolar: use strengthen/reduce. Delete this _note.",
+        "strengthen": [
+          "Concrete, actionable change to improve on this criterion"
+        ],
+        "reduce": [
+          "When and how to pull back on this criterion"
+        ]
+      },
+
+      "common_misreadings": [
+        "How this criterion is often misunderstood or misapplied",
+        "Include the theorist's own cautions where available"
+      ]
+    }
+  ],
+
+  "anti_goals": [
+    "What this critic must NEVER do — e.g., impose subjective preference, conflate formal and representational quality"
+  ],
+
+  "tensions": [
+    {
+      "label": "Name of an internal tension in the theory",
+      "description": "How does this tension manifest? Theories are not seamless — document the friction points."
+    }
+  ],
+
+  "citations": [
+    {
+      "claim": "What claim from the card is being supported",
+      "quote_or_paraphrase": "Actual text or close paraphrase from the source",
+      "location": "Chapter, page, or section reference"
+    }
+  ],
+
+  "confidence_notes": [
+    "Where is the theory hard to operationalize for machine vision?",
+    "What parts of the source text are ambiguous or contested?"
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "critic_id": "kandinsky",
+  "theorist": "Wassily Kandinsky",
+  "book": "Point and Line to Plane",
+  "thesis": "Every pictorial element — point, line, and the basic plane — possesses inherent expressive force independent of representation. A point is concentric tension at rest; a line is the track of its destruction through movement; the basic plane is a living field whose boundaries and format generate tensions that interact with every element placed upon it. Composition is the law-abiding organization of these vital forces, achieved through constructive counterpoint among tensions rather than decorative arrangement of shapes. Directions carry temperature (horizontals are cold, verticals warm, diagonals mixed), and the analyst's task is to read these forces, not merely to name geometric forms.",
+  "elements": [
+    {
+      "element_id": "point",
+      "label": "Point",
+      "definition": "The proto-element of painting. In its geometric essence it is the ultimate and most singular union of silence and speech. It is the result of the initial collision of the tool with the material plane — concentric tension directed inward.",
+      "properties": {
+        "tension_type": "concentric (directed inward)",
+        "temperature": "neutral — determined by context",
+        "state": "rest in isolation; dynamic through placement and repetition",
+        "boundary_condition": "A growing point becomes a plane; the threshold is contextual, not absolute"
+      },
+      "diagnostic_questions": [
+        "Where are the concentrated visual events — the points of maximum local energy?",
+        "Do point-elements function as anchors (stabilizing) or accents (disrupting)?",
+        "Is there a hierarchy among point-events, or do they scatter without structure?",
+        "At what size does a point-like element begin to read as a plane?"
+      ],
+      "indicators": {
+        "strong_point_presence": [
+          "Distinct concentrated marks or spots that arrest the eye",
+          "Clear focal accents at intersections or tension zones",
+          "Size differentiation creating hierarchy among point-events",
+          "Points placed at BP boundaries generating high tension"
+        ],
+        "weak_point_presence": [
+          "No concentrated visual events — energy diffused across the field",
+          "Marks of uniform size creating monotonous scatter",
+          "No clear hierarchy of accent or emphasis"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Concentrate energy into fewer, more decisive point-events",
+          "Place key points at high-tension BP zones (corners, edge-center intersections)",
+          "Create size hierarchy: one dominant point-accent supported by subordinate ones",
+          "Use the point as a termination or origin for linear movement"
+        ],
+        "reduce": [
+          "Dissolve isolated points into linear or planar movement",
+          "Reduce point-scatter by grouping into rhythmic sequences",
+          "Let points merge into larger masses where the field needs continuity"
+        ]
+      },
+      "common_misreadings": [
+        "Treating every small circle as a 'point' — Kandinsky's point is defined by concentric tension and contextual size, not geometric shape",
+        "Ignoring that a point's expressive force changes with its position on the BP — the same point near center (low tension) vs. near edge (high tension) carries different energy",
+        "Confusing decorative dots with structural point-events that anchor compositional forces"
+      ]
+    },
+    {
+      "element_id": "line",
+      "label": "Line",
+      "definition": "The geometric line is an invisible thing. It is the track made by the moving point; it arises from movement — through the destruction of the point's supreme self-contained repose. It is inwardly animated tension created by movement.",
+      "properties": {
+        "tension_type": "eccentric (directed outward along its length)",
+        "temperature_by_direction": {
+          "horizontal": "cold — flat, capable of infinite cold extension",
+          "vertical": "warm — height, active, aspiring",
+          "diagonal": "warm-cold — equal parts, creating tension between the two",
+          "free_curve": "varies continuously with curvature direction"
+        },
+        "angular_temperature": {
+          "acute_45": "sharpest, most active, warmest",
+          "right_90": "coldest of angles, most restrained",
+          "obtuse_135": "weakest, most passive, approaching the line"
+        }
+      },
+      "diagnostic_questions": [
+        "What are the dominant line directions and what temperature do they carry?",
+        "Do line types contrast with each other — warm against cold, diagonal against horizontal?",
+        "Is there rhythmic variation in the linear movement, or monotonous repetition?",
+        "Do lines create directional pull (eccentric tension) or remain static?",
+        "Are angular formations present, and what temperature do their angles carry?",
+        "Is the line structure geometric (exact, constructed) or loose (free, organic)?"
+      ],
+      "indicators": {
+        "warm_dominant": [
+          "Strong verticals or ascending diagonals",
+          "Acute angles creating sharp, active junctions",
+          "Upward-directed movement across the composition",
+          "Lines pulling away from the horizontal base"
+        ],
+        "cold_dominant": [
+          "Horizontals dominating the visual field",
+          "Right angles creating restrained, stable junctions",
+          "Movement parallel to the earth-line",
+          "Obtuse angles flattening energy toward passivity"
+        ],
+        "balanced_tension": [
+          "Diagonal and horizontal lines in structured counterpoint",
+          "Mixed angular types creating temperature variety",
+          "Rhythmic alternation between warm and cold directions"
+        ]
+      },
+      "feedback_directions": {
+        "increase_warmth": [
+          "Introduce or strengthen vertical and ascending diagonal lines",
+          "Sharpen angles toward the acute — increase activity",
+          "Direct linear forces upward, away from the base",
+          "Add counter-diagonals to create warm-cold tension"
+        ],
+        "increase_coldness": [
+          "Extend horizontal lines — emphasize cold, flat extension",
+          "Open angles toward the obtuse — reduce angular energy",
+          "Suppress vertical aspiration in favor of lateral spread"
+        ],
+        "increase_counterpoint": [
+          "Set warm lines against cold — vertical against horizontal, diagonal against both",
+          "Vary line weight to create rhythmic accents within a direction",
+          "Use angular junctions as energy-exchange points between directions"
+        ]
+      },
+      "common_misreadings": [
+        "Describing lines only by their geometric type (straight, curved) without reading their temperature and tension",
+        "Treating all diagonals as identical — Kandinsky distinguishes the 'harmonious' diagonal (upper-left to lower-right) from the 'disharmonious' (lower-left to upper-right)",
+        "Ignoring the distinction between tension (inner force) and direction (external course) — a line's energy is in its tension, not its trajectory alone",
+        "Reducing angular analysis to 'sharp' vs 'not sharp' without the temperature spectrum from acute-warm through right-cold to obtuse-passive"
+      ]
+    },
+    {
+      "element_id": "basic_plane",
+      "label": "Basic Plane (Grundflache)",
+      "definition": "The material plane called upon to receive the content of the work of art. Bounded by two horizontal and two vertical lines, it is not a neutral container but a living being whose four boundaries create inherent tensions that interact with every element placed upon it.",
+      "properties": {
+        "boundary_tensions": {
+          "above": "looseness, lightness, emancipation, freedom — density decreases upward",
+          "below": "condensation, heaviness, constraint — density increases, movement restricted",
+          "left": "going away, distance, adventure — emancipation (weaker than 'above')",
+          "right": "coming home, rest, fatigue — resistance (weaker than 'below')"
+        },
+        "format_temperature": {
+          "square": "most objective — cold and warm equally balanced",
+          "horizontal": "cold — elements feel heavier, restraint is strong",
+          "vertical": "warm — elements feel lighter and more active"
+        },
+        "diagonal_character": {
+          "harmonious": "upper-left to lower-right — lyric tension, mild",
+          "disharmonious": "lower-left to upper-right — dramatic tension, complex, deflected upward"
+        },
+        "center": "point of least tension, the 'indifferent' zone"
+      },
+      "diagnostic_questions": [
+        "What is the format of the BP (square, horizontal, vertical) and what temperature does it establish?",
+        "Are elements placed where the BP's inherent tensions support or contradict their own energy?",
+        "Does the composition use the edges and center of the BP intentionally — or does it ignore the BP's force field?",
+        "Which quadrant carries the most weight, and does the weight distribution create dramatization or balance?",
+        "Does the diagonal structure follow the harmonious (lyric) or disharmonious (dramatic) axis?",
+        "Does the BP feel like a living participant in the work, or like a dead container?"
+      ],
+      "indicators": {
+        "bp_as_active": [
+          "Elements respond to the above/below, left/right tensions of the BP",
+          "Format choice reinforces or intentionally contradicts the compositional energy",
+          "Weight distribution across quadrants is clearly structured",
+          "Edge-approaching elements create deliberate friction with BP boundaries"
+        ],
+        "bp_as_ignored": [
+          "Elements float without reference to the BP's boundary tensions",
+          "Format seems arbitrary — a square composition would work equally in any aspect ratio",
+          "No sense of the four zones (above-light, below-heavy, left-away, right-home)",
+          "Center and periphery are treated identically"
+        ]
+      },
+      "feedback_directions": {
+        "activate_bp": [
+          "Place heavy elements below and light elements above to dramatize the BP's inherent tensions",
+          "Use the format's temperature — a cold horizontal BP restrains warm ascending forces, creating drama",
+          "Engage the corners: upper-left is the loosest zone, lower-right the firmest — distribute weight accordingly",
+          "Structure the composition along one diagonal axis (lyric or dramatic) to give it a backbone"
+        ],
+        "counteract_bp": [
+          "Place heavy elements above and light below for deliberate tension against the BP's nature",
+          "Direct warm forces across a cold (horizontal) BP to create productive restraint",
+          "Shift the center of gravity away from the geometric center to activate peripheral tensions"
+        ]
+      },
+      "common_misreadings": [
+        "Treating the basic plane as a neutral background — for Kandinsky, the BP breathes, has warmth and coldness, and 'frivolous abuse of it is akin to murder'",
+        "Ignoring format: the shift from square to horizontal or vertical fundamentally changes every tension in the composition",
+        "Applying the above/below and left/right tensions as rigid rules rather than as a force field that elements interact with",
+        "Forgetting that the BP's 'weight' is inner force (tension), not physical mass"
+      ]
+    }
+  ],
+  "compositional_principles": [
+    {
+      "principle_id": "counterpoint",
+      "label": "Constructive Counterpoint",
+      "definition": "Elements should create structured opposition — warm against cold, concentric against eccentric, point-rest against line-movement — not chaos. A composition is an exact law-abiding organization of the vital forces which, in the form of tensions, are shut up within the elements.",
+      "diagnostic_questions": [
+        "Do opposing forces (warm/cold, heavy/light, concentric/eccentric) create structured dialogue or mere confusion?",
+        "Is there a clear relationship between contrasting elements, or do they simply coexist?"
+      ]
+    },
+    {
+      "principle_id": "tension",
+      "label": "Tension as Primary Force",
+      "definition": "Tension is the internal force of an element — the living force within it. Direction is the external course of movement. Tension + direction = the character of an element. Analysis must distinguish between these.",
+      "diagnostic_questions": [
+        "Can the internal tensions of the major elements be identified independently of their direction?",
+        "Is the overall tension constructive (building visual coherence) or destructive (producing noise)?"
+      ]
+    },
+    {
+      "principle_id": "rhythm",
+      "label": "Rhythm and Repetition",
+      "definition": "Repetition and variation of elements create a temporal experience across the visual field. Pure repetition produces monotony; variation without structure produces chaos. The productive zone is between these extremes.",
+      "diagnostic_questions": [
+        "Is there rhythmic variation in element placement, or mechanical repetition?",
+        "Does the rhythm create a sense of movement through time, or static decoration?"
+      ]
+    },
+    {
+      "principle_id": "economy",
+      "label": "Economy of Means",
+      "definition": "The minimum effort for the maximum result. The pure form places itself at the disposal of the living content. Trimmings which hush and obscure the inner sound must be excluded.",
+      "diagnostic_questions": [
+        "Does every element carry tension, or are some purely decorative?",
+        "Could the same inner sound be achieved with fewer elements?"
+      ]
+    }
+  ],
+  "anti_goals": [
+    "Must not reduce the analysis to naming geometric shapes — 'circles, lines, and rectangles' is not a Kandinsky critique",
+    "Must not ignore the temperature properties Kandinsky assigns to directions and forms (warm/cold is structural, not decorative)",
+    "Must not treat the basic plane as a neutral container — its format, boundaries, and zones are active participants",
+    "Must not confuse Kandinsky's system with generic 'elements and principles of design' — his elements carry inherent expressive force",
+    "Must not center the critique on representational content when the image operates abstractly",
+    "Must not describe only external direction while ignoring internal tension — tension is the inner force, direction is the outer course",
+    "Must not apply the BP zone properties (above=light, below=heavy) as rigid rules rather than as a force field"
+  ],
+  "tensions": [
+    {
+      "label": "Inner necessity vs. systematic analysis",
+      "description": "Kandinsky insists that 'inner necessity' governs artistic decisions, yet his book provides a rigorous analytical system. The critic must use the system without reducing art to formula — the system illuminates inner necessity, it does not replace it."
+    },
+    {
+      "label": "Temperature as structure vs. temperature as metaphor",
+      "description": "Warm/cold assignments to line directions and BP zones function as structural descriptions of visual experience for Kandinsky, not as poetic metaphors. Yet the boundary between structural description and synesthetic metaphor is genuinely unstable in his writing."
+    },
+    {
+      "label": "Concentric vs. eccentric as historical tendency",
+      "description": "Kandinsky notes that art oscillates between concentric (centripetal, point-like) and eccentric (centrifugal, line-like) periods. The critic should recognize where a work falls on this axis without treating either as superior."
+    },
+    {
+      "label": "Art and nature share laws but not materials",
+      "description": "Kandinsky repeatedly draws parallels between artistic and natural forms (crystals, skeletons, spider webs) but insists the difference lies in material and purpose. The critic must not confuse formal resemblance with shared meaning."
+    }
+  ],
+  "citations": [
+    {
+      "claim": "The point is defined as concentric tension",
+      "quote_or_paraphrase": "The point is the proto-element of painting. In its geometric essence it is the ultimate and most singular union of silence and speech.",
+      "location": "Point chapter, opening definition"
+    },
+    {
+      "claim": "The line arises from the destruction of the point's repose",
+      "quote_or_paraphrase": "The geometric line is an invisible thing. It is the track made by the moving point; it arises from movement — through the destruction of the point's supreme self-contained repose.",
+      "location": "Line chapter, opening definition"
+    },
+    {
+      "claim": "Composition is organization of vital forces as tensions",
+      "quote_or_paraphrase": "A composition is nothing other than an exact law-abiding organization of the vital forces which, in the form of tensions, are shut up within the elements.",
+      "location": "Line chapter, composition theory section"
+    },
+    {
+      "claim": "Horizontal lines are cold, verticals are warm",
+      "quote_or_paraphrase": "Two elements of cold rest and two elements of warm rest give two double sounds of rest, which determine the tranquil = objective sound of the BP.",
+      "location": "Basic Plane chapter, boundary tensions"
+    },
+    {
+      "claim": "The BP is a living being, not a dead container",
+      "quote_or_paraphrase": "Every artist feels — even though unconsciously — the 'breathing' of the still untouched BP and he feels a responsibility toward this being and is aware of the fact that frivolous abuse of it is akin to murder.",
+      "location": "Basic Plane chapter, nature of the BP"
+    },
+    {
+      "claim": "Above is looseness and freedom, below is condensation and constraint",
+      "quote_or_paraphrase": "The 'above' gives the impression of a great looseness, a feeling of lightness, of emancipation and, finally, of freedom... The effect of 'below' is completely contrary: condensation, heaviness, constraint.",
+      "location": "Basic Plane chapter, above and below"
+    },
+    {
+      "claim": "Left is distance/adventure, right is home/rest",
+      "quote_or_paraphrase": "The one to the 'left' — going outside — is movement into the distance... The one to the 'right' — centered inwardly — is a movement toward home.",
+      "location": "Basic Plane chapter, left and right"
+    },
+    {
+      "claim": "The harmonious and disharmonious diagonals carry different energy",
+      "quote_or_paraphrase": "cb — 'lyric' tension, da — 'dramatic' tension. These denotations are to be understood only as arrows pointing the way to the inner content.",
+      "location": "Basic Plane chapter, diagonal analysis"
+    },
+    {
+      "claim": "Economy: minimum effort for maximum result",
+      "quote_or_paraphrase": "The exclusion of 'trimmings,' which hush and obscure the inner sound of this message, lends the greatest brevity and precision to pictorial expressions. The pure form places itself at the disposal of the living content.",
+      "location": "Line chapter, closing summary"
+    }
+  ],
+  "confidence_notes": [
+    "Kandinsky's temperature assignments (warm/cold) are stated as facts about visual experience, but their universality is debatable — the critic should apply them as Kandinsky's framework, not as perceptual absolutes",
+    "The BP zone properties (above=light, below=heavy, left=away, right=home) may interact differently with non-Western reading directions — Kandinsky acknowledges the BP's properties are 'mirrored' relative to the artist",
+    "The boundary between 'constructive' and 'destructive' tension is a judgment call that Kandinsky leaves underspecified — the critic should flag ambiguous cases rather than force a classification",
+    "Point and Line to Plane deals primarily with abstract/non-representational work; applying this framework to figurative images requires translating representational elements into their formal-energetic equivalents"
+  ]
+}

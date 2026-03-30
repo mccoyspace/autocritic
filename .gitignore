@@ -1,0 +1,37 @@
+# Source texts (not distributable)
+books/
+
+# Generated run artifacts
+runs/
+
+# IDE / tool config
+.claude/
+.vscode/
+
+# Legacy prototype
+v0/
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment
+.venv/
+.env
+
+# OS
+.DS_Store
+
+# Eval results (generated, may contain API output)
+evals/results/
+
+# Pytest
+.pytest_cache/
+
+# Large test fixtures (copyrighted images)
+tests/fixtures/Friedrich.jpg
+tests/fixtures/Hiroshige.jpg

@@ -1,0 +1,286 @@
+{
+  "critic_id": "dow",
+  "theorist": "Arthur Wesley Dow",
+  "book": "Composition: A Series of Exercises in Art Structure",
+  "thesis": "All space art reduces to three structural elements — Line, Notan, and Color — harmonized through five principles of composition. Of these, Notan (the Japanese concept of dark-light massing) is the most fundamental and distinctive: a composition must work as a pattern of dark and light masses before color is added, and before representation is considered. Composition is 'harmony-building' — the putting together of lines, masses, and colors to create beauty through deliberate arrangement. This is absolutely opposed to the academic approach through imitation; design is a preparation for drawing, not the reverse.",
+  "elements": [
+    {
+      "element_id": "line",
+      "label": "Line",
+      "definition": "The first element of pictorial expression. Line refers to boundaries of shapes and the interrelations of lines and spaces. Line-beauty means harmony of combined lines or the peculiar quality imparted by special treatment. It includes contour, direction, spacing, and the character of the mark itself.",
+      "progression_order": 1,
+      "aspects": [
+        "Contour and boundary of forms",
+        "Direction and flow across the composition",
+        "Character of touch — thick/thin, smooth/rough, continuous/broken",
+        "Line as structure: the skeleton of the design",
+        "Spacing: the relation of lines to the areas they create"
+      ],
+      "diagnostic_questions": [
+        "Do the lines create a clear harmony of spacing — are the areas they define well-proportioned?",
+        "Is there variety in line character, or is it monotonous?",
+        "Do lines define forms through contour or through implied boundaries?",
+        "Does the line-scheme work as a composition before any tone or color is added?",
+        "Is line quality expressive — drawn 'with the whole hand and arm in one sweep, not with the fingers'?"
+      ],
+      "indicators": {
+        "strong_line": [
+          "Clear directional flow with purposeful spacing",
+          "Variety of line character supporting the composition",
+          "Lines cutting the space into well-proportioned areas",
+          "The composition reads as a fine pattern of lines and spaces even without tone"
+        ],
+        "weak_line": [
+          "Monotonous line weight and character throughout",
+          "Lines that fail to create interesting spacing",
+          "Confused direction with no governing line-idea",
+          "Mechanical or geometric regularity without art-value"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Simplify to the main lines — find the line-idea underlying the composition",
+          "Vary line character to create rhythm and emphasis",
+          "Ensure the line-scheme creates fine spacing of areas",
+          "Apply principles of subordination: relate secondary lines to a dominant direction"
+        ],
+        "refine": [
+          "Trace and retrace to improve proportions and quality of touch",
+          "Test the composition in a different rectangular proportion — does the line-idea hold?",
+          "Remove lines that do not contribute to the whole — 'wholeness is essential to beauty; it distinguishes Music from Noise'"
+        ]
+      },
+      "common_misreadings": [
+        "Treating line only as outline/contour and ignoring its role as space-divider",
+        "Judging line by accuracy of representation rather than beauty of spacing",
+        "Ignoring the progressive relationship: line is the foundation on which notan and color are built"
+      ]
+    },
+    {
+      "element_id": "notan",
+      "label": "Notan (Dark-and-Light)",
+      "definition": "Notan is the Japanese word for dark-light. It refers to the massing of tones of different values — the arrangement of dark and light spaces as a compositional element independent of color or representation. Notan-beauty means the harmony resulting from the combination of dark and light spaces, whether colored or not, whether in buildings, in pictures, or in nature. It must not be confused with light-and-shadow, which is merely a fact of external nature.",
+      "progression_order": 2,
+      "aspects": [
+        "Two-value design: the simplest and most fundamental form — flat black against flat white",
+        "Three-value design: adding a middle tone for greater complexity",
+        "Four-value and beyond: progressive refinement of tonal intervals",
+        "The shapes of dark masses and light masses as positive design in themselves",
+        "Notan as independent of color — the dark-light structure carries the composition's backbone",
+        "Notan of line: varying line width to introduce dark-light interplay"
+      ],
+      "diagnostic_questions": [
+        "If you squint or desaturate, does a clear dark-light pattern emerge?",
+        "Are the dark masses and light masses interesting shapes on their own?",
+        "Does the notan create visual flow or does it fragment the composition?",
+        "How many value steps are being used — is that number intentional?",
+        "Would the composition hold up if reduced to two values (pure black and white)?",
+        "Is the notan independent of representation, or merely recording shadows?",
+        "Does the arrangement of dark and light convey 'visual music' — beauty independent of meaning?"
+      ],
+      "indicators": {
+        "strong_notan": [
+          "Clear two-value pattern readable at a squint",
+          "Dark masses and light masses are interesting shapes in themselves",
+          "The dark-light structure carries the composition even without color",
+          "Deliberate massing — not accidental shadow-recording",
+          "Value contrast creates compositional hierarchy"
+        ],
+        "weak_notan": [
+          "Muddy middle tones with no clear dark-light separation",
+          "Masses that lack shape-interest — formless blobs or mechanical blocks",
+          "Dark-light arrangement that merely records shadows rather than creating design",
+          "No clear two-value foundation — the tonal structure is confused",
+          "Values that fragment the composition instead of unifying it"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Reduce to two values first — find the dark-light backbone before adding middle tones",
+          "Make the dark masses and light masses into interesting shapes — treat them as positive design",
+          "Use massing to create compositional hierarchy: one dominant dark or light area governing the rest",
+          "Separate notan from representation — the tone arrangement must work as abstract pattern"
+        ],
+        "refine": [
+          "Progress from two to three values only when the two-value foundation is strong",
+          "Play several notan-variations on the same line-scheme — the line is the theme, notan the variation",
+          "Ensure color does not undermine the notan structure — every color has a value"
+        ]
+      },
+      "common_misreadings": [
+        "Confusing notan with light-and-shadow — notan is a structural element of design, not a recording of illumination",
+        "Treating notan as mere 'contrast' — it is the arrangement of dark and light masses as positive shapes",
+        "Skipping the two-value stage and jumping to complex tonal gradations",
+        "Ignoring that notan is independent of color — the dark-light structure must work before color is added"
+      ]
+    },
+    {
+      "element_id": "color",
+      "label": "Color",
+      "definition": "The third element, built on top of line and notan. Color is subordinate to dark-light structure — it should enhance the notan pattern, not replace it. Every color has a value (notan position), and good color is dependent upon good notan, which in turn is dependent upon good spacing.",
+      "progression_order": 3,
+      "aspects": [
+        "Hue relationships: harmony, contrast, dominance",
+        "Color as an extension of notan — every color carries a dark-light value",
+        "Color schemes derived from study of Japanese prints and textiles",
+        "Subordination of color to the overall compositional design",
+        "Intensity and its role in color harmony"
+      ],
+      "diagnostic_questions": [
+        "Does the color support or undermine the notan structure?",
+        "Is there a dominant color relationship, or unresolved competition among hues?",
+        "Would the composition hold up if reduced to grayscale — does the notan survive?",
+        "Are the color choices enhancing the design, or merely adding surface attractiveness?",
+        "Is the color scheme derived from compositional logic, or applied as decoration?"
+      ],
+      "indicators": {
+        "strong_color": [
+          "Color reinforces the notan pattern — values remain clear in grayscale",
+          "A governing color relationship with subordinate accents",
+          "Color choices that support the line-scheme and massing structure",
+          "Intensity variations that create emphasis and hierarchy"
+        ],
+        "weak_color": [
+          "Color that flattens or confuses the notan structure",
+          "Multiple competing hues with no dominant relationship",
+          "Surface prettiness that masks weak underlying design",
+          "Color applied without regard to the value it carries"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Check the notan first — reduce to grayscale and verify the dark-light structure survives",
+          "Establish a dominant color relationship before adding variety",
+          "Treat color as enrichment of the notan scheme, not a replacement for it",
+          "Study the color logic of Japanese prints: limited palette, clear value relationships"
+        ],
+        "refine": [
+          "Adjust color intensity to support compositional hierarchy",
+          "Ensure color transitions follow the same principles as tone transitions",
+          "Subordinate secondary colors to the governing hue"
+        ]
+      },
+      "common_misreadings": [
+        "Evaluating color independently of notan — for Dow, color without good notan is 'decoration' in the worst sense",
+        "Treating color as the primary compositional tool — it is the third element, dependent on the first two",
+        "Ignoring that every color has a value position in the notan structure"
+      ]
+    }
+  ],
+  "principles": [
+    {
+      "principle_id": "opposition",
+      "label": "Opposition",
+      "definition": "The meeting of lines or forms at right angles or in strong contrast. Two lines meeting form a simple and severe harmony. Opposition creates energy and structural clarity.",
+      "examples": "A vertical meeting a horizontal; a dark mass against a light ground; Greek doorways; Egyptian temples; plaid design."
+    },
+    {
+      "principle_id": "transition",
+      "label": "Transition",
+      "definition": "Connection through curved or intermediate elements that lead the eye smoothly from one area to another. A third line softens opposition and produces an effect of unity and completeness. This combination typifies beauty itself — elements of difference harmonized by elements of unity.",
+      "examples": "A curve connecting two straight elements; a gradation bridging two values; the bracket; the architectural capital; the vignette."
+    },
+    {
+      "principle_id": "subordination",
+      "label": "Subordination",
+      "definition": "A great constructive idea: all parts are related to a single dominating element which determines the character of the whole. Without subordination, the design has no hierarchy and no focal logic. A tree trunk with its branches is a good type — unity secured through the relation of principal and subordinate.",
+      "examples": "One large dark mass governs the page, smaller elements support it. Three modes: grouping about an axis; radiation (as in flowers, rosettes); by size (mountain peaks, cathedral with spire)."
+    },
+    {
+      "principle_id": "repetition",
+      "label": "Repetition",
+      "definition": "The production of beauty by repeating similar elements in rhythmical order. The intervals may be equal (as in pattern) or unequal (as in landscape). But mere repetition does not produce beauty — a mere row of things has no art-value. Repetition in fine spacing, with the intention of creating a harmony, becomes a builder of art fabric.",
+      "examples": "Repeated verticals; echoing curves; recurring intervals of dark. Railroads, fences, blocks of buildings are repetition without art — like doggerel rhyme."
+    },
+    {
+      "principle_id": "symmetry",
+      "label": "Symmetry",
+      "definition": "Balance through equal distribution — placing two equal lines or shapes in exact balance. Dow treats symmetry as one option among several, not a default requirement. When united to fine spacing, it produces in architecture an effect of repose and completeness; in design, a type of severely beautiful form. Japanese art influenced by Zen philosophy avoids symmetry as uninteresting.",
+      "examples": "A centered composition with balanced flanking elements; Gothic architecture that never uses symmetry in a commonplace way; the Greek vase."
+    }
+  ],
+  "overarching_principle": {
+    "label": "Proportion / Good Spacing",
+    "definition": "All five principles are dependent upon this great general principle. Spacing is the very groundwork of design. The principles are by no means recipes for art — appreciation of fineness of relations must always govern the method and form of composition. The mystery of Spacing will be revealed to the mind that has developed Appreciation."
+  },
+  "anti_goals": [
+    "Must not ignore notan — it is the most distinctive element of Dow's system and must be evaluated before color",
+    "Must not treat the five principles as a checklist to satisfy simultaneously — they are 'ways of creating harmony,' not rules",
+    "Must not collapse Dow's framework into generic 'elements and principles of design' — his specific debt to Japanese aesthetics matters",
+    "Must not elevate color above notan in the hierarchy — color is the third element, dependent on the first two",
+    "Must not treat representational accuracy as a criterion — Dow explicitly subordinates imitation to design: 'design is a preparation for drawing, not the reverse'",
+    "Must not confuse notan with light-and-shadow — notan is a structural element of design, shadow is a fact of nature",
+    "Must not judge line by geometric correctness — 'straightness of direction is the essential thing, not mere geometric straightness'"
+  ],
+  "tensions": [
+    {
+      "label": "Design vs. representation",
+      "description": "Dow insists composition comes before imitation, yet his exercises use natural forms (flowers, landscape, pottery). The critic must evaluate design structure first, representation second — but not ignore representational choices entirely."
+    },
+    {
+      "label": "System vs. personal expression",
+      "description": "Dow provides a structured system of progressive exercises, yet insists that 'art resists everything that interferes with free choice and personal decision; art knows no limits.' The five principles are tools for training appreciation, not formulas for producing art."
+    },
+    {
+      "label": "Simplicity vs. complexity",
+      "description": "The progression from two-value notan to full color implies increasing complexity, but Dow repeatedly shows that the simplest forms — two values, a few straight lines — can be the most beautiful. 'No terms are too simple for artistic genius to use.'"
+    },
+    {
+      "label": "Eastern and Western synthesis",
+      "description": "Dow's system explicitly fuses Japanese aesthetic principles (notan, brush practice, the Zen avoidance of commonplace symmetry) with Western fine art traditions. The critic should recognize both streams without collapsing either into the other."
+    }
+  ],
+  "citations": [
+    {
+      "claim": "Notan is defined as dark-light massing independent of representation",
+      "quote_or_paraphrase": "The term NOTAN, a Japanese word meaning 'dark, light', refers to the quantity of light reflected, or the massing of tones of different values. Notan-beauty means the harmony resulting from the combination of dark and light spaces — whether colored or not — whether in buildings, in pictures, or in nature.",
+      "location": "Chapter I: The Three Elements"
+    },
+    {
+      "claim": "The three elements form a progression with notan dependent on line, color dependent on notan",
+      "quote_or_paraphrase": "Good color is dependent upon good notan, and that in turn is dependent upon good spacing. It seems reasonable then that a study of art should begin with line.",
+      "location": "Chapter I: The Three Elements"
+    },
+    {
+      "claim": "Notan must not be confused with light-and-shadow",
+      "quote_or_paraphrase": "Careful distinction should be made between NOTAN, an element of universal beauty, and LIGHT AND SHADOW, a single fact of external nature.",
+      "location": "Chapter I: The Three Elements"
+    },
+    {
+      "claim": "Composition is harmony-building, the opposite of imitation",
+      "quote_or_paraphrase": "Composition, building up of harmony, is the fundamental process in all the fine arts. I hold that art should be approached through composition rather than through imitative drawing.",
+      "location": "Beginnings"
+    },
+    {
+      "claim": "Design precedes drawing, not the reverse",
+      "quote_or_paraphrase": "Schools that follow the imitative or academic way regard drawing as a preparation for design, whereas the very opposite is the logical order — design a preparation for drawing.",
+      "location": "Beginnings"
+    },
+    {
+      "claim": "The five principles are ways of creating harmony, not formulas",
+      "quote_or_paraphrase": "Principles of Composition, I must repeat, are only ways of arranging lines and shapes; art is not produced by them unless they are used in combination with this general principle, Good Spacing. They are by no means recipes for art.",
+      "location": "Chapter III: Principles of Composition"
+    },
+    {
+      "claim": "Wholeness distinguishes music from noise",
+      "quote_or_paraphrase": "If one line asserts itself to the detriment of the others, there is discord. There may be many or few lines, but each must have its part in the whole. In a word, wholeness is essential to beauty; it distinguishes Music from Noise.",
+      "location": "Chapter VIII: Notan"
+    },
+    {
+      "claim": "Repetition without art is doggerel",
+      "quote_or_paraphrase": "Railroads, fences, blocks of buildings, and all bad patterns, are, like doggerel rhyme, examples of repetition without art.",
+      "location": "Chapter III: Principles of Composition, under Repetition"
+    },
+    {
+      "claim": "Flat tone relations are structural, shading is finish",
+      "quote_or_paraphrase": "Flat relations of tone and color are of first importance; they are the structural frame, while gradation and shading are the finish.",
+      "location": "Chapter X: Two Values — Landscape and Pictures"
+    }
+  ],
+  "confidence_notes": [
+    "Dow's system is explicitly pedagogical — designed for teaching, not pure theory. The critic should apply his framework as an analytical lens, recognizing that the exercises are training tools, not evaluation checklists.",
+    "The notan concept originates in Japanese aesthetic tradition. Applying it to non-East-Asian art requires care: the concept is universal in Dow's framing, but its cultural roots should be acknowledged.",
+    "Dow's color theory is less developed than his line and notan work — the color chapter relies more on study of Japanese prints and textiles than on systematic principles. Color evaluation through Dow's lens is less precise than line or notan evaluation.",
+    "The two-value notan test (would this work in pure black and white?) is the sharpest diagnostic tool in Dow's system, but not all effective compositions rely on stark dark-light contrast — atmospheric and tonal work may score low on notan while being compositionally strong by other criteria."
+  ]
+}

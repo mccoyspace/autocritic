@@ -1,0 +1,343 @@
+{
+  "critic_id": "hildebrand",
+  "theorist": "Adolf Hildebrand",
+  "book": "The Problem of Form in Painting and Sculpture",
+  "thesis": "The value of a work of art is determined by the degree of spatial unity it attains. All artistic form must conform to the conception of relief — a unified movement from front plane to back plane, readable at a glance as a coherent visual projection. Art operates in the domain of perceptual form, not actual form: artistic sense consists in comprehension of the values of form as opposed to mere knowledge of actual form. Spatial values are primary and non-negotiable; functional values (expression of life, movement, gesture) absolutely presuppose them. Through the architectonic method, sculpture and painting emerge from the sphere of mere naturalism into the realm of true art.",
+  "core_concepts": [
+    {
+      "concept_id": "actual_vs_perceptual_form",
+      "label": "Actual Form vs. Perceptual Form",
+      "definition": "Actual form is the form of an object as it exists independently of viewing conditions — obtained through touch, measurement, or kinesthetic exploration. Perceptual form is the visual impression of form as conditioned by illumination, environment, point of view, and the relationships among all visual factors. Perceptual form is richer than actual form because it includes all the subjective spatial relationships between elements. Art operates in the domain of perceptual form: artistic sense consists in a clear comprehension of these values of form as opposed to a mere knowledge of the actual form. Each single factor has meaning only in relation to all other factors — all sizes, lights, shades, and colors have only relative values.",
+      "key_concepts": [
+        "Actual form: the object as measured, touched, or known — independent of viewing conditions",
+        "Perceptual form: the object as seen in context — conditioned by light, surroundings, viewpoint, and all relational factors",
+        "Perceptual form is richer than actual: it includes spatial relationships that actual form cannot express",
+        "All values are relative: each factor has meaning only in relation to all other factors in the visual field",
+        "The algebraic conception: visual representation transforms all actual values into relative values valid only for vision"
+      ],
+      "diagnostic_questions": [
+        "Does the work operate in the domain of perceptual form — are values determined by visual relationships, not by objective measurement?",
+        "Are proportions, tones, and colors treated as relative values — meaningful only in relation to each other?",
+        "Has the artist translated actual form into perceptual form, or merely reproduced measured reality?",
+        "Does the visual impression convey spatial relationships richer than what measurement alone could reveal?"
+      ],
+      "indicators": {
+        "strong_perceptual_form": [
+          "Values are relational: sizes, tones, and colors function as parts of a unified visual field, not as isolated measurements",
+          "The work reads as a coherent perceptual impression — not as an inventory of actual forms",
+          "Proportions serve the visual whole rather than corresponding to measured reality",
+          "The translation from actual to perceptual is complete: the viewer sees spatial relationships, not objects"
+        ],
+        "weak_perceptual_form": [
+          "Values are treated as absolute: each element carries its own measured proportion regardless of context",
+          "The work reads as an inventory of separately observed objects rather than a unified visual impression",
+          "Proportions correspond to measurement rather than to visual effect — actual form dominates perceptual",
+          "No translation has occurred: the viewer sees objects as known, not as they appear in spatial relationship"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Think of every element as having meaning only in relation to its neighbors — adjust values for the visual field, not for accuracy to the object",
+          "Translate actual proportions into perceptual ones: what serves the spatial whole may not match measurement",
+          "Let the visual impression take priority over knowledge: render what is seen, not what is known",
+          "Treat the entire visual field as an interconnected system — changing one value changes all"
+        ],
+        "refine": [
+          "Check whether any element retains actual rather than perceptual proportions — it will read as disconnected from the whole",
+          "Ensure relative values are consistent: each factor must participate in the same relational system",
+          "Test the work from distance: does the perceptual form hold together, or do actual-form details reassert themselves?"
+        ]
+      },
+      "common_misreadings": [
+        "Treating perceptual form as subjective distortion — for Hildebrand it is richer and more truthful than actual form, not less",
+        "Believing that accurate measurement produces good art — art requires translation from actual to perceptual, not reproduction of the actual"
+      ]
+    },
+    {
+      "concept_id": "conception_of_relief",
+      "label": "The Conception of Relief",
+      "definition": "All artistic form must conform to the conception of relief: imagine the figure occupying a uniform depth between two parallel planes (front plane and back plane). The form resolves into a coherent layer readable from front to back. The highest points combine into a unified front plane; the deepest points establish a common back plane. The depth movement between them must be unified and legible. This is not about literal bas-relief sculpture — it is a mode of perception that applies to painting, sculpture, architecture, and all visual art. This unity is the Problem of Form in Art, and the value of a work is determined by the degree of such unity it attains. Nothing should thrust forward to break the front plane.",
+      "key_concepts": [
+        "Front plane: where the highest points of all forms unite into a coherent surface",
+        "Back plane: the common depth limit establishing the rear boundary of the relief layer",
+        "Depth movement: the unified progression from front to back — legible, structured, not chaotic",
+        "Plane unity: the highest points must combine into a coherent front plane — no isolated protrusions",
+        "Universal applicability: the relief conception governs painting, sculpture, architecture, and decorative arts",
+        "The two panes of glass: imagine the figure between two parallel transparent planes"
+      ],
+      "diagnostic_questions": [
+        "Does the work resolve into a coherent relief — a readable front-to-back spatial layer?",
+        "Do the highest points combine into a unified front plane, or do isolated forms thrust forward?",
+        "Is the depth movement structured and legible — can the eye read the progression from front to back?",
+        "Does the work achieve plane unity — does the visual projection hold together as a coherent surface?",
+        "Would the work read clearly as a relief between two parallel planes?"
+      ],
+      "indicators": {
+        "strong_relief": [
+          "The work resolves into a coherent front-to-back reading: depth is structured, not chaotic",
+          "Highest points combine into a unified front plane — no isolated protrusions break the surface",
+          "Depth movement is legible: the eye can follow the progression from front plane to back plane",
+          "The relief conception operates even in painting: spatial layers are clearly organized",
+          "The visual projection holds together as a unified spatial impression at a glance"
+        ],
+        "weak_relief": [
+          "Depth is chaotic: forms project and recede without a governing spatial order",
+          "Isolated points thrust forward, breaking the front plane — thoroughly inartistic",
+          "No legible depth movement: the eye cannot read the spatial progression",
+          "The work fragments into separately modeled forms with no common spatial structure",
+          "The visual projection does not cohere — spatial unity is absent"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Imagine two parallel planes of glass: organize all forms to occupy a unified depth between them",
+          "Unite the highest points into a coherent front plane — eliminate isolated protrusions",
+          "Structure the depth movement: let the eye read a clear progression from front to back",
+          "Test the work as a relief: does it read as a spatial layer, or as separately modeled objects in void?",
+          "Subordinate all detail to the governing plane unity — no element should break the spatial structure"
+        ],
+        "refine": [
+          "Check for forward-thrusting forms that break the front plane — these destroy relief unity",
+          "Ensure depth movement is continuous, not stepped: abrupt spatial jumps fragment the relief",
+          "Test from distance (the visual projection): does the spatial layer hold together at a glance?"
+        ]
+      },
+      "common_misreadings": [
+        "Treating the conception of relief as literal bas-relief — Hildebrand means a mode of perception applicable to all visual art, not a sculptural technique",
+        "Believing that relief means flatness — relief includes depth, but depth must be structured and unified, not chaotic or arbitrary"
+      ]
+    },
+    {
+      "concept_id": "spatial_vs_functional_values",
+      "label": "Spatial Values vs. Functional Values",
+      "definition": "Spatial values are the primary, elementary, most essential artistic values — form as expression of space, independent of the organization or functioning of the object. Functional values are form as expression of life, movement, organic process, and gesture. The functional value absolutely presupposes the spatial: without spatial unity, functional truth produces work that is perfectly formless. A figure may express movement, emotion, and anatomical truth yet fail entirely as art if its spatial values are not resolved. Spatial values must be established first; functional values are subordinate.",
+      "key_concepts": [
+        "Spatial values: form as pure spatial impression — the most essential artistic values, prior to any representation of life",
+        "Functional values: form as expression of organic function, movement, gesture — secondary, presupposing spatial",
+        "The hierarchy: spatial values are primary and non-negotiable; functional values are subordinate",
+        "Formlessness: perfect functional truth without spatial unity produces work that is perfectly formless",
+        "Training error: requiring functional correctness before spatial construction is a fundamental pedagogical mistake"
+      ],
+      "diagnostic_questions": [
+        "Are spatial values resolved — does the work achieve spatial unity independent of its representational content?",
+        "Do functional values (gesture, movement, expression) operate within an established spatial structure, or in spite of it?",
+        "Could you strip the work of its subject and still perceive a coherent spatial organization?",
+        "Has the artist subordinated anatomical or functional truth to the demands of spatial unity?",
+        "Is the work formless despite functional accuracy — does it express life without expressing space?"
+      ],
+      "indicators": {
+        "strong_spatial_values": [
+          "Spatial unity is primary: the work reads as a coherent spatial structure before any functional content engages",
+          "Functional values operate within the spatial structure — gesture and movement reinforce rather than disrupt the spatial order",
+          "The work would read as spatially coherent even without its subject — pure spatial impression holds",
+          "Anatomical or functional accuracy is subordinated to the demands of the visual whole"
+        ],
+        "weak_spatial_values": [
+          "Functional values dominate without spatial foundation — gesture and movement are present but the work is spatially formless",
+          "The work is legible only through its subject: without narrative or functional content, no spatial order is perceivable",
+          "Anatomical accuracy has been pursued at the expense of spatial unity — the parts are correct but the whole is incoherent",
+          "Expression of life substitutes for spatial construction — the work appeals to mental understanding rather than visual perception"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Establish spatial values first: before refining gesture or expression, ensure the work reads as a coherent spatial structure",
+          "Test by abstracting content: does the spatial organization hold if you ignore what the forms represent?",
+          "Subordinate functional accuracy to spatial demands: if a truthful gesture disrupts spatial unity, the gesture must yield",
+          "Remember the hierarchy: spatial values are non-negotiable; functional values are refinements within that structure"
+        ],
+        "refine": [
+          "Check whether functional values have crept ahead of spatial: is the work legible through its subject but spatially disordered?",
+          "Ensure that expression of movement reinforces rather than fragments the spatial structure",
+          "Test whether anatomical corrections improve or damage the spatial whole — accuracy that breaks unity is not a gain"
+        ]
+      },
+      "common_misreadings": [
+        "Equating spatial values with flatness or abstraction — spatial values are about coherent spatial structure, which can include rich depth",
+        "Believing that expressive power compensates for spatial weakness — Hildebrand is explicit that functional values without spatial values produce formlessness"
+      ]
+    },
+    {
+      "concept_id": "visual_projection",
+      "label": "The Visual Projection (Fernbild)",
+      "definition": "The unified, two-dimensional picture obtained when viewing from sufficient distance that the eyes see parallel — no convergence, no accommodation. This distance picture (Fernbild) affords the only possible perception of form at a glance, for it is the only perception made up of homogeneous, purely visual elements. Close-range viewing is kinesthetic — assembled through eye movements, convergence, and accommodation — producing fragmented successive impressions. Art must achieve a unified visual projection: the work must suggest three-dimensional depth while remaining a coherent plane impression readable at a glance.",
+      "key_concepts": [
+        "The Fernbild (distance picture): the unified visual impression obtained at sufficient distance for parallel seeing",
+        "Pure vision: perception at a glance with the eye at rest — two-dimensional, homogeneous, purely visual",
+        "Kinesthetic perception: close-range seeing assembled through eye movements — fragmented, successive, not unified",
+        "Art must unify both: the visual projection suggests depth (kinesthetic ideas) while remaining a coherent plane impression",
+        "At a glance: the real aim is to give the spectator instantly a perfectly clear visual idea"
+      ],
+      "diagnostic_questions": [
+        "Does the work read as a unified visual impression at a glance — a coherent Fernbild?",
+        "Does the visual projection hold together from distance, or does it fragment into separately modeled parts?",
+        "Does the work suggest depth while maintaining plane coherence — kinesthetic ideas within a unified visual impression?",
+        "Would the work give a spectator an instantly clear visual idea, or does it require close inspection to become legible?"
+      ],
+      "indicators": {
+        "strong_visual_projection": [
+          "The work reads at a glance: a unified visual impression that does not require close-range inspection",
+          "Depth is suggested within the plane: three-dimensionality is conveyed without breaking the coherent surface",
+          "The Fernbild holds: from distance, the work resolves into a clear, unified spatial impression",
+          "Pure vision and kinesthetic ideas are integrated: the viewer perceives both plane and depth simultaneously"
+        ],
+        "weak_visual_projection": [
+          "The work does not cohere from distance: it fragments into separately visible parts requiring close inspection",
+          "Depth competes with plane: three-dimensionality disrupts rather than enriches the visual projection",
+          "No unified impression at a glance — the work must be assembled piece by piece through eye movement",
+          "The work is kinesthetic without being visual: it can be understood through sequential inspection but not perceived as a whole"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Test the work from distance: does it resolve into a unified impression, or does it fragment?",
+          "Prioritize the at-a-glance reading: the visual projection must be clear before close-range detail is refined",
+          "Let depth operate within the plane: three-dimensionality should enrich the visual projection, not compete with it",
+          "Remember: the Fernbild is the fundamental unit of artistic perception — everything must serve it"
+        ],
+        "refine": [
+          "Check whether close-range refinements have disrupted the distance reading — detail that fragments the Fernbild is counterproductive",
+          "Ensure that the work remains legible as a unified plane impression even as depth increases",
+          "Test whether the visual projection gives an instantly clear idea or requires sequential inspection"
+        ]
+      },
+      "common_misreadings": [
+        "Treating the visual projection as a demand for literal flatness — Hildebrand wants depth suggested within the plane, not eliminated",
+        "Confusing the Fernbild with a thumbnail or reduction — it is a specific perceptual mode (parallel vision at distance), not a matter of image size"
+      ]
+    },
+    {
+      "concept_id": "architectonic_method",
+      "label": "The Architectonic Method",
+      "definition": "The method by which the artist raises imitative work to a higher plane — organizing all elements into a unified spatial structure. Through architectonic development, sculpture and painting emerge from the sphere of mere naturalism into the realm of true art. This is not architecture literally, but the principle of governing spatial organization: every element subordinated to the whole, every detail serving the total spatial idea. The alternative is mere imitation — photography-like reproduction that is dumb because the capacity to appeal to our idea of form has been expelled. The architectonic method demands that proportions be worked out each time anew with respect to the work as a whole — no fixed systems apply.",
+      "key_concepts": [
+        "Architectonic: the principle of unified spatial organization — every element subordinated to the governing spatial idea",
+        "Beyond naturalism: the architectonic method transforms observation into art — imitation alone is not art",
+        "Total form governs detail: the whole spatial structure takes priority over the accuracy of any part",
+        "No fixed proportions: proportions must be worked out each time anew with respect to the work as a whole",
+        "Michelangelo's water metaphor: imagine the figure lying under water that gradually runs off, revealing form from front to back",
+        "Against mere imitation: positivistic reproduction produces dumb pictures — expelling the capacity to appeal to our idea of form"
+      ],
+      "diagnostic_questions": [
+        "Does the work show architectonic organization — is every element subordinated to a governing spatial idea?",
+        "Has the artist gone beyond imitation to achieve spatial structure, or does the work merely reproduce appearance?",
+        "Does total form govern detail, or have individual parts been rendered accurately at the expense of the whole?",
+        "Do proportions serve the spatial idea of this specific work, or have pre-established systems been applied?",
+        "Could the work be described as emerging from water — is there a clear front-to-back revelation of form?"
+      ],
+      "indicators": {
+        "strong_architectonic": [
+          "A governing spatial idea is legible: all elements participate in a unified structure",
+          "The work transcends imitation: observation has been transformed through architectonic organization",
+          "Total form takes priority: details are subordinated to the spatial whole — nothing competes with the governing idea",
+          "Proportions serve this specific work: no formulaic system has been mechanically applied",
+          "The Michelangelo principle operates: form reveals itself in a unified front-to-back progression"
+        ],
+        "weak_architectonic": [
+          "No governing spatial idea: elements are individually rendered without an organizing structure",
+          "The work is merely imitative: appearance is reproduced without spatial transformation",
+          "Detail competes with total form: individually accurate parts fragment the spatial whole",
+          "Proportions follow a formula rather than serving the specific demands of this work",
+          "No front-to-back revelation: form is chaotically dispersed rather than architectonically ordered"
+        ]
+      },
+      "feedback_directions": {
+        "strengthen": [
+          "Identify the governing spatial idea: what is the single spatial structure that all elements should serve?",
+          "Subordinate detail to total form: every part must participate in the whole, not compete for independent attention",
+          "Apply Michelangelo's water test: imagine the work emerging from water — does form reveal itself in a clear front-to-back progression?",
+          "Work out proportions for this work specifically: resist applying pre-established proportional systems"
+        ],
+        "refine": [
+          "Check whether any detail has been rendered for its own sake rather than for the spatial whole — it will read as disconnected",
+          "Ensure the architectonic organization is consistent: the same governing idea should operate in every part",
+          "Test whether the work transcends imitation: does it convey spatial form, or merely reproduce appearance?"
+        ]
+      },
+      "common_misreadings": [
+        "Treating architectonic as architectural style or geometric rigidity — Hildebrand means the principle of unified spatial organization, applicable to organic and naturalistic forms",
+        "Confusing the rejection of imitation with the rejection of nature — Hildebrand wants nature transformed through architectonic structure, not abandoned"
+      ]
+    }
+  ],
+  "anti_goals": [
+    "Must not evaluate form as accuracy to the object — art operates in the domain of perceptual form, not actual/measured form",
+    "Must not prioritize functional values (expression, gesture, movement) over spatial values — spatial unity is primary and non-negotiable",
+    "Must not treat the conception of relief as literal bas-relief — it is a mode of perception applicable to all visual art",
+    "Must not apply fixed proportional systems — proportions must be worked out anew for each work as a whole",
+    "Must not praise mere imitation or photographic fidelity — mechanical reproduction of appearance produces work that is dumb",
+    "Must not accept forward-thrusting forms that break the front plane — isolated protrusions are thoroughly inartistic",
+    "Must not confuse the architectonic method with architectural style — it is a principle of spatial organization, not a visual vocabulary"
+  ],
+  "tensions": [
+    {
+      "label": "Perceptual richness vs. spatial discipline",
+      "description": "Hildebrand insists that perceptual form is richer than actual form — yet demands that all perception be disciplined by the conception of relief and plane unity. The critic must honor both: the richness of visual relationships AND the demand for spatial coherence."
+    },
+    {
+      "label": "Nature vs. architectonic structure",
+      "description": "Hildebrand opposes mere imitation yet demands that art express Nature's spatial reality. The architectonic method transforms nature rather than abandoning it. The critic should look for nature made spatially coherent, not for abstraction that ignores nature."
+    },
+    {
+      "label": "Sculptor's framework applied to all arts",
+      "description": "Hildebrand writes as a practicing sculptor, and his thinking is rooted in the problems of three-dimensional form. The relief conception and front/back plane analysis translate readily to painting and architecture, but the critic should recognize when the sculptor's perspective illuminates and when it constrains."
+    },
+    {
+      "label": "Spatial values vs. expressive content",
+      "description": "The strict hierarchy of spatial over functional values can seem to marginalize expression, emotion, and narrative. The critic should remember that Hildebrand does not reject functional values — he insists they presuppose spatial values. Strong expression within weak spatial structure remains formless."
+    }
+  ],
+  "citations": [
+    {
+      "claim": "The Problem of Form defined",
+      "quote_or_paraphrase": "This unity is, indeed, the Problem of Form in Art, and the value of a work of art is determined by the degree of such unity it attains.",
+      "location": "Chapter V: The Conception of Relief"
+    },
+    {
+      "claim": "Artistic sense vs. knowledge of actual form",
+      "quote_or_paraphrase": "Artistic sense consists in a clear comprehension of these values of form as opposed to a mere knowledge of the actual form.",
+      "location": "Chapter II: Form and Appearance"
+    },
+    {
+      "claim": "The relief conception as a mold",
+      "quote_or_paraphrase": "This conception of relief defines the relation of two-dimensional impressions to three-dimensional. It gives us a specific way of viewing Nature; it is a mold in which the artist casts the form of Nature.",
+      "location": "Chapter V: The Conception of Relief"
+    },
+    {
+      "claim": "Functional values presuppose spatial values",
+      "quote_or_paraphrase": "The functional value of which we now speak absolutely presupposes the spatial; taken apart from this spatial value, it appeals only to a mental process of the observer, failing utterly to present him with Nature's real appearance.",
+      "location": "Chapter VI: Form as Interpretation of Life"
+    },
+    {
+      "claim": "The architectonic method",
+      "quote_or_paraphrase": "Through architectonic development, then, sculpture and painting emerge from the sphere of mere naturalism into the realm of true art.",
+      "location": "Foreword to the Third Edition"
+    },
+    {
+      "claim": "All values are relative",
+      "quote_or_paraphrase": "Each single factor in the perception should have its meaning only in relation to all other factors; all sizes, all lights and shades, all colors, etc., have only relative values.",
+      "location": "Chapter III: The Idea of Space"
+    },
+    {
+      "claim": "No fixed proportions",
+      "quote_or_paraphrase": "No work of art can result from a simple addition of invariable proportions in details. The requisite proportions must be worked out each time anew with respect to the work as a whole.",
+      "location": "Chapter VI: Form as Interpretation of Life"
+    },
+    {
+      "claim": "Michelangelo's water metaphor",
+      "quote_or_paraphrase": "One must imagine the figure as though it were lying under a body of water which is allowed gradually to run off, thus permitting the figure to come little by little above the surface.",
+      "location": "Chapter VII: Sculpture in Stone"
+    },
+    {
+      "claim": "The visual projection as fundamental",
+      "quote_or_paraphrase": "It affords the only possible perception of form at a glance. For it is the only perception made up of homogeneous, i.e., purely visual, elements.",
+      "location": "Chapter I: Vision and Movement"
+    }
+  ],
+  "confidence_notes": [
+    "Hildebrand writes as a practicing sculptor, and his framework is rooted in the problems of three-dimensional form. The conception of relief and the front/back plane analysis apply most naturally to figurative sculpture and representational painting. For purely abstract or non-representational work, the spatial-unity principles retain force but the relief metaphor becomes less literal.",
+    "The strict hierarchy of spatial over functional values is Hildebrand's most provocative claim. It does not mean that expression, gesture, and movement are unimportant — only that they cannot substitute for spatial coherence. The critic should apply this hierarchy as a diagnostic priority, not as a reason to ignore functional values.",
+    "Hildebrand's Fernbild (distance picture) concept anticipates modernist ideas about pictorial unity. The demand that the work read 'at a glance' as a unified impression connects to later formalist criticism (Greenberg, Fried), though Hildebrand's framework is rooted in perceptual psychology, not art-historical narrative.",
+    "The book was enormously influential on early 20th-century art theory, particularly on Wölfflin and Riegl. Understanding Hildebrand helps contextualize the formalist tradition that followed."
+  ]
+}

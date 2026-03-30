@@ -2,7 +2,8 @@
 CLI entry point for autocritic.
 
 Usage:
-    python3 -m autocritic run --critic wolfflin --iterations 5
+    python3 -m autocritic critique image.png --critic wolfflin --model openai:gpt-4o
+    python3 -m autocritic run --critic wolfflin --generator wolfram --iterations 5
     python3 -m autocritic validate critics/*.json
     python3 -m autocritic report runs/wolfram_123456/
     python3 -m autocritic list
@@ -14,6 +15,73 @@ import argparse
 import random
 import sys
 from pathlib import Path
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _resolve_critic(name: str) -> Path:
+    """Resolve a critic card name or path to a Path, or exit."""
+    card_path = Path(f"critics/{name}.json")
+    if card_path.exists():
+        return card_path
+    card_path = Path(name)
+    if card_path.exists():
+        return card_path
+    print(f"Error: critic card not found: {name}")
+    try:
+        available = ", ".join(p.stem for p in Path("critics").glob("*.json"))
+        print(f"Available: {available}")
+    except Exception:
+        pass
+    sys.exit(1)
+
+
+# ---------------------------------------------------------------------------
+# Commands
+# ---------------------------------------------------------------------------
+
+def cmd_critique(args: argparse.Namespace) -> None:
+    """Critique a single image — no generator needed."""
+    from autocritic.critic import load_critic
+    from autocritic.scoring import score_critique
+
+    card_path = _resolve_critic(args.critic)
+    image_path = Path(args.image)
+    if not image_path.exists():
+        print(f"Error: image not found: {image_path}")
+        sys.exit(1)
+
+    critic = load_critic(card_path)
+    print(f"Critiquing {image_path.name} through {critic.label}...")
+    print(f"Model: {args.model}\n")
+
+    scored = score_critique(critic, image_path, model=args.model, intent=args.intent)
+
+    print(f"Composite score: {scored.composite_score:.3f}\n")
+    print("Axis scores:")
+    for s in scored.axis_scores:
+        print(f"  {s.label}: {s.score:.2f}")
+        print(f"    {s.reasoning}\n")
+
+    print("Lens summary:")
+    print(f"  {scored.critique.lens_summary}\n")
+
+    if scored.critique.strengths:
+        print("Strengths:")
+        for s in scored.critique.strengths:
+            print(f"  + {s}")
+
+    if scored.critique.weaknesses:
+        print("\nWeaknesses:")
+        for w in scored.critique.weaknesses:
+            print(f"  - {w}")
+
+    if scored.critique.directives:
+        print("\nDirectives:")
+        for d in scored.critique.directives:
+            print(f"  > {d}")
 
 
 def cmd_validate(args: argparse.Namespace) -> None:
@@ -60,36 +128,41 @@ def cmd_report(args: argparse.Namespace) -> None:
 
 
 def cmd_run(args: argparse.Namespace) -> None:
-    """Run the critic-driven improvement loop."""
-    # Resolve critic card path
-    card_path = Path(f"critics/{args.critic}.json")
-    if not card_path.exists():
-        card_path = Path(args.critic)
-        if not card_path.exists():
-            print(f"Error: critic card not found: {args.critic}")
-            try:
-                available = ", ".join(p.stem for p in Path("critics").glob("*.json"))
-                print(f"Available: {available}")
-            except Exception:
-                pass
-            sys.exit(1)
+    """Run the critic-driven improvement loop with a generator."""
+    card_path = _resolve_critic(args.critic)
 
-    # Check wolframDrawer server
-    from autocritic.adapters.wolfram import check_server
-    if not check_server(args.wolfram_url):
-        print(f"Error: wolframDrawer server not reachable at {args.wolfram_url}")
+    if args.generator == "wolfram":
+        _run_wolfram(args, card_path)
+    else:
+        print(f"Error: unknown generator '{args.generator}'")
+        print("Available generators: wolfram")
+        print("\nTo add a generator, implement a ParamSpace and acquire_image function.")
+        print("See src/autocritic/adapters/wolfram.py for an example.")
+        sys.exit(1)
+
+
+def _run_wolfram(args: argparse.Namespace, card_path: Path) -> None:
+    """Run the loop with wolframDrawer as the generator."""
+    try:
+        from autocritic.adapters.wolfram import (
+            WOLFRAM_PARAM_SPACE,
+            DEFAULT_WOLFRAM_PARAMS,
+            acquire_image,
+            check_server,
+        )
+    except ImportError:
+        print("Error: wolfram adapter requires cairosvg.")
+        print("Install with: pip install 'autocritic[wolfram]'")
+        sys.exit(1)
+
+    if not check_server(args.server_url):
+        print(f"Error: wolframDrawer server not reachable at {args.server_url}")
         print("Start it with: cd wolframDrawer && python3 run_local.py")
         sys.exit(1)
 
-    print(f"wolframDrawer server OK at {args.wolfram_url}")
+    print(f"wolframDrawer server OK at {args.server_url}")
 
-    # Build config
     from autocritic.loop import LoopConfig, run_loop
-    from autocritic.adapters.wolfram import (
-        WOLFRAM_PARAM_SPACE,
-        DEFAULT_WOLFRAM_PARAMS,
-        acquire_image,
-    )
 
     config = LoopConfig(
         critic_card_path=card_path,
@@ -99,10 +172,9 @@ def cmd_run(args: argparse.Namespace) -> None:
         intent=args.intent,
         output_dir=Path(args.output_dir),
         generator_name="wolfram",
-        generator_base_url=args.wolfram_url,
+        generator_base_url=args.server_url,
     )
 
-    # Initial params
     initial_params = dict(DEFAULT_WOLFRAM_PARAMS)
     initial_params["random_seed"] = (
         args.random_seed if args.random_seed is not None
@@ -120,7 +192,7 @@ def cmd_run(args: argparse.Namespace) -> None:
         print(f"Intent: {args.intent}")
 
     def acquire(params, output_path):
-        return acquire_image(params, output_path, base_url=args.wolfram_url)
+        return acquire_image(params, output_path, base_url=args.server_url)
 
     result = run_loop(
         config=config,
@@ -134,6 +206,10 @@ def cmd_run(args: argparse.Namespace) -> None:
         print(f"  {k}: {v}")
 
 
+# ---------------------------------------------------------------------------
+# Main parser
+# ---------------------------------------------------------------------------
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="autocritic",
@@ -141,19 +217,39 @@ def main() -> None:
     )
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
+    # --- critique ---
+    crit_parser = subparsers.add_parser(
+        "critique", help="Critique a single image (no generator needed)",
+    )
+    crit_parser.add_argument("image", help="Path to the image file.")
+    crit_parser.add_argument(
+        "--critic", default="wolfflin",
+        help="Critic card name or path (default: wolfflin).",
+    )
+    crit_parser.add_argument(
+        "--model", default="openai:gpt-4o",
+        help="LLM model string (default: openai:gpt-4o).",
+    )
+    crit_parser.add_argument("--intent", help="Project intent for the critic to factor in.")
+    crit_parser.set_defaults(func=cmd_critique)
+
     # --- run ---
-    run_parser = subparsers.add_parser("run", help="Run the improvement loop")
+    run_parser = subparsers.add_parser("run", help="Run the improvement loop with a generator")
     run_parser.add_argument(
         "--critic", default="wolfflin",
         help="Critic card name or path (default: wolfflin).",
     )
     run_parser.add_argument(
+        "--generator", default="wolfram",
+        help="Generator adapter (default: wolfram). See adapters/ for available generators.",
+    )
+    run_parser.add_argument(
         "--model", default="openai:gpt-4o",
-        help="LLM model string, e.g. 'openai:gpt-5.4-mini' (default: openai:gpt-4o).",
+        help="LLM model string (default: openai:gpt-4o).",
     )
     run_parser.add_argument("--iterations", type=int, default=10, help="Max iterations (default: 10).")
     run_parser.add_argument("--intent", help="Project intent for the critic.")
-    run_parser.add_argument("--wolfram-url", default="http://127.0.0.1:8010", help="wolframDrawer server URL.")
+    run_parser.add_argument("--server-url", default="http://127.0.0.1:8010", help="Generator server URL.")
     run_parser.add_argument("--output-dir", default="runs", help="Output directory (default: runs/).")
     run_parser.add_argument("--damping", type=float, default=0.7, help="Delta damping 0-1 (default: 0.7).")
     run_parser.add_argument("--random-seed", type=int, default=None, help="Random seed (default: random).")

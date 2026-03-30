@@ -167,7 +167,7 @@ class TestTranslateCritiqueToParams:
         )
 
         with patch(
-            "evals.judge._call_llm",
+            "autocritic.llm._call_llm",
             return_value=MOCK_TRANSLATION_RESPONSE,
         ):
             result = translate_critique_to_params(

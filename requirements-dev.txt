@@ -1,0 +1,7 @@
+# Development dependencies
+-r requirements.txt
+anthropic>=0.40
+openai>=1.0
+pytest>=8.0
+jsonschema>=4.0
+cairosvg>=2.7

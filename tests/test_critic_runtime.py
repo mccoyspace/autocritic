@@ -394,7 +394,7 @@ class TestCritiqueImageMocked:
         image_path = FIXTURES_DIR / "test_image.png"
 
         with patch(
-            "evals.judge._call_llm_with_image",
+            "autocritic.llm._call_llm_with_image",
             return_value=SAMPLE_RESPONSE,
         ):
             result = critique_image(c, image_path, model="test-model")
@@ -418,7 +418,7 @@ class TestCritiqueImageMocked:
             calls.append(kwargs)
             return SAMPLE_RESPONSE
 
-        with patch("evals.judge._call_llm_with_image", side_effect=mock_call):
+        with patch("autocritic.llm._call_llm_with_image", side_effect=mock_call):
             critique_image(c, image_path, intent="geometric abstraction")
 
         assert len(calls) == 1

@@ -234,7 +234,7 @@ def score_critique(
     Combines the qualitative critique (CritiqueResult) with per-axis
     numeric positions (AxisScore) in a single vision call.
     """
-    from evals.judge import _call_llm_with_image
+    from autocritic.llm import _call_llm_with_image
 
     system = _build_system_prompt(critic)
     user = _build_scored_user_prompt(critic, intent)

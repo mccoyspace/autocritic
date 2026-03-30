@@ -214,7 +214,7 @@ class TestScoreCritiqueMocked:
         image = Path(__file__).parent / "fixtures" / "test_image.png"
 
         with patch(
-            "evals.judge._call_llm_with_image",
+            "autocritic.llm._call_llm_with_image",
             return_value=SAMPLE_RESPONSE_WITH_SCORES,
         ):
             result = score_critique(c, image, model="test")

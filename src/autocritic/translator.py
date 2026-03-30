@@ -192,7 +192,7 @@ def translate_critique_to_params(
 
     Returns a TranslationResult with target values for changed parameters.
     """
-    from evals.judge import _call_llm
+    from autocritic.llm import _call_llm
 
     system = _build_translator_system_prompt()
     user = _build_translator_user_prompt(

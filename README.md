@@ -80,19 +80,32 @@ for axis in scored.axis_scores:
     print(f"  {axis.label}: {axis.score:.2f} — {axis.reasoning}")
 ```
 
-### Run the improvement loop
+### Critique from the command line
 
 ```bash
-# Start the wolframDrawer server first, then:
-python3 -m autocritic run --critic wolfflin --model "openai:gpt-4o" --iterations 5
+# Critique any image — no generator needed
+python3 -m autocritic critique photo.jpg --critic ruskin --model openai:gpt-4o
 ```
 
-This generates images, critiques them, translates critiques into parameter changes, and iterates. Results are saved to `runs/` with a contact sheet and narrative summary.
+### Run the improvement loop
+
+The improvement loop connects autocritic to a generative system. It generates an image, critiques it, translates the critique into parameter changes, and repeats.
+
+```bash
+# With wolframDrawer as the generator:
+python3 -m autocritic run --critic wolfflin --generator wolfram --iterations 5
+
+# With a different generator (implement your own adapter — see below):
+python3 -m autocritic run --critic arnheim --generator my_system --server-url http://localhost:9000
+```
+
+Results are saved to `runs/` with a contact sheet and narrative summary.
 
 ## CLI
 
 ```bash
-python3 -m autocritic run        # Run the improvement loop
+python3 -m autocritic critique   # Critique a single image
+python3 -m autocritic run        # Run the improvement loop with a generator
 python3 -m autocritic validate   # Validate critic card JSON files
 python3 -m autocritic list       # List available critic cards
 python3 -m autocritic report     # Generate contact sheet for an existing run

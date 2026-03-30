@@ -375,7 +375,7 @@ def critique_image(
     Returns:
         CritiqueResult with structured sections and the raw response
     """
-    from evals.judge import _call_llm_with_image
+    from autocritic.llm import _call_llm_with_image
 
     system = _build_system_prompt(critic)
     user = _build_critique_user_prompt(intent)
@@ -426,7 +426,7 @@ def compare_iterations(
     The LLM sees both images and the previous critique (if provided),
     and produces a comparison focused on progress, regressions, and next steps.
     """
-    from evals.judge import _call_llm_with_image, _load_image
+    from autocritic.llm import _call_llm_with_image, _load_image
 
     system = _build_system_prompt(critic)
     user = _build_comparison_user_prompt(
@@ -441,7 +441,7 @@ def compare_iterations(
     # Use the image-aware call with the current image,
     # and embed the previous image description/reference in the prompt.
     # Most vision APIs support multiple images in one message.
-    from evals.judge import _parse_provider
+    from autocritic.llm import _parse_provider
 
     provider, model_name = _parse_provider(model)
 
@@ -556,7 +556,7 @@ def _call_two_images(
         except ImportError:
             raise ImportError("openai package required")
 
-        from evals.judge import _OPENAI_COMPAT_PROVIDERS
+        from autocritic.llm import _OPENAI_COMPAT_PROVIDERS
 
         if provider == "local":
             base_url = os.environ.get("LOCAL_LLM_URL", "http://localhost:8080/v1")

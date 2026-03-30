@@ -73,7 +73,7 @@ print(result.summary())
 from autocritic import load_critic, score_critique
 
 critic = load_critic("critics/arnheim.json")
-scored = score_critique(critic, "path/to/image.png", model="openai:gpt-4o")
+scored = score_critique(critic, "path/to/image.png", model="openai:gpt-5.4-mini")
 
 print(f"Composite: {scored.composite_score:.2f}")
 for axis in scored.axis_scores:
@@ -84,11 +84,11 @@ for axis in scored.axis_scores:
 
 ```bash
 # Critique any image — no generator needed
-python3 -m autocritic critique photo.jpg --critic ruskin --model openai:gpt-4o
+python3 -m autocritic critique photo.jpg --critic ruskin --model openai:gpt-5.4-mini
 
 # Try different theoretical lenses on the same image
-python3 -m autocritic critique drawing.png --critic kandinsky --model openai:gpt-4o
-python3 -m autocritic critique drawing.png --critic arnheim --model openai:gpt-4o
+python3 -m autocritic critique drawing.png --critic kandinsky --model openai:gpt-5.4-mini
+python3 -m autocritic critique drawing.png --critic arnheim --model openai:gpt-5.4-mini
 
 # See available critics
 python3 -m autocritic list
@@ -106,7 +106,7 @@ python3 -m autocritic run --critic wolfflin --generator wolfram --model openai:g
 python3 -m autocritic run --critic kandinsky --generator wolfram --model openai:gpt-5.4-mini --iterations 5
 
 # Add an intent to guide the critique
-python3 -m autocritic run --critic arnheim --generator wolfram --model openai:gpt-4o --iterations 5 --intent "organic branching structure"
+python3 -m autocritic run --critic arnheim --generator wolfram --model openai:gpt-5.4-mini --iterations 5 --intent "organic branching structure"
 ```
 
 Results are saved to `runs/` with a contact sheet and narrative summary.

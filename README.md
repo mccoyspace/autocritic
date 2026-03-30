@@ -85,6 +85,13 @@ for axis in scored.axis_scores:
 ```bash
 # Critique any image — no generator needed
 python3 -m autocritic critique photo.jpg --critic ruskin --model openai:gpt-4o
+
+# Try different theoretical lenses on the same image
+python3 -m autocritic critique drawing.png --critic kandinsky --model openai:gpt-4o
+python3 -m autocritic critique drawing.png --critic arnheim --model openai:gpt-4o
+
+# See available critics
+python3 -m autocritic list
 ```
 
 ### Run the improvement loop
@@ -92,23 +99,26 @@ python3 -m autocritic critique photo.jpg --critic ruskin --model openai:gpt-4o
 The improvement loop connects autocritic to a generative system. It generates an image, critiques it, translates the critique into parameter changes, and repeats.
 
 ```bash
-# With wolframDrawer as the generator:
-python3 -m autocritic run --critic wolfflin --generator wolfram --iterations 5
+# Start your generator server first (e.g. wolframDrawer), then:
+python3 -m autocritic run --critic wolfflin --generator wolfram --model openai:gpt-5.4-mini --iterations 5
 
-# With a different generator (implement your own adapter — see below):
-python3 -m autocritic run --critic arnheim --generator my_system --server-url http://localhost:9000
+# Try different critics to get different aesthetic directions
+python3 -m autocritic run --critic kandinsky --generator wolfram --model openai:gpt-5.4-mini --iterations 5
+
+# Add an intent to guide the critique
+python3 -m autocritic run --critic arnheim --generator wolfram --model openai:gpt-4o --iterations 5 --intent "organic branching structure"
 ```
 
 Results are saved to `runs/` with a contact sheet and narrative summary.
 
-## CLI
+### Other commands
 
 ```bash
-python3 -m autocritic critique   # Critique a single image
-python3 -m autocritic run        # Run the improvement loop with a generator
-python3 -m autocritic validate   # Validate critic card JSON files
-python3 -m autocritic list       # List available critic cards
-python3 -m autocritic report     # Generate contact sheet for an existing run
+# Validate critic card files
+python3 -m autocritic validate critics/*.json
+
+# Generate a contact sheet for an existing run
+python3 -m autocritic report runs/wolfram_1774718482/
 ```
 
 ## Available critics

@@ -82,13 +82,18 @@ for axis in scored.axis_scores:
 
 ### Critique from the command line
 
+The repo includes 5 CC0 sample images from The Met's Open Access collection in `tests/fixtures/samples/` — use them to try things out immediately.
+
 ```bash
-# Critique any image — no generator needed
-python3 -m autocritic critique photo.jpg --critic ruskin --model openai:gpt-5.4-mini
+# Critique a sample image — no generator needed
+python3 -m autocritic critique tests/fixtures/samples/Friedrich.jpg --critic wolfflin --model openai:gpt-5.4-mini
 
 # Try different theoretical lenses on the same image
-python3 -m autocritic critique drawing.png --critic kandinsky --model openai:gpt-5.4-mini
-python3 -m autocritic critique drawing.png --critic arnheim --model openai:gpt-5.4-mini
+python3 -m autocritic critique tests/fixtures/samples/Hiroshige.jpg --critic kandinsky --model openai:gpt-5.4-mini
+python3 -m autocritic critique tests/fixtures/samples/Goltzius.jpg --critic arnheim --model openai:gpt-5.4-mini
+
+# Critique your own images
+python3 -m autocritic critique your-image.png --critic ruskin --model openai:gpt-5.4-mini
 
 # See available critics
 python3 -m autocritic list

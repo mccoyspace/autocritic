@@ -32,6 +32,6 @@ evals/results/
 # Pytest
 .pytest_cache/
 
-# Large test fixtures (copyrighted images)
+# Large test fixtures (copyrighted images — not the CC0 samples)
 tests/fixtures/Friedrich.jpg
 tests/fixtures/Hiroshige.jpg

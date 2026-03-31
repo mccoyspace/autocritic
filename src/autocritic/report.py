@@ -176,7 +176,7 @@ def generate_contact_sheet(run_dir: Path, output_path: Path | None = None) -> Pa
     """Generate a contact sheet PNG with thumbnails, scores, and narrative.
 
     Args:
-        run_dir: Path to the run directory (e.g. runs/wolfram_123456)
+        run_dir: Path to the run directory (e.g. runs/rewriter_123456)
         output_path: Where to save. Defaults to run_dir/contact_sheet.png
 
     Returns:

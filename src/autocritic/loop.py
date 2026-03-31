@@ -57,7 +57,7 @@ class LoopConfig:
     output_dir: Path = Path("runs")
 
     # Generator-specific (set by adapter)
-    generator_name: str = "wolfram"
+    generator_name: str = "rewriter"
     generator_base_url: str = "http://127.0.0.1:8010"
 
 

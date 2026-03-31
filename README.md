@@ -47,10 +47,10 @@ pip install -e ".[openai]"
 pip install -e ".[anthropic]"
 
 # For the rewriteDrawer adapter:
-pip install -e ".[wolfram]"
+pip install -e ".[rewriter]"
 
 # Everything:
-pip install -e ".[all-llms,wolfram,dev]"
+pip install -e ".[all-llms,rewriter,dev]"
 ```
 
 Requires Python 3.11+.
@@ -105,13 +105,13 @@ The improvement loop connects autocritic to a generative system. It generates an
 
 ```bash
 # Start your generator server first (e.g. rewriteDrawer), then:
-python3 -m autocritic run --critic wolfflin --generator wolfram --model openai:gpt-5.4-mini --iterations 5
+python3 -m autocritic run --critic wolfflin --generator rewriter --model openai:gpt-5.4-mini --iterations 5
 
 # Try different critics to get different aesthetic directions
-python3 -m autocritic run --critic kandinsky --generator wolfram --model openai:gpt-5.4-mini --iterations 5
+python3 -m autocritic run --critic kandinsky --generator rewriter --model openai:gpt-5.4-mini --iterations 5
 
 # Add an intent to guide the critique
-python3 -m autocritic run --critic arnheim --generator wolfram --model openai:gpt-5.4-mini --iterations 5 --intent "organic branching structure"
+python3 -m autocritic run --critic arnheim --generator rewriter --model openai:gpt-5.4-mini --iterations 5 --intent "organic branching structure"
 ```
 
 Results are saved to `runs/` with a contact sheet and narrative summary.
@@ -123,7 +123,7 @@ Results are saved to `runs/` with a contact sheet and narrative summary.
 python3 -m autocritic validate critics/*.json
 
 # Generate a contact sheet for an existing run
-python3 -m autocritic report runs/wolfram_1774718482/
+python3 -m autocritic report runs/rewriter_1774718482/
 ```
 
 ## Available critics
@@ -164,7 +164,7 @@ src/autocritic/
 ├── validate.py      # Critic card validation against schema
 ├── __main__.py      # CLI entry point
 └── adapters/
-    └── wolfram.py   # rewriteDrawer HTTP client and parameter space
+    └── rewriter.py  # rewriteDrawer HTTP client and parameter space
 
 critics/             # 10 critic cards (JSON)
 schemas/             # JSON schema and template for authoring

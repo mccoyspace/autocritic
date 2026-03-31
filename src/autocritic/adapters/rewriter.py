@@ -24,7 +24,7 @@ from autocritic.translator import ParamSpec, ParamSpace
 # Parameter space definition
 # ---------------------------------------------------------------------------
 
-WOLFRAM_PARAM_SPACE = ParamSpace(specs=[
+REWRITER_PARAM_SPACE = ParamSpace(specs=[
     ParamSpec(
         "seed_type", "enum",
         ("path3", "star3", "triangle", "bowtie", "square"),
@@ -102,7 +102,7 @@ WOLFRAM_PARAM_SPACE = ParamSpace(specs=[
     ),
 ])
 
-DEFAULT_WOLFRAM_PARAMS = WOLFRAM_PARAM_SPACE.defaults()
+DEFAULT_REWRITER_PARAMS = REWRITER_PARAM_SPACE.defaults()
 
 # Fixed export dimensions (reasonable for screen display + LLM vision)
 _EXPORT_PAGE_WIDTH_MM = 800.0
@@ -240,7 +240,7 @@ def svg_to_png(svg_bytes: bytes, width: int = 1024) -> bytes:
     except ImportError:
         raise ImportError(
             "cairosvg package required for SVG→PNG conversion. "
-            "Install with: pip install 'autocritic[wolfram]'"
+            "Install with: pip install 'autocritic[rewriter]'"
         )
     return cairosvg.svg2png(bytestring=svg_bytes, output_width=width)
 

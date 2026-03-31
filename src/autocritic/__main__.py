@@ -3,9 +3,9 @@ CLI entry point for autocritic.
 
 Usage:
     python3 -m autocritic critique image.png --critic wolfflin --model openai:gpt-4o
-    python3 -m autocritic run --critic wolfflin --generator wolfram --iterations 5
+    python3 -m autocritic run --critic wolfflin --generator rewriter --iterations 5
     python3 -m autocritic validate critics/*.json
-    python3 -m autocritic report runs/wolfram_123456/
+    python3 -m autocritic report runs/rewriter_123456/
     python3 -m autocritic list
 """
 
@@ -131,28 +131,28 @@ def cmd_run(args: argparse.Namespace) -> None:
     """Run the critic-driven improvement loop with a generator."""
     card_path = _resolve_critic(args.critic)
 
-    if args.generator == "wolfram":
-        _run_wolfram(args, card_path)
+    if args.generator == "rewriter":
+        _run_rewriter(args, card_path)
     else:
         print(f"Error: unknown generator '{args.generator}'")
-        print("Available generators: wolfram")
+        print("Available generators: rewriter")
         print("\nTo add a generator, implement a ParamSpace and acquire_image function.")
-        print("See src/autocritic/adapters/wolfram.py for an example.")
+        print("See src/autocritic/adapters/rewriter.py for an example.")
         sys.exit(1)
 
 
-def _run_wolfram(args: argparse.Namespace, card_path: Path) -> None:
+def _run_rewriter(args: argparse.Namespace, card_path: Path) -> None:
     """Run the loop with rewriteDrawer as the generator."""
     try:
-        from autocritic.adapters.wolfram import (
-            WOLFRAM_PARAM_SPACE,
-            DEFAULT_WOLFRAM_PARAMS,
+        from autocritic.adapters.rewriter import (
+            REWRITER_PARAM_SPACE,
+            DEFAULT_REWRITER_PARAMS,
             acquire_image,
             check_server,
         )
     except ImportError:
-        print("Error: wolfram adapter requires cairosvg.")
-        print("Install with: pip install 'autocritic[wolfram]'")
+        print("Error: rewriter adapter requires cairosvg.")
+        print("Install with: pip install 'autocritic[rewriter]'")
         sys.exit(1)
 
     if not check_server(args.server_url):
@@ -171,11 +171,11 @@ def _run_wolfram(args: argparse.Namespace, card_path: Path) -> None:
         damping=args.damping,
         intent=args.intent,
         output_dir=Path(args.output_dir),
-        generator_name="wolfram",
+        generator_name="rewriter",
         generator_base_url=args.server_url,
     )
 
-    initial_params = dict(DEFAULT_WOLFRAM_PARAMS)
+    initial_params = dict(DEFAULT_REWRITER_PARAMS)
     initial_params["random_seed"] = (
         args.random_seed if args.random_seed is not None
         else random.randint(0, 9999999)
@@ -196,7 +196,7 @@ def _run_wolfram(args: argparse.Namespace, card_path: Path) -> None:
 
     result = run_loop(
         config=config,
-        param_space=WOLFRAM_PARAM_SPACE,
+        param_space=REWRITER_PARAM_SPACE,
         acquire_image_fn=acquire,
         initial_params=initial_params,
     )
@@ -240,8 +240,8 @@ def main() -> None:
         help="Critic card name or path (default: wolfflin).",
     )
     run_parser.add_argument(
-        "--generator", default="wolfram",
-        help="Generator adapter (default: wolfram). See adapters/ for available generators.",
+        "--generator", default="rewriter",
+        help="Generator adapter (default: rewriter). See adapters/ for available generators.",
     )
     run_parser.add_argument(
         "--model", default="openai:gpt-4o",

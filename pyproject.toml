@@ -15,7 +15,7 @@ anthropic = ["anthropic>=0.40"]
 openai = ["openai>=1.0"]
 google = ["google-genai>=1.0"]
 all-llms = ["anthropic>=0.40", "openai>=1.0", "google-genai>=1.0"]
-wolfram = ["cairosvg>=2.7"]
+rewriter = ["cairosvg>=2.7"]
 dev = ["pytest>=8.0", "jsonschema>=4.0"]
 
 [project.scripts]

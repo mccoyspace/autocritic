@@ -29,8 +29,8 @@ Load a **critic card** distilled from an art theory book. The critic evaluates i
                                                  │
                                         ┌────────▼────────┐
                                         │    Generator    │
-                                        │  (wolframDrawer,│
-                                        │   morphogenesis,│
+                                        │ (rewriteDrawer, │
+                                        │  morphogenesis, │
                                         │   your system)  │
                                         └─────────────────┘
 ```
@@ -46,7 +46,7 @@ pip install -e ".[openai]"
 # For Anthropic models:
 pip install -e ".[anthropic]"
 
-# For the wolframDrawer adapter:
+# For the rewriteDrawer adapter:
 pip install -e ".[wolfram]"
 
 # Everything:
@@ -99,7 +99,7 @@ python3 -m autocritic list
 The improvement loop connects autocritic to a generative system. It generates an image, critiques it, translates the critique into parameter changes, and repeats.
 
 ```bash
-# Start your generator server first (e.g. wolframDrawer), then:
+# Start your generator server first (e.g. rewriteDrawer), then:
 python3 -m autocritic run --critic wolfflin --generator wolfram --model openai:gpt-5.4-mini --iterations 5
 
 # Try different critics to get different aesthetic directions
@@ -159,7 +159,7 @@ src/autocritic/
 ├── validate.py      # Critic card validation against schema
 ├── __main__.py      # CLI entry point
 └── adapters/
-    └── wolfram.py   # wolframDrawer HTTP client and parameter space
+    └── wolfram.py   # rewriteDrawer HTTP client and parameter space
 
 critics/             # 10 critic cards (JSON)
 schemas/             # JSON schema and template for authoring

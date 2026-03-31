@@ -1,11 +1,11 @@
 """
-wolframDrawer adapter: HTTP client, parameter space, and image acquisition.
+rewriteDrawer adapter: HTTP client, parameter space, and image acquisition.
 
-Connects to a running wolframDrawer FastAPI server to generate graph-based
+Connects to a running rewriteDrawer FastAPI server to generate graph-based
 drawings and capture them as PNG images for critic evaluation.
 
 Requires:
-- wolframDrawer server running (default http://127.0.0.1:8010)
+- rewriteDrawer server running (default http://127.0.0.1:8010)
 - cairosvg package for SVG→PNG conversion: pip install cairosvg
 """
 
@@ -139,7 +139,7 @@ def _get_bytes(url: str, timeout: float = 30.0) -> bytes:
 
 
 def check_server(base_url: str = "http://127.0.0.1:8010") -> bool:
-    """Check if the wolframDrawer server is reachable."""
+    """Check if the rewriteDrawer server is reachable."""
     try:
         _get_bytes(f"{base_url}/api/options", timeout=5.0)
         return True
@@ -220,7 +220,7 @@ def fetch_file(
     path: str,
     base_url: str = "http://127.0.0.1:8010",
 ) -> bytes:
-    """Fetch a file from the wolframDrawer server by its path."""
+    """Fetch a file from the rewriteDrawer server by its path."""
     # Path is server-relative like /exports/folder/raw.svg
     url = f"{base_url}{path}"
     return _get_bytes(url)

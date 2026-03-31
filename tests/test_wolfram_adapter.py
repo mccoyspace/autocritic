@@ -1,4 +1,4 @@
-"""Tests for the wolframDrawer adapter: parameter space, HTTP client, SVG conversion."""
+"""Tests for the rewriteDrawer adapter: parameter space, HTTP client, SVG conversion."""
 
 from __future__ import annotations
 

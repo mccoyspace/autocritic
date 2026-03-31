@@ -142,7 +142,7 @@ def cmd_run(args: argparse.Namespace) -> None:
 
 
 def _run_wolfram(args: argparse.Namespace, card_path: Path) -> None:
-    """Run the loop with wolframDrawer as the generator."""
+    """Run the loop with rewriteDrawer as the generator."""
     try:
         from autocritic.adapters.wolfram import (
             WOLFRAM_PARAM_SPACE,
@@ -156,11 +156,11 @@ def _run_wolfram(args: argparse.Namespace, card_path: Path) -> None:
         sys.exit(1)
 
     if not check_server(args.server_url):
-        print(f"Error: wolframDrawer server not reachable at {args.server_url}")
-        print("Start it with: cd wolframDrawer && python3 run_local.py")
+        print(f"Error: rewriteDrawer server not reachable at {args.server_url}")
+        print("Start it with: cd rewriteDrawer && python3 run_local.py")
         sys.exit(1)
 
-    print(f"wolframDrawer server OK at {args.server_url}")
+    print(f"rewriteDrawer server OK at {args.server_url}")
 
     from autocritic.loop import LoopConfig, run_loop
 

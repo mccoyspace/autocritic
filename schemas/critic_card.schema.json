@@ -24,6 +24,11 @@
       "minLength": 20,
       "description": "One paragraph: the core evaluative logic of this theorist's framework."
     },
+    "scoring_mode": {
+      "type": "string",
+      "enum": ["bipolar", "unipolar"],
+      "description": "How axes are scored. bipolar: -1 to +1 between two poles. unipolar: 0 to 1 strength. If omitted, inferred from indicators (pole_a/pole_b → bipolar)."
+    },
     "criteria": { "$ref": "#/$defs/items_array" },
     "core_concepts": { "$ref": "#/$defs/items_array" },
     "elements": { "$ref": "#/$defs/items_array" },

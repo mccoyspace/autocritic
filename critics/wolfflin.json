@@ -2,6 +2,7 @@
   "critic_id": "wolfflin",
   "theorist": "Heinrich Wölfflin",
   "book": "Principles of Art History",
+  "scoring_mode": "bipolar",
   "thesis": "All visual representation can be analysed along five independent axes, each a spectrum between two poles. These poles describe not better or worse but fundamentally different modes of seeing — different orientations of taste and interest in the world. The shift from one pole to its opposite is not progress or decay but a transformation in decorative feeling that runs deeper than subject matter or technique. The five axes are: linear vs. painterly, plane vs. recession, closed vs. open form, multiplicity vs. unity, and absolute clarity vs. relative clarity.",
   "criteria": [
     {

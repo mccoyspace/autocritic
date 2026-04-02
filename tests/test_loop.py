@@ -118,7 +118,7 @@ class TestRunLoopMocked:
         assert len(result.iterations) == 2
 
     def test_rejection_reverts_params(self, tmp_path):
-        """When score drops, params revert to accepted state."""
+        """When score drops, params revert to accepted state (unipolar critic)."""
         scores = iter([0.5, 0.3, 0.6])  # drop then recover
 
         def mock_acquire(params, output_path):
@@ -126,8 +126,9 @@ class TestRunLoopMocked:
             output_path.write_bytes(b"fake png")
             return output_path
 
+        # Use a unipolar critic — bipolar critics accept all iterations
         config = LoopConfig(
-            critic_card_path=CRITICS_DIR / "wolfflin.json",
+            critic_card_path=CRITICS_DIR / "arnheim.json",
             model="test",
             max_iterations=3,
             min_improvement=0.01,

@@ -59,13 +59,34 @@ class ScoredCritique:
 def is_bipolar(critic: CriticCard) -> bool:
     """Detect whether a critic card uses bipolar axes (pole_a/pole_b).
 
-    Currently only Wölfflin uses bipolar indicators. All other cards
-    use strong_X/weak_X style indicators (unipolar).
+    Checks the explicit ``scoring_mode`` field first (preferred).
+    Falls back to inspecting ALL items for pole_a/pole_b indicators,
+    asserting consistency across the card.
     """
+    # Prefer explicit field
+    mode = critic.raw.get("scoring_mode")
+    if mode is not None:
+        return mode == "bipolar"
+
+    # Heuristic: check all items for consistency
     if not critic.items:
         return False
-    indicators = critic.items[0].get("indicators", {})
-    return "pole_a" in indicators and "pole_b" in indicators
+    item_polarities = []
+    for item in critic.items:
+        indicators = item.get("indicators", {})
+        has_poles = "pole_a" in indicators and "pole_b" in indicators
+        item_polarities.append(has_poles)
+
+    if all(item_polarities):
+        return True
+    if not any(item_polarities):
+        return False
+    # Mixed — some items bipolar, some not. Flag the inconsistency.
+    raise ValueError(
+        f"Critic card '{critic.critic_id}' has mixed indicator structures: "
+        f"some items have pole_a/pole_b, others don't. "
+        f"Add an explicit \"scoring_mode\": \"bipolar\" or \"unipolar\" to the card."
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -8,7 +8,7 @@ from autocritic.critic import (
     compare_iterations,
 )
 from autocritic.scoring import ScoredCritique, score_critique, compare_scores
-from autocritic.translator import ParamSpace, ParamSpec, TranslationResult
+from autocritic.translator import ParamSpace, ParamSpec, TranslationResult, TranslationParseError
 
 __all__ = [
     "CriticCard",
@@ -22,6 +22,7 @@ __all__ = [
     "ParamSpace",
     "ParamSpec",
     "TranslationResult",
+    "TranslationParseError",
 ]
 
 __version__ = "0.1.0"

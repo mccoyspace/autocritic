@@ -16,10 +16,11 @@ from pathlib import Path
 from typing import Any
 
 from autocritic.critic import CriticCard, load_critic
-from autocritic.scoring import ScoredCritique, compare_scores, score_critique
+from autocritic.scoring import ScoredCritique, compare_scores, is_bipolar, score_critique
 from autocritic.translator import (
     ParamSpace,
     TranslationResult,
+    TranslationParseError,
     apply_deltas,
     translate_critique_to_params,
 )
@@ -163,6 +164,7 @@ def run_loop(
     run_dir.mkdir(parents=True, exist_ok=True)
 
     critic = load_critic(config.critic_card_path)
+    bipolar = is_bipolar(critic)
     params = initial_params or param_space.defaults()
 
     # Save config
@@ -212,9 +214,20 @@ def run_loop(
             print(f"    {s.label}: {s.score:.2f} — {s.reasoning[:60]}")
 
         # 3. Accept/reject
+        # For bipolar critics, composite = mean(abs(score)) measures pole-
+        # commitment, not quality.  A shift from one pole toward the other
+        # can look like regression but is valid aesthetic movement.  Accept
+        # all iterations for bipolar critics; the loop still converges via
+        # plateau detection and max-iterations.
         if i == 0:
             accepted = True
             print(f"  Baseline (accepted)")
+        elif bipolar:
+            # Always accept — bipolar movement is not monotonic
+            accepted = True
+            consecutive_rejections = 0
+            delta = scored.composite_score - accepted_score
+            print(f"  Bipolar critic: accepted (Δ{delta:+.3f})")
         elif scored.composite_score - accepted_score >= config.min_improvement:
             accepted = True
             consecutive_rejections = 0
@@ -261,8 +274,9 @@ def run_loop(
             break
 
         if i >= 3:
-            recent = [r.composite_score for r in iterations[-3:]]
-            if recent and max(recent) - min(recent) < 0.01:
+            # Include current score (not yet appended to iterations)
+            recent = [r.composite_score for r in iterations[-2:]] + [scored.composite_score]
+            if len(recent) >= 3 and max(recent) - min(recent) < 0.01:
                 record.deltas = {}
                 iterations.append(record)
                 _save_iteration(run_dir, record)
@@ -297,13 +311,23 @@ def run_loop(
         # 6. Translate critique to parameter changes (one LLM text call)
         if i < config.max_iterations - 1:  # skip translation on last iteration
             print(f"  Translating critique to parameter changes...")
-            translation = translate_critique_to_params(
-                scored,
-                params,
-                param_space,
-                model=config.model,
-                preservations=scored.critique.strengths,
-            )
+            try:
+                translation = translate_critique_to_params(
+                    scored,
+                    params,
+                    param_space,
+                    model=config.model,
+                    preservations=scored.critique.strengths,
+                )
+            except TranslationParseError as e:
+                print(f"  Warning: translation parse failed: {e}")
+                print(f"  Skipping parameter update this iteration.")
+                record.deltas = {}
+                record.delta_reasoning = f"Parse error: {e}"
+                iterations.append(record)
+                _save_iteration(run_dir, record)
+                continue
+
             print(f"  Deltas: {translation.deltas}")
             print(f"  Reasoning: {translation.reasoning[:100]}")
 

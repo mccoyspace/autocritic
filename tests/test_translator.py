@@ -124,13 +124,15 @@ class TestParseTranslation:
         assert deltas == {"speed": 7.0}
         assert reasoning == "Increase speed"
 
-    def test_no_json_returns_empty(self):
-        deltas, reasoning = _parse_translation("No JSON here.")
-        assert deltas == {}
+    def test_no_json_raises(self):
+        from autocritic.translator import TranslationParseError
+        with pytest.raises(TranslationParseError, match="No fenced"):
+            _parse_translation("No JSON here.")
 
-    def test_invalid_json_returns_empty(self):
-        deltas, _ = _parse_translation('```json\n{broken\n```')
-        assert deltas == {}
+    def test_invalid_json_raises(self):
+        from autocritic.translator import TranslationParseError
+        with pytest.raises(TranslationParseError, match="Invalid JSON"):
+            _parse_translation('```json\n{broken\n```')
 
 
 # ---------------------------------------------------------------------------

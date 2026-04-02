@@ -21,20 +21,45 @@ from pathlib import Path
 # Helpers
 # ---------------------------------------------------------------------------
 
+def _package_root() -> Path:
+    """Return the autocritic repo/package root directory."""
+    # src/autocritic/__main__.py → go up 3 levels to repo root
+    return Path(__file__).resolve().parent.parent.parent
+
+
 def _resolve_critic(name: str) -> Path:
-    """Resolve a critic card name or path to a Path, or exit."""
+    """Resolve a critic card name or path to a Path, or exit.
+
+    Search order:
+      1. CWD-relative ``critics/<name>.json``
+      2. Package-root-relative ``critics/<name>.json``
+      3. Literal path (``<name>`` as given)
+    """
+    # 1. CWD
     card_path = Path(f"critics/{name}.json")
     if card_path.exists():
         return card_path
+
+    # 2. Relative to the installed package root
+    pkg_path = _package_root() / "critics" / f"{name}.json"
+    if pkg_path.exists():
+        return pkg_path
+
+    # 3. Literal path
     card_path = Path(name)
     if card_path.exists():
         return card_path
+
     print(f"Error: critic card not found: {name}")
-    try:
-        available = ", ".join(p.stem for p in Path("critics").glob("*.json"))
-        print(f"Available: {available}")
-    except Exception:
-        pass
+    # Try both locations for helpful output
+    for search_dir in [Path("critics"), _package_root() / "critics"]:
+        try:
+            available = ", ".join(p.stem for p in search_dir.glob("*.json"))
+            if available:
+                print(f"Available: {available}")
+                break
+        except Exception:
+            continue
     sys.exit(1)
 
 

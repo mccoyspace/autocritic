@@ -57,7 +57,7 @@ class CritiqueResult:
     weaknesses: list[str] = field(default_factory=list)
     criterion_notes: list[dict[str, str]] = field(default_factory=list)
     directives: list[str] = field(default_factory=list)
-    preservations: list[str] = field(default_factory=list)
+    preservations: list[str] | None = None  # None = not applicable; [] = none found
 
     def summary(self) -> str:
         lines = [
@@ -293,15 +293,20 @@ def _parse_critique(raw: str) -> dict[str, Any]:
 
 
 def _extract_bullet_list(text: str) -> list[str]:
-    """Extract bullet points from a section of text."""
+    """Extract bullet points from a section of text.
+
+    Only recognises explicit bullet markers (-, *, •, →, or numbered
+    like ``1.``).  Prose lines without markers are ignored — callers
+    handle the empty-list case rather than receiving noisy data.
+    """
     items = []
     for line in text.split("\n"):
         stripped = line.strip()
         if stripped.startswith(("- ", "* ", "• ", "→ ")):
             items.append(stripped[2:].strip())
-        elif stripped and len(stripped) > 10 and not stripped.startswith("#"):
-            # Non-bullet substantial lines
-            items.append(stripped)
+        elif len(stripped) > 3 and stripped[0].isdigit() and ". " in stripped[:5]:
+            # Numbered list items like "1. Do this"
+            items.append(stripped.split(". ", 1)[1].strip())
     return items
 
 
@@ -409,7 +414,7 @@ def critique_image(
         directives=_extract_bullet_list(
             sections.get("Next Iteration Directives", "")
         ),
-        preservations=[],  # populated in compare_iterations
+        preservations=None,  # only populated by compare_iterations
     )
 
 
@@ -426,29 +431,18 @@ def compare_iterations(
     The LLM sees both images and the previous critique (if provided),
     and produces a comparison focused on progress, regressions, and next steps.
     """
-    from autocritic.llm import _call_llm_with_image, _load_image
+    from autocritic.llm import _load_image, _call_llm_with_two_images
 
     system = _build_system_prompt(critic)
     user = _build_comparison_user_prompt(
         prev_critique_text=prev_critique.raw_text if prev_critique else None,
     )
 
-    # For comparison, we need to send two images. Build the messages manually.
-    provider_mod = model  # keep the full model string for routing
     prev_b64, prev_mt = _load_image(prev_image_path)
     curr_b64, curr_mt = _load_image(curr_image_path)
 
-    # Use the image-aware call with the current image,
-    # and embed the previous image description/reference in the prompt.
-    # Most vision APIs support multiple images in one message.
-    from autocritic.llm import _parse_provider
-
-    provider, model_name = _parse_provider(model)
-
-    raw = _call_two_images(
-        provider=provider,
-        model_name=model_name,
-        model_full=model,
+    raw = _call_llm_with_two_images(
+        model=model,
         system=system,
         user=user,
         prev_b64=prev_b64,
@@ -483,111 +477,3 @@ def compare_iterations(
     )
 
 
-def _call_two_images(
-    provider: str, model_name: str, model_full: str,
-    system: str, user: str,
-    prev_b64: str, prev_mt: str,
-    curr_b64: str, curr_mt: str,
-) -> str:
-    """Send two images (prev + current) to an LLM for comparison."""
-    import os
-
-    if provider == "anthropic":
-        try:
-            import anthropic
-        except ImportError:
-            raise ImportError("anthropic package required")
-        client = anthropic.Anthropic()
-        response = client.messages.create(
-            model=model_name,
-            max_tokens=4096,
-            temperature=0.0,
-            system=system,
-            messages=[{
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": "Previous iteration:"},
-                    {"type": "image", "source": {
-                        "type": "base64", "media_type": prev_mt, "data": prev_b64,
-                    }},
-                    {"type": "text", "text": "Current iteration:"},
-                    {"type": "image", "source": {
-                        "type": "base64", "media_type": curr_mt, "data": curr_b64,
-                    }},
-                    {"type": "text", "text": user},
-                ],
-            }],
-        )
-        return response.content[0].text
-
-    elif provider == "google":
-        try:
-            from google import genai
-            from google.genai import types
-        except ImportError:
-            raise ImportError("google-genai package required")
-        import base64 as b64mod
-        client = genai.Client()
-        prev_part = types.Part.from_bytes(
-            data=b64mod.b64decode(prev_b64), mime_type=prev_mt,
-        )
-        curr_part = types.Part.from_bytes(
-            data=b64mod.b64decode(curr_b64), mime_type=curr_mt,
-        )
-        response = client.models.generate_content(
-            model=model_name,
-            contents=[
-                "Previous iteration:", prev_part,
-                "Current iteration:", curr_part,
-                user,
-            ],
-            config=types.GenerateContentConfig(
-                system_instruction=system,
-                max_output_tokens=4096,
-                temperature=0.0,
-            ),
-        )
-        return response.text
-
-    else:
-        # OpenAI-compatible (covers openai, xai, ollama, mlx, llamacpp, local)
-        try:
-            import openai
-        except ImportError:
-            raise ImportError("openai package required")
-
-        from autocritic.llm import _OPENAI_COMPAT_PROVIDERS
-
-        if provider == "local":
-            base_url = os.environ.get("LOCAL_LLM_URL", "http://localhost:8080/v1")
-            api_key = os.environ.get("LOCAL_LLM_API_KEY", "none")
-        elif provider in _OPENAI_COMPAT_PROVIDERS:
-            base_url, api_key_env = _OPENAI_COMPAT_PROVIDERS[provider]
-            api_key = os.environ.get(api_key_env) if api_key_env else "ollama"
-        else:
-            raise ValueError(f"Unknown provider: {provider}")
-
-        client = openai.OpenAI(base_url=base_url, api_key=api_key)
-        prev_url = f"data:{prev_mt};base64,{prev_b64}"
-        curr_url = f"data:{curr_mt};base64,{curr_b64}"
-        token_kwarg = (
-            {"max_completion_tokens": 4096}
-            if base_url is None
-            else {"max_tokens": 4096}
-        )
-        response = client.chat.completions.create(
-            model=model_name,
-            **token_kwarg,
-            temperature=0.0,
-            messages=[
-                {"role": "system", "content": system},
-                {"role": "user", "content": [
-                    {"type": "text", "text": "Previous iteration:"},
-                    {"type": "image_url", "image_url": {"url": prev_url}},
-                    {"type": "text", "text": "Current iteration:"},
-                    {"type": "image_url", "image_url": {"url": curr_url}},
-                    {"type": "text", "text": user},
-                ]},
-            ],
-        )
-        return response.choices[0].message.content

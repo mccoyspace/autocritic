@@ -341,3 +341,123 @@ def _call_llm_with_image(
             f"Unknown provider '{provider}'. "
             f"Supported: anthropic, google, local, {', '.join(_OPENAI_COMPAT_PROVIDERS)}"
         )
+
+
+# ---------------------------------------------------------------------------
+# Two-image comparison calls
+# ---------------------------------------------------------------------------
+
+def _call_llm_with_two_images(
+    model: str, system: str, user: str,
+    prev_b64: str, prev_mt: str,
+    curr_b64: str, curr_mt: str,
+    max_tokens: int = 4096, temperature: float = 0.0,
+) -> str:
+    """Route a two-image comparison call to the appropriate LLM provider."""
+    provider, model_name = _parse_provider(model)
+
+    if provider == "anthropic":
+        try:
+            import anthropic
+        except ImportError:
+            raise ImportError(
+                "anthropic package required. "
+                "Install with: pip install 'autocritic[anthropic]'"
+            )
+        client = anthropic.Anthropic()
+        response = client.messages.create(
+            model=model_name,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            system=system,
+            messages=[{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "Previous iteration:"},
+                    {"type": "image", "source": {
+                        "type": "base64", "media_type": prev_mt, "data": prev_b64,
+                    }},
+                    {"type": "text", "text": "Current iteration:"},
+                    {"type": "image", "source": {
+                        "type": "base64", "media_type": curr_mt, "data": curr_b64,
+                    }},
+                    {"type": "text", "text": user},
+                ],
+            }],
+        )
+        return response.content[0].text
+
+    elif provider == "google":
+        try:
+            from google import genai
+            from google.genai import types
+        except ImportError:
+            raise ImportError(
+                "google-genai package required. "
+                "Install with: pip install 'autocritic[google]'"
+            )
+        client = genai.Client()
+        prev_part = types.Part.from_bytes(
+            data=base64.b64decode(prev_b64), mime_type=prev_mt,
+        )
+        curr_part = types.Part.from_bytes(
+            data=base64.b64decode(curr_b64), mime_type=curr_mt,
+        )
+        response = client.models.generate_content(
+            model=model_name,
+            contents=[
+                "Previous iteration:", prev_part,
+                "Current iteration:", curr_part,
+                user,
+            ],
+            config=types.GenerateContentConfig(
+                system_instruction=system,
+                max_output_tokens=max_tokens,
+                temperature=temperature,
+            ),
+        )
+        return response.text
+
+    else:
+        # OpenAI-compatible (covers openai, xai, ollama, mlx, llamacpp, local)
+        try:
+            import openai
+        except ImportError:
+            raise ImportError(
+                "openai package required. "
+                "Install with: pip install 'autocritic[openai]'"
+            )
+
+        if provider == "local":
+            base_url = os.environ.get("LOCAL_LLM_URL", "http://localhost:8080/v1")
+            api_key = os.environ.get("LOCAL_LLM_API_KEY", "none")
+        elif provider in _OPENAI_COMPAT_PROVIDERS:
+            base_url, api_key_env = _OPENAI_COMPAT_PROVIDERS[provider]
+            api_key = os.environ.get(api_key_env) if api_key_env else "ollama"
+        else:
+            raise ValueError(f"Unknown provider: {provider}")
+
+        client = openai.OpenAI(base_url=base_url, api_key=api_key)
+        prev_url = f"data:{prev_mt};base64,{prev_b64}"
+        curr_url = f"data:{curr_mt};base64,{curr_b64}"
+        token_kwarg = (
+            {"max_completion_tokens": max_tokens}
+            if base_url is None
+            else {"max_tokens": max_tokens}
+        )
+        response = client.chat.completions.create(
+            model=model_name,
+            **token_kwarg,
+            temperature=temperature,
+            messages=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": [
+                    {"type": "text", "text": "Previous iteration:"},
+                    {"type": "image_url", "image_url": {"url": prev_url}},
+                    {"type": "text", "text": "Current iteration:"},
+                    {"type": "image_url", "image_url": {"url": curr_url}},
+                    {"type": "text", "text": user},
+                ]},
+            ],
+        )
+        return response.choices[0].message.content

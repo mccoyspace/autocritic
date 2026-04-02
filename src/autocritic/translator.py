@@ -207,7 +207,7 @@ def translate_critique_to_params(
         temperature=0.0,
     )
 
-    # Parse JSON from response
+    # Parse JSON from response — raises TranslationParseError on failure
     deltas, reasoning = _parse_translation(raw)
 
     return TranslationResult(
@@ -217,27 +217,40 @@ def translate_critique_to_params(
     )
 
 
+class TranslationParseError(ValueError):
+    """Raised when the translator response cannot be parsed."""
+    def __init__(self, message: str, raw_text: str):
+        super().__init__(message)
+        self.raw_text = raw_text
+
+
 def _parse_translation(raw: str) -> tuple[dict[str, Any], str]:
-    """Extract deltas and reasoning from the translator response."""
+    """Extract deltas and reasoning from the translator response.
+
+    Expects a fenced ``json`` block containing ``{"deltas": {...}, ...}``.
+    Raises ``TranslationParseError`` if parsing fails, rather than
+    silently returning empty deltas.
+    """
     # Find fenced JSON blocks
     pattern = r"```json\s*\n(.*?)```"
     matches = re.findall(pattern, raw, re.DOTALL)
 
-    if matches:
-        raw_json = matches[-1].strip()
-    else:
-        # Try to find bare JSON
-        pattern2 = r"\{[^{}]*\"deltas\"[^{}]*\{.*?\}.*?\}"
-        m = re.search(pattern2, raw, re.DOTALL)
-        if m:
-            raw_json = m.group(0)
-        else:
-            return {}, raw.strip()
+    if not matches:
+        raise TranslationParseError(
+            "No fenced ```json``` block found in translator response. "
+            "The LLM may have returned prose instead of structured output.",
+            raw_text=raw,
+        )
+
+    raw_json = matches[-1].strip()
 
     try:
         data = json.loads(raw_json)
-    except json.JSONDecodeError:
-        return {}, raw.strip()
+    except json.JSONDecodeError as e:
+        raise TranslationParseError(
+            f"Invalid JSON in translator response: {e}",
+            raw_text=raw,
+        ) from e
 
     deltas = data.get("deltas", {})
     reasoning = data.get("reasoning", "")

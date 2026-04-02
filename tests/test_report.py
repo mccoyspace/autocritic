@@ -12,6 +12,7 @@ from autocritic.report import (
     build_narrative,
     generate_contact_sheet,
     save_narrative_md,
+    _infer_bipolar,
     _readable_stop,
     _wrap_narrative,
 )
@@ -209,6 +210,63 @@ class TestBuildNarrativeBipolar:
         narrative = build_narrative(run_dir)
         assert "0.80" in narrative
         assert "0.70" in narrative
+
+
+# ---------------------------------------------------------------------------
+# _infer_bipolar — legacy summary fallback
+# ---------------------------------------------------------------------------
+
+class TestInferBipolar:
+    def test_explicit_flag_true(self):
+        assert _infer_bipolar({"bipolar": True}) is True
+
+    def test_explicit_flag_false(self):
+        assert _infer_bipolar({"bipolar": False}) is False
+
+    def test_legacy_summary_wolfflin_inferred_bipolar(self):
+        """A legacy summary (no bipolar key) for wolfflin should infer True."""
+        assert _infer_bipolar({"critic_id": "wolfflin"}) is True
+
+    def test_legacy_summary_arnheim_inferred_unipolar(self):
+        """A legacy summary (no bipolar key) for arnheim should infer False."""
+        assert _infer_bipolar({"critic_id": "arnheim"}) is False
+
+    def test_legacy_summary_unknown_critic_defaults_false(self):
+        assert _infer_bipolar({"critic_id": "nonexistent_critic"}) is False
+
+    def test_empty_summary_defaults_false(self):
+        assert _infer_bipolar({}) is False
+
+    def test_legacy_bipolar_narrative_uses_pole_language(self, tmp_path):
+        """End-to-end: a legacy wolfflin summary without bipolar key should produce bipolar narrative."""
+        run_dir = tmp_path / "legacy_run"
+        run_dir.mkdir()
+        # Simulate a pre-bipolar-field summary
+        summary = {
+            "run_id": "legacy_wolfflin_123",
+            "stop_reason": "max_iterations",
+            "total_iterations": 2,
+            "best_iteration": 0,
+            "best_score": 0.8,
+            # No "bipolar" key — legacy format
+            "critic_id": "wolfflin",
+            "score_progression": [0.8, 0.5],
+        }
+        (run_dir / "summary.json").write_text(json.dumps(summary))
+        for i in range(2):
+            iter_dir = run_dir / f"iter_{i:03d}"
+            iter_dir.mkdir()
+            crit = {
+                "composite_score": summary["score_progression"][i],
+                "accepted": True,
+                "lens_summary": "test",
+                "directives": ["do something"],
+            }
+            (iter_dir / "critique_summary.json").write_text(json.dumps(crit))
+
+        narrative = build_narrative(run_dir)
+        assert "Pole commitment:" in narrative
+        assert "Score:" not in narrative
 
 
 # ---------------------------------------------------------------------------

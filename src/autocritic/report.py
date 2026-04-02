@@ -53,6 +53,33 @@ def _load_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
     return ImageFont.load_default()
 
 
+def _infer_bipolar(summary: dict) -> bool:
+    """Determine whether a run used a bipolar critic.
+
+    Reads the explicit ``bipolar`` flag if present (runs after this field
+    was added).  For legacy summaries that lack it, falls back to loading
+    the critic card by ``critic_id``.
+    """
+    if "bipolar" in summary:
+        return summary["bipolar"]
+    critic_id = summary.get("critic_id")
+    if critic_id:
+        try:
+            from autocritic.critic import load_critic
+            from autocritic.scoring import is_bipolar
+            # Search bundled critics
+            candidates = [
+                Path(__file__).resolve().parent / "critics" / f"{critic_id}.json",
+                Path(f"critics/{critic_id}.json"),
+            ]
+            for p in candidates:
+                if p.exists():
+                    return is_bipolar(load_critic(p))
+        except Exception:
+            pass
+    return False
+
+
 def _swap_dark_bg(img: Image.Image, threshold: int = 40) -> Image.Image:
     """Replace near-black pixels with white, preserving colored content."""
     arr = np.array(img)
@@ -92,7 +119,7 @@ def build_narrative(run_dir: Path) -> str:
     total = summary.get("total_iterations", 0)
     best_iter = summary.get("best_iteration", 0)
     best_score = summary.get("best_score", 0)
-    bipolar = summary.get("bipolar", False)
+    bipolar = _infer_bipolar(summary)
     scores = summary.get("score_progression", [])
 
     # Load critique summaries for each iteration
@@ -203,7 +230,7 @@ def generate_contact_sheet(run_dir: Path, output_path: Path | None = None) -> Pa
     summary = json.loads(summary_path.read_text())
     total = summary.get("total_iterations", 0)
     best_iter = summary.get("best_iteration", 0)
-    bipolar = summary.get("bipolar", False)
+    bipolar = _infer_bipolar(summary)
     scores = summary.get("score_progression", [])
 
     if total == 0:

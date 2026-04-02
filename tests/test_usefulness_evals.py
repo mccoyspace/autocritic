@@ -226,6 +226,52 @@ class TestExpectedTerms:
         result = eval_expected_terms(exp, sc)
         assert not result.passed
 
+    def test_no_escalation_without_model(self):
+        """Without a model, no LLM call even when terms miss."""
+        exp = _make_expectation(expected_terms=["zigzag", "spiral", "fractal", "linear"])
+        sc = _make_scored_critique()
+        # model=None (default) — should fail without attempting LLM recovery
+        result = eval_expected_terms(exp, sc, model=None)
+        assert not result.passed
+        assert "recovered" not in result.scores[0].evidence
+
+    def test_no_escalation_when_passing(self):
+        """LLM escalation should not fire when substring matching passes."""
+        exp = _make_expectation(expected_terms=["linear", "contour", "edge", "bounded"])
+        sc = _make_scored_critique()
+        # Even with a model, no escalation needed — all terms hit
+        result = eval_expected_terms(exp, sc, model="test:fake")
+        assert result.passed
+        assert "recovered" not in result.scores[0].evidence
+
+    def test_escalation_recovers_terms(self, monkeypatch):
+        """LLM escalation recovers synonyms that substring matching misses."""
+        exp = _make_expectation(expected_terms=["zigzag", "spiral", "fractal", "linear"])
+        sc = _make_scored_critique()
+        # 1/4 by substring, below 75% — should escalate
+        # Mock LLM to recover "zigzag" and "spiral" (indices 1 and 2)
+        monkeypatch.setattr(
+            "autocritic.llm._call_llm",
+            lambda model, system, user, **kw: "[1, 2]",
+        )
+        result = eval_expected_terms(exp, sc, model="test:fake")
+        # 3/4 = 75%, should now pass
+        assert result.passed
+        assert "recovered by LLM" in result.scores[0].evidence
+
+    def test_escalation_still_fails_if_not_enough(self, monkeypatch):
+        """LLM recovery that doesn't reach 75% still fails."""
+        exp = _make_expectation(expected_terms=["zigzag", "spiral", "fractal", "vortex"])
+        sc = _make_scored_critique()
+        # 0/4 by substring — escalate, recover only 1
+        monkeypatch.setattr(
+            "autocritic.llm._call_llm",
+            lambda model, system, user, **kw: "[1]",
+        )
+        result = eval_expected_terms(exp, sc, model="test:fake")
+        # 1/4 = 25%, still fails
+        assert not result.passed
+
 
 # ---------------------------------------------------------------------------
 # Score-text coherence

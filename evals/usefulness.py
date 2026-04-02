@@ -2,8 +2,11 @@
 Usefulness eval suite: tests whether critic cards produce specific, actionable,
 lens-grounded critiques rather than generic art coaching.
 
-Two layers:
-  - Programmatic checks on cached critique fixtures (no extra LLM calls)
+Three layers:
+  - Programmatic checks on cached critique fixtures (fast, no extra LLM calls)
+  - LLM-assisted escalation: when programmatic term matching fails due to
+    synonym variation, an LLM verifies whether the concept is semantically
+    present (one call per failure, not per term)
   - LLM-as-judge checks for actionability and anti-generic distinctiveness
 
 Fixtures are pre-generated ScoredCritique objects saved as JSON.
@@ -262,25 +265,92 @@ def eval_lens_vocabulary(
     )
 
 
+def _llm_recover_terms(
+    misses: list[str],
+    critique_text: str,
+    critic_id: str,
+    model: str,
+) -> list[str]:
+    """Ask an LLM which of the missing concepts are actually discussed.
+
+    This handles synonym variation: "isolated" vs "isolation", "gradation
+    is absent" vs "no gradation", etc.  Returns the subset of *misses*
+    that the LLM confirms are present as concepts (even if the exact
+    substring is absent).
+    """
+    from autocritic.llm import _call_llm
+
+    numbered = "\n".join(f"  {i+1}. {t}" for i, t in enumerate(misses))
+
+    system = (
+        "You are a precise text analyst. You will be given a critique written "
+        "from a specific art-theory perspective and a list of concepts. "
+        "Determine which concepts are substantively discussed in the critique, "
+        "even if the exact term is not used. Synonyms, paraphrases, and "
+        "negations that demonstrate awareness of the concept all count.\n\n"
+        "Return ONLY a JSON array of the concept numbers that are present.\n"
+        "Example: [1, 3]"
+    )
+
+    user = (
+        f"## Critic: {critic_id}\n\n"
+        f"## Critique\n{critique_text}\n\n"
+        f"## Concepts to check\n{numbered}\n\n"
+        f"Which of these concepts are discussed in the critique? "
+        f"Return a JSON array of the numbers."
+    )
+
+    raw = _call_llm(model, system, user)
+
+    # Parse the response — extract a JSON array
+    import re
+    match = re.search(r"\[[\d\s,]*\]", raw)
+    if not match:
+        return []
+    try:
+        indices = json.loads(match.group(0))
+        return [misses[i - 1] for i in indices if 1 <= i <= len(misses)]
+    except (json.JSONDecodeError, IndexError):
+        return []
+
+
 def eval_expected_terms(
     exp: CritiqueExpectation,
     sc: ScoredCritique,
+    model: str | None = None,
 ) -> EvalResult:
-    """Check that expected terms for this image-critic pair appear."""
+    """Check that expected terms for this image-critic pair appear.
+
+    First pass: exact substring matching (free, instant).
+    If a model is provided and the first pass fails, escalate missed
+    terms to an LLM for semantic recovery — handles synonym variation
+    across different LLMs and writing styles.
+    """
     text = sc.critique.raw_text.lower()
 
     hits = [t for t in exp.expected_terms if t.lower() in text]
     misses = [t for t in exp.expected_terms if t.lower() not in text]
     ratio = len(hits) / len(exp.expected_terms) if exp.expected_terms else 0
 
+    # LLM escalation: recover missed terms via semantic check
+    recovered: list[str] = []
+    if misses and model and ratio < 0.75:
+        recovered = _llm_recover_terms(
+            misses, sc.critique.raw_text, exp.critic_id, model,
+        )
+        hits = hits + recovered
+        misses = [t for t in misses if t not in recovered]
+        ratio = len(hits) / len(exp.expected_terms) if exp.expected_terms else 0
+
     # Require at least 75% of expected terms
+    evidence = f"{len(hits)}/{len(exp.expected_terms)} ({ratio:.0%})"
+    if recovered:
+        evidence += f"; recovered by LLM: {recovered}"
+    if misses:
+        evidence += f"; missing: {misses}"
+
     checks: list[tuple[str, bool, str]] = [
-        (
-            "expected_term_coverage",
-            ratio >= 0.75,
-            f"{len(hits)}/{len(exp.expected_terms)} ({ratio:.0%})"
-            + (f"; missing: {misses}" if misses else ""),
-        ),
+        ("expected_term_coverage", ratio >= 0.75, evidence),
     ]
 
     return run_programmatic_check(
@@ -493,10 +563,10 @@ def run_usefulness_suite(
                 skipped += 1
                 continue
 
-        # Programmatic checks
+        # Programmatic checks (expected_terms gets model for LLM escalation)
         results.append(eval_completeness(exp, sc))
         results.append(eval_lens_vocabulary(exp, sc))
-        results.append(eval_expected_terms(exp, sc))
+        results.append(eval_expected_terms(exp, sc, model=model))
         results.append(eval_score_text_coherence(exp, sc))
 
         # LLM-as-judge checks (optional)

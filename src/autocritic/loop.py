@@ -13,6 +13,7 @@ import shutil
 import time
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
+from collections.abc import Callable
 from typing import Any
 
 from autocritic.critic import CriticCard, load_critic
@@ -78,6 +79,7 @@ class LoopResult:
     best_score: float
     output_dir: Path
     stop_reason: str
+    parse_errors: int = 0
 
 
 # ---------------------------------------------------------------------------
@@ -149,7 +151,7 @@ def _save_trajectory(run_dir: Path, iterations: list[IterationRecord]) -> None:
 def run_loop(
     config: LoopConfig,
     param_space: ParamSpace,
-    acquire_image_fn,  # (params, output_path) -> Path
+    acquire_image_fn: Callable[[dict[str, Any], Path], Path],
     initial_params: dict[str, Any] | None = None,
 ) -> LoopResult:
     """Run the improvement loop.
@@ -397,4 +399,5 @@ def run_loop(
         best_score=best_score,
         output_dir=run_dir,
         stop_reason=stop_reason,
+        parse_errors=parse_errors,
     )

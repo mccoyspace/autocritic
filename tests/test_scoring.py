@@ -10,6 +10,7 @@ import pytest
 from autocritic.critic import CriticCard, load_critic
 from autocritic.scoring import (
     AxisScore,
+    ScoreParseError,
     ScoredCritique,
     build_scoring_prompt_section,
     compare_scores,
@@ -129,15 +130,15 @@ class TestParseAxisScores:
         scores = parse_axis_scores(SAMPLE_RESPONSE_WITH_SCORES, c)
         assert all(s.reasoning for s in scores)
 
-    def test_empty_response_returns_empty(self):
+    def test_empty_response_raises(self):
         c = load_critic(CRITICS_DIR / "wolfflin.json")
-        scores = parse_axis_scores("No JSON here.", c)
-        assert scores == []
+        with pytest.raises(ScoreParseError, match="No fenced"):
+            parse_axis_scores("No JSON here.", c)
 
-    def test_invalid_json_returns_empty(self):
+    def test_invalid_json_raises(self):
         c = load_critic(CRITICS_DIR / "wolfflin.json")
-        scores = parse_axis_scores("```json\n{broken\n```", c)
-        assert scores == []
+        with pytest.raises(ScoreParseError, match="Invalid JSON"):
+            parse_axis_scores("```json\n{broken\n```", c)
 
 
 # ---------------------------------------------------------------------------

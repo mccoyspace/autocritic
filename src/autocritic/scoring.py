@@ -14,6 +14,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+
+class ScoreParseError(Exception):
+    """Raised when axis score JSON cannot be parsed from LLM output."""
+
 from autocritic.critic import (
     CriticCard,
     CritiqueResult,
@@ -188,23 +192,20 @@ def parse_axis_scores(
     matches = re.findall(pattern, raw_text, re.DOTALL)
 
     if not matches:
-        # Try unfenced JSON at end of response
-        pattern2 = r"\{[^{}]*\"axis_scores\"[^{}]*\[.*?\]\s*\}"
-        matches = re.findall(pattern2, raw_text, re.DOTALL)
-
-    if not matches:
-        return []
+        raise ScoreParseError("No fenced ```json``` block found in LLM response")
 
     # Use the last match (scoring block comes after critique)
     raw_json = matches[-1].strip()
     try:
         data = json.loads(raw_json)
-    except json.JSONDecodeError:
-        return []
+    except json.JSONDecodeError as e:
+        raise ScoreParseError(f"Invalid JSON in axis scores block: {e}") from e
 
     scores_data = data.get("axis_scores", [])
     if not isinstance(scores_data, list):
-        return []
+        raise ScoreParseError(
+            f"Expected 'axis_scores' to be a list, got {type(scores_data).__name__}"
+        )
 
     # Build label lookup from all items (primary + secondary)
     label_map = {}

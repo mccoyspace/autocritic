@@ -7,7 +7,7 @@ from autocritic.critic import (
     critique_image,
     compare_iterations,
 )
-from autocritic.scoring import ScoredCritique, score_critique, compare_scores
+from autocritic.scoring import ScoredCritique, ScoreParseError, score_critique, compare_scores
 from autocritic.translator import ParamSpace, ParamSpec, TranslationResult, TranslationParseError
 
 __all__ = [
@@ -17,6 +17,7 @@ __all__ = [
     "critique_image",
     "compare_iterations",
     "ScoredCritique",
+    "ScoreParseError",
     "score_critique",
     "compare_scores",
     "ParamSpace",

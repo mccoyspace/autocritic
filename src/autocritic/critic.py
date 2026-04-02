@@ -98,7 +98,7 @@ class CritiqueResult:
 
 # The possible keys for the main criteria array, in priority order.
 _ITEMS_KEYS = ["criteria", "core_concepts", "elements", "impulses", "principles"]
-_ID_FIELDS = ["criterion_id", "concept_id", "element_id", "impulse_id", "principle_id"]
+_ID_FIELDS = ["criterion_id", "concept_id", "element_id", "impulse_id", "principle_id", "dimension_id"]
 
 # Keys that look like item arrays but aren't evaluative items.
 _NON_ITEM_KEYS = {

@@ -393,6 +393,7 @@ def run_loop(
         "total_iterations": len(iterations),
         "best_iteration": best_iteration,
         "best_score": best_score,
+        "bipolar": bipolar,
         "parse_errors": parse_errors,
         "final_params": final_params,
         "score_progression": [r.composite_score for r in iterations],

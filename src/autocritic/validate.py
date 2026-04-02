@@ -39,7 +39,7 @@ def _validate_runtime(card_path: Path) -> list[str]:
     """Try loading the card with the runtime loader. Returns list of error messages."""
     errors = []
     try:
-        from autocritic.critic import load_critic
+        from autocritic.critic import load_critic, _ID_FIELDS
         critic = load_critic(card_path)
 
         # Check that critic_id matches filename
@@ -52,6 +52,7 @@ def _validate_runtime(card_path: Path) -> list[str]:
             errors.append("  No items found (criteria/core_concepts/elements/impulses/principles)")
 
         # Check each primary item has required subfields
+        id_fields_set = set(_ID_FIELDS)
         for i, item in enumerate(critic.items):
             item_id = item.get(critic.item_id_field, item.get("id", f"item_{i}"))
             if "label" not in item:
@@ -62,8 +63,14 @@ def _validate_runtime(card_path: Path) -> list[str]:
                 errors.append(f"  {item_id}: missing 'diagnostic_questions' (required for primary items)")
             if "indicators" not in item:
                 errors.append(f"  {item_id}: missing 'indicators' (required for primary items)")
+            # Check for a recognized ID field (required for scoring)
+            if not any(idf in item for idf in id_fields_set):
+                errors.append(
+                    f"  item {i}: missing ID field (need one of: {', '.join(_ID_FIELDS)}). "
+                    f"Without an ID, the scoring prompt will list this axis as 'unknown'."
+                )
 
-        # Check secondary items have at least label + definition
+        # Check secondary items have at least label + definition + ID
         for sec_key, sec_items in critic.secondary_items.items():
             for i, item in enumerate(sec_items):
                 item_id = item.get("label", f"{sec_key}[{i}]")
@@ -71,6 +78,11 @@ def _validate_runtime(card_path: Path) -> list[str]:
                     errors.append(f"  {sec_key}[{i}]: missing 'label'")
                 if "definition" not in item:
                     errors.append(f"  {sec_key}[{i}]: missing 'definition'")
+                if not any(idf in item for idf in id_fields_set):
+                    errors.append(
+                        f"  {sec_key}[{i}] ({item_id}): missing ID field "
+                        f"(need one of: {', '.join(_ID_FIELDS)})"
+                    )
 
     except Exception as e:
         errors.append(f"  Runtime load failed: {e}")

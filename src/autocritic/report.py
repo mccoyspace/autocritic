@@ -92,6 +92,7 @@ def build_narrative(run_dir: Path) -> str:
     total = summary.get("total_iterations", 0)
     best_iter = summary.get("best_iteration", 0)
     best_score = summary.get("best_score", 0)
+    bipolar = summary.get("bipolar", False)
     scores = summary.get("score_progression", [])
 
     # Load critique summaries for each iteration
@@ -133,11 +134,21 @@ def build_narrative(run_dir: Path) -> str:
     lines.append(f"Run: {run_id}")
     lines.append(f"Stopped: {_readable_stop(stop_reason)} after {total} iteration{'s' if total != 1 else ''}")
     if scores:
-        lines.append(f"Score: {scores[0]:.2f} → {scores[-1]:.2f} (best {best_score:.2f} at iter {best_iter})")
+        if bipolar:
+            lines.append(
+                f"Pole commitment: {scores[0]:.2f} → {scores[-1]:.2f} "
+                f"(peak {best_score:.2f} at iter {best_iter})"
+            )
+        else:
+            lines.append(f"Score: {scores[0]:.2f} → {scores[-1]:.2f} (best {best_score:.2f} at iter {best_iter})")
     lines.append("")
 
     for n in iter_narratives:
-        tag = "★" if n["i"] == best_iter else " "
+        if bipolar:
+            # No "best" marker for bipolar — pole commitment is not quality
+            tag = " "
+        else:
+            tag = "★" if n["i"] == best_iter else " "
         status = "✓" if n["accepted"] else "✗"
         line = f"{tag} Iter {n['i']} [{n['score']:.2f}] {status}"
         lines.append(line)
@@ -192,6 +203,7 @@ def generate_contact_sheet(run_dir: Path, output_path: Path | None = None) -> Pa
     summary = json.loads(summary_path.read_text())
     total = summary.get("total_iterations", 0)
     best_iter = summary.get("best_iteration", 0)
+    bipolar = summary.get("bipolar", False)
     scores = summary.get("score_progression", [])
 
     if total == 0:
@@ -235,7 +247,7 @@ def generate_contact_sheet(run_dir: Path, output_path: Path | None = None) -> Pa
         # Label
         score = scores[i] if i < len(scores) else 0
         label = f"iter {i}  —  {score:.3f}"
-        if i == best_iter:
+        if not bipolar and i == best_iter:
             label += "  ★ best"
             label_color = BEST_COLOR
         else:

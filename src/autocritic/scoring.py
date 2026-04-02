@@ -358,5 +358,11 @@ def score_critique(
 
 
 def compare_scores(a: ScoredCritique, b: ScoredCritique) -> float:
-    """Compute improvement delta: positive means b is better than a."""
+    """Compute composite score delta: ``b.composite - a.composite``.
+
+    For unipolar critics, positive means b scored higher (better).
+    For bipolar critics, this measures change in pole commitment,
+    not quality — a positive delta means stronger commitment, not
+    necessarily improvement.
+    """
     return b.composite_score - a.composite_score

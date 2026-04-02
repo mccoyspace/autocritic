@@ -21,10 +21,9 @@ from pathlib import Path
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _package_root() -> Path:
-    """Return the autocritic repo/package root directory."""
-    # src/autocritic/__main__.py → go up 3 levels to repo root
-    return Path(__file__).resolve().parent.parent.parent
+def _bundled_critics_dir() -> Path:
+    """Return the path to bundled critic cards inside the installed package."""
+    return Path(__file__).resolve().parent / "critics"
 
 
 def _resolve_critic(name: str) -> Path:
@@ -32,7 +31,7 @@ def _resolve_critic(name: str) -> Path:
 
     Search order:
       1. CWD-relative ``critics/<name>.json``
-      2. Package-root-relative ``critics/<name>.json``
+      2. Bundled package data ``autocritic/critics/<name>.json``
       3. Literal path (``<name>`` as given)
     """
     # 1. CWD
@@ -40,8 +39,8 @@ def _resolve_critic(name: str) -> Path:
     if card_path.exists():
         return card_path
 
-    # 2. Relative to the installed package root
-    pkg_path = _package_root() / "critics" / f"{name}.json"
+    # 2. Bundled with the package
+    pkg_path = _bundled_critics_dir() / f"{name}.json"
     if pkg_path.exists():
         return pkg_path
 
@@ -51,8 +50,7 @@ def _resolve_critic(name: str) -> Path:
         return card_path
 
     print(f"Error: critic card not found: {name}")
-    # Try both locations for helpful output
-    for search_dir in [Path("critics"), _package_root() / "critics"]:
+    for search_dir in [Path("critics"), _bundled_critics_dir()]:
         try:
             available = ", ".join(p.stem for p in search_dir.glob("*.json"))
             if available:
@@ -117,15 +115,18 @@ def cmd_validate(args: argparse.Namespace) -> None:
 
 def cmd_list(args: argparse.Namespace) -> None:
     """List available critic cards."""
+    # Search CWD first, fall back to bundled
     critics_dir = Path("critics")
+    if not critics_dir.exists() or not list(critics_dir.glob("*.json")):
+        critics_dir = _bundled_critics_dir()
     if not critics_dir.exists():
-        print("No critics/ directory found.")
+        print("No critic cards found.")
         return
 
     from autocritic.critic import load_critic
     cards = sorted(critics_dir.glob("*.json"))
     if not cards:
-        print("No critic cards found in critics/.")
+        print("No critic cards found.")
         return
 
     print(f"{'ID':<14} {'Theorist':<24} {'Book':<36} {'Items'}")
@@ -133,7 +134,11 @@ def cmd_list(args: argparse.Namespace) -> None:
     for card_path in cards:
         try:
             critic = load_critic(card_path)
-            print(f"{critic.critic_id:<14} {critic.theorist:<24} {critic.book:<36} {len(critic.items)} {critic.items_key}")
+            n_total = len(critic.items) + sum(len(v) for v in critic.secondary_items.values())
+            items_desc = f"{n_total} {critic.items_key}"
+            if critic.secondary_items:
+                items_desc += f" (+{', '.join(critic.secondary_items.keys())})"
+            print(f"{critic.critic_id:<14} {critic.theorist:<24} {critic.book:<36} {items_desc}")
         except Exception as e:
             print(f"{card_path.stem:<14} ERROR: {e}")
 

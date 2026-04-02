@@ -21,6 +21,9 @@ dev = ["pytest>=8.0", "jsonschema>=4.0"]
 [project.scripts]
 autocritic = "autocritic.__main__:main"
 
+[tool.setuptools.package-data]
+autocritic = ["critics/*.json", "schemas/*.json"]
+
 [tool.pytest.ini_options]
 markers = [
     "eval: LLM-as-judge tests (require API key)",

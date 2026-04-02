@@ -12,8 +12,8 @@ import json
 import sys
 from pathlib import Path
 
-# Schema path relative to this file
-SCHEMA_PATH = Path(__file__).resolve().parent.parent.parent / "schemas" / "critic_card.schema.json"
+# Schema bundled with the package
+SCHEMA_PATH = Path(__file__).resolve().parent / "schemas" / "critic_card.schema.json"
 
 
 def _validate_with_jsonschema(card: dict, card_path: Path) -> list[str]:
@@ -62,6 +62,15 @@ def _validate_runtime(card_path: Path) -> list[str]:
                 errors.append(f"  {item_id}: missing 'diagnostic_questions' (required for primary items)")
             if "indicators" not in item:
                 errors.append(f"  {item_id}: missing 'indicators' (required for primary items)")
+
+        # Check secondary items have at least label + definition
+        for sec_key, sec_items in critic.secondary_items.items():
+            for i, item in enumerate(sec_items):
+                item_id = item.get("label", f"{sec_key}[{i}]")
+                if "label" not in item:
+                    errors.append(f"  {sec_key}[{i}]: missing 'label'")
+                if "definition" not in item:
+                    errors.append(f"  {sec_key}[{i}]: missing 'definition'")
 
     except Exception as e:
         errors.append(f"  Runtime load failed: {e}")

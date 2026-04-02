@@ -430,6 +430,10 @@ class TestCritiqueImageMocked:
 # ---------------------------------------------------------------------------
 
 @pytest.mark.eval
+@pytest.mark.skipif(
+    not __import__("os").environ.get("ANTHROPIC_API_KEY"),
+    reason="ANTHROPIC_API_KEY not set",
+)
 class TestCritiqueImageLive:
     """Live LLM critique — requires API key and real images."""
 

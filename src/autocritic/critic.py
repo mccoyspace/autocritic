@@ -33,12 +33,21 @@ class CriticCard:
     theorist: str
     book: str
     thesis: str
-    items: list[dict[str, Any]]       # the criteria/concepts/elements/etc.
+    items: list[dict[str, Any]]       # primary items (criteria/concepts/elements/etc.)
     items_key: str                     # "criteria", "core_concepts", etc.
     item_id_field: str                 # "criterion_id", "concept_id", etc.
     anti_goals: list[str]
     tensions: list[dict[str, str]]
     raw: dict[str, Any]               # the full parsed JSON
+    secondary_items: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
+
+    @property
+    def all_items(self) -> list[dict[str, Any]]:
+        """All items: primary + secondary arrays merged."""
+        merged = list(self.items)
+        for items_list in self.secondary_items.values():
+            merged.extend(items_list)
+        return merged
 
     @property
     def label(self) -> str:
@@ -91,13 +100,33 @@ class CritiqueResult:
 _ITEMS_KEYS = ["criteria", "core_concepts", "elements", "impulses", "principles"]
 _ID_FIELDS = ["criterion_id", "concept_id", "element_id", "impulse_id", "principle_id"]
 
+# Keys that look like item arrays but aren't evaluative items.
+_NON_ITEM_KEYS = {
+    "anti_goals", "tensions", "citations", "confidence_notes",
+}
+
+
+def _is_item_array(value: Any) -> bool:
+    """Check if a value looks like an array of evaluative items."""
+    return (
+        isinstance(value, list)
+        and len(value) > 0
+        and isinstance(value[0], dict)
+        and "label" in value[0]
+        and "definition" in value[0]
+    )
+
 
 def load_critic(card_path: str | Path) -> CriticCard:
-    """Load a critic card from a JSON file."""
+    """Load a critic card from a JSON file.
+
+    Collects the primary items array (first match in ``_ITEMS_KEYS``)
+    and any secondary item arrays (other dict-lists with label+definition).
+    """
     path = Path(card_path)
     raw = json.loads(path.read_text())
 
-    # Find the main items array and its ID field.
+    # Find the primary items array and its ID field.
     items_key = None
     items = []
     for key in _ITEMS_KEYS:
@@ -118,6 +147,18 @@ def load_critic(card_path: str | Path) -> CriticCard:
                 item_id_field = id_field
                 break
 
+    # Collect secondary item arrays (other recognized keys, or any
+    # dict-list with label+definition that isn't the primary or metadata).
+    secondary: dict[str, list[dict[str, Any]]] = {}
+    for key in _ITEMS_KEYS:
+        if key != items_key and key in raw and isinstance(raw[key], list):
+            secondary[key] = raw[key]
+    for key, value in raw.items():
+        if key in _ITEMS_KEYS or key in _NON_ITEM_KEYS or key == items_key:
+            continue
+        if _is_item_array(value):
+            secondary[key] = value
+
     return CriticCard(
         critic_id=raw.get("critic_id", path.stem),
         theorist=raw.get("theorist", "Unknown"),
@@ -129,6 +170,7 @@ def load_critic(card_path: str | Path) -> CriticCard:
         anti_goals=raw.get("anti_goals", []),
         tensions=raw.get("tensions", []),
         raw=raw,
+        secondary_items=secondary,
     )
 
 
@@ -136,8 +178,76 @@ def load_critic(card_path: str | Path) -> CriticCard:
 # Prompt assembly
 # ---------------------------------------------------------------------------
 
+def _format_item_block(item: dict[str, Any], id_field: str = "id") -> list[str]:
+    """Format a single item (criterion/concept/element/etc.) for the prompt."""
+    lines = []
+    item_id = item.get(id_field, "unknown")
+    label = item.get("label", item_id)
+    definition = item.get("definition", "")
+    lines.append(f"### {label}")
+    lines.append(definition)
+
+    # Diagnostic questions
+    qs = item.get("diagnostic_questions", [])
+    if qs:
+        lines.append("")
+        lines.append("Diagnostic questions:")
+        for q in qs:
+            lines.append(f"  - {q}")
+
+    # Indicators (handle varying structures)
+    indicators = item.get("indicators", {})
+    if indicators:
+        lines.append("")
+        lines.append("Indicators:")
+        for cat, items_list in indicators.items():
+            lines.append(f"  {cat}:")
+            if isinstance(items_list, list):
+                for ind in items_list:
+                    lines.append(f"    - {ind}")
+            else:
+                lines.append(f"    {items_list}")
+
+    # Feedback directions (authored but previously not injected)
+    feedback = item.get("feedback_directions", {})
+    if feedback:
+        lines.append("")
+        lines.append("Feedback directions:")
+        for direction, suggestions in feedback.items():
+            lines.append(f"  {direction}:")
+            if isinstance(suggestions, list):
+                for s in suggestions:
+                    lines.append(f"    - {s}")
+            else:
+                lines.append(f"    {suggestions}")
+
+    # Common misreadings
+    misreadings = item.get("common_misreadings", [])
+    if misreadings:
+        lines.append("")
+        lines.append("Common misreadings to avoid:")
+        for m in misreadings:
+            lines.append(f"  - {m}")
+
+    # Examples (for simpler items like Dow's principles)
+    examples = item.get("examples", [])
+    if examples:
+        lines.append("")
+        lines.append("Examples:")
+        for ex in examples:
+            lines.append(f"  - {ex}")
+
+    lines.append("")
+    return lines
+
+
 def _build_system_prompt(critic: CriticCard) -> str:
-    """Build the system prompt from a critic card."""
+    """Build the system prompt from a critic card.
+
+    Includes primary items, secondary item arrays (e.g. Dow's principles,
+    Kandinsky's compositional_principles), tensions, feedback_directions,
+    and common_misreadings.
+    """
     lines = [
         "You are an image critic operating through a specific theoretical lens.",
         f"Your lens: {critic.theorist}, \"{critic.book}\".",
@@ -152,34 +262,30 @@ def _build_system_prompt(critic: CriticCard) -> str:
         "",
     ]
 
+    # Primary items
     for item in critic.items:
-        item_id = item.get(critic.item_id_field, "unknown")
-        label = item.get("label", item_id)
-        definition = item.get("definition", "")
-        lines.append(f"### {label}")
-        lines.append(definition)
+        lines.extend(_format_item_block(item, critic.item_id_field))
 
-        # Diagnostic questions
-        qs = item.get("diagnostic_questions", [])
-        if qs:
-            lines.append("")
-            lines.append("Diagnostic questions:")
-            for q in qs:
-                lines.append(f"  - {q}")
+    # Secondary item arrays (e.g. principles, compositional_principles)
+    for sec_key, sec_items in critic.secondary_items.items():
+        heading = sec_key.replace("_", " ").title()
+        lines.append(f"## {heading}")
+        lines.append("")
+        # Detect the id field for this array
+        sec_id_field = "id"
+        if sec_items:
+            for idf in _ID_FIELDS:
+                if idf in sec_items[0]:
+                    sec_id_field = idf
+                    break
+        for item in sec_items:
+            lines.extend(_format_item_block(item, sec_id_field))
 
-        # Indicators (handle varying structures)
-        indicators = item.get("indicators", {})
-        if indicators:
-            lines.append("")
-            lines.append("Indicators:")
-            for cat, items_list in indicators.items():
-                lines.append(f"  {cat}:")
-                if isinstance(items_list, list):
-                    for ind in items_list:
-                        lines.append(f"    - {ind}")
-                else:
-                    lines.append(f"    {items_list}")
-
+    # Tensions
+    if critic.tensions:
+        lines.append("## Internal Tensions")
+        for t in critic.tensions:
+            lines.append(f"- **{t.get('label', '')}**: {t.get('description', '')}")
         lines.append("")
 
     # Anti-goals

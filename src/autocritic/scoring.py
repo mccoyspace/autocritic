@@ -126,8 +126,15 @@ def build_scoring_prompt_section(critic: CriticCard) -> str:
         "Score these axes:",
     ])
 
-    for item in critic.items:
-        item_id = item.get(critic.item_id_field, "unknown")
+    # Score all items: primary + secondary
+    all_items = critic.all_items
+    for item in all_items:
+        # Find the appropriate id field for this item
+        item_id = "unknown"
+        for idf in ("criterion_id", "concept_id", "element_id", "impulse_id", "principle_id", "dimension_id", "id"):
+            if idf in item:
+                item_id = item[idf]
+                break
         label = item.get("label", item_id)
         if bipolar:
             pole_a = item.get("indicators", {}).get("pole_a", [""])[0] if item.get("indicators") else ""
@@ -199,11 +206,13 @@ def parse_axis_scores(
     if not isinstance(scores_data, list):
         return []
 
-    # Build label lookup from critic card
+    # Build label lookup from all items (primary + secondary)
     label_map = {}
-    for item in critic.items:
-        item_id = item.get(critic.item_id_field, "unknown")
-        label_map[item_id] = item.get("label", item_id)
+    for item in critic.all_items:
+        for idf in ("criterion_id", "concept_id", "element_id", "impulse_id", "principle_id", "dimension_id", "id"):
+            if idf in item:
+                label_map[item[idf]] = item.get("label", item[idf])
+                break
 
     scores = []
     for entry in scores_data:

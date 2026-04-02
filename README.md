@@ -135,13 +135,13 @@ python3 -m autocritic report runs/rewriter_1774718482/
 | `dow` | Arthur Wesley Dow | *Composition* | 3 elements + 5 principles (unipolar) |
 | `gombrich` | Ernst Gombrich | *The Sense of Order* | 4 core concepts (unipolar) |
 | `hildebrand` | Adolf Hildebrand | *The Problem of Form* | 5 core concepts (unipolar) |
-| `kandinsky` | Wassily Kandinsky | *Point and Line to Plane* | 3 elements + 4 principles (bipolar) |
+| `kandinsky` | Wassily Kandinsky | *Point and Line to Plane* | 3 elements + 4 principles (unipolar) |
 | `klee` | Paul Klee | *Pedagogical Sketchbook* | 5 core concepts (unipolar) |
 | `ruskin` | John Ruskin | *The Elements of Drawing* | 5 core concepts (unipolar) |
 | `wolfflin` | Heinrich Wölfflin | *Principles of Art History* | 5 criteria (bipolar) |
-| `worringer` | Wilhelm Worringer | *Abstraction and Empathy* | 2 impulses + 3 dimensions (bipolar) |
+| `worringer` | Wilhelm Worringer | *Abstraction and Empathy* | 2 impulses + 3 dimensions (unipolar) |
 
-**Bipolar** critics (Wölfflin, Kandinsky, Worringer) score on a -1 to +1 spectrum between two poles — neither pole is superior. **Unipolar** critics score 0 to 1 on presence/strength of each concept.
+**Bipolar** critics (Wölfflin) score on a -1 to +1 spectrum between two poles — neither pole is superior. **Unipolar** critics score 0 to 1 on presence/strength of each concept. Cards can declare `"scoring_mode": "bipolar"` explicitly; otherwise the mode is inferred from indicator structure (`pole_a`/`pole_b`).
 
 ## Authoring new critics
 

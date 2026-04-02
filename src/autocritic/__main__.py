@@ -68,7 +68,7 @@ def _resolve_critic(name: str) -> Path:
 def cmd_critique(args: argparse.Namespace) -> None:
     """Critique a single image — no generator needed."""
     from autocritic.critic import load_critic
-    from autocritic.scoring import score_critique
+    from autocritic.scoring import ScoreParseError, score_critique
 
     card_path = _resolve_critic(args.critic)
     image_path = Path(args.image)
@@ -80,7 +80,11 @@ def cmd_critique(args: argparse.Namespace) -> None:
     print(f"Critiquing {image_path.name} through {critic.label}...")
     print(f"Model: {args.model}\n")
 
-    scored = score_critique(critic, image_path, model=args.model, intent=args.intent)
+    try:
+        scored = score_critique(critic, image_path, model=args.model, intent=args.intent)
+    except ScoreParseError as e:
+        print(f"Error: could not parse axis scores from model response: {e}")
+        sys.exit(1)
 
     print(f"Composite score: {scored.composite_score:.3f}\n")
     print("Axis scores:")

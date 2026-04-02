@@ -21,11 +21,36 @@ class ScoreParseError(Exception):
 from autocritic.critic import (
     CriticCard,
     CritiqueResult,
+    _ID_FIELDS,
     _build_system_prompt,
     _extract_bullet_list,
     _extract_criterion_notes,
     _parse_critique,
 )
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+_ID_FIELD_CANDIDATES = tuple(_ID_FIELDS) + ("id",)
+
+
+def _get_item_id(item: dict[str, Any]) -> str:
+    """Return the ID value from an item dict, checking known ID fields."""
+    for idf in _ID_FIELD_CANDIDATES:
+        if idf in item:
+            return item[idf]
+    return "unknown"
+
+
+def _expected_axis_ids(critic: CriticCard) -> dict[str, str]:
+    """Build {axis_id: label} for all expected axes in a critic card."""
+    mapping: dict[str, str] = {}
+    for item in critic.all_items:
+        axis_id = _get_item_id(item)
+        mapping[axis_id] = item.get("label", axis_id)
+    return mapping
 
 
 # ---------------------------------------------------------------------------
@@ -131,14 +156,8 @@ def build_scoring_prompt_section(critic: CriticCard) -> str:
     ])
 
     # Score all items: primary + secondary
-    all_items = critic.all_items
-    for item in all_items:
-        # Find the appropriate id field for this item
-        item_id = "unknown"
-        for idf in ("criterion_id", "concept_id", "element_id", "impulse_id", "principle_id", "dimension_id", "id"):
-            if idf in item:
-                item_id = item[idf]
-                break
+    for item in critic.all_items:
+        item_id = _get_item_id(item)
         label = item.get("label", item_id)
         if bipolar:
             pole_a = item.get("indicators", {}).get("pole_a", [""])[0] if item.get("indicators") else ""
@@ -207,23 +226,35 @@ def parse_axis_scores(
             f"Expected 'axis_scores' to be a list, got {type(scores_data).__name__}"
         )
 
-    # Build label lookup from all items (primary + secondary)
-    label_map = {}
-    for item in critic.all_items:
-        for idf in ("criterion_id", "concept_id", "element_id", "impulse_id", "principle_id", "dimension_id", "id"):
-            if idf in item:
-                label_map[item[idf]] = item.get("label", item[idf])
-                break
+    # Build expected axis set from critic card
+    expected = _expected_axis_ids(critic)
 
+    # Parse returned scores, checking for unknown and duplicate IDs
     scores = []
+    seen_ids: set[str] = set()
     for entry in scores_data:
         axis_id = entry.get("axis_id", "")
+        if axis_id in seen_ids:
+            raise ScoreParseError(f"Duplicate axis_id in response: '{axis_id}'")
+        seen_ids.add(axis_id)
+        if axis_id not in expected:
+            raise ScoreParseError(
+                f"Unknown axis_id '{axis_id}' — expected one of: {sorted(expected.keys())}"
+            )
         scores.append(AxisScore(
             axis_id=axis_id,
-            label=label_map.get(axis_id, axis_id),
+            label=expected.get(axis_id, axis_id),
             score=float(entry.get("score", 0.0)),
             reasoning=str(entry.get("reasoning", "")),
         ))
+
+    # Check for missing axes
+    missing = set(expected.keys()) - seen_ids
+    if missing:
+        raise ScoreParseError(
+            f"Missing axis scores: {sorted(missing)} "
+            f"(got {len(scores)}/{len(expected)})"
+        )
 
     return scores
 

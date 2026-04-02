@@ -106,11 +106,11 @@ Strongly linear.
 ```json
 {
   "axis_scores": [
-    {"axis_id": "linear_vs_painterly", "score": -0.7, "reasoning": "Strong contours, no tonal merging"},
-    {"axis_id": "plane_vs_recession", "score": -0.3, "reasoning": "Mostly planar arrangement"},
-    {"axis_id": "closed_vs_open_form", "score": 0.4, "reasoning": "Some elements extend past frame"},
-    {"axis_id": "multiplicity_vs_unity", "score": 0.2, "reasoning": "Slight unity tendency"},
-    {"axis_id": "absolute_vs_relative_clarity", "score": -0.5, "reasoning": "Forms clearly presented"}
+    {"axis_id": "linear_painterly", "score": -0.7, "reasoning": "Strong contours, no tonal merging"},
+    {"axis_id": "plane_recession", "score": -0.3, "reasoning": "Mostly planar arrangement"},
+    {"axis_id": "closed_open", "score": 0.4, "reasoning": "Some elements extend past frame"},
+    {"axis_id": "multiplicity_unity", "score": 0.2, "reasoning": "Slight unity tendency"},
+    {"axis_id": "clearness_unclearness", "score": -0.5, "reasoning": "Forms clearly presented"}
   ]
 }
 ```
@@ -122,7 +122,7 @@ class TestParseAxisScores:
         c = load_critic(CRITICS_DIR / "wolfflin.json")
         scores = parse_axis_scores(SAMPLE_RESPONSE_WITH_SCORES, c)
         assert len(scores) == 5
-        assert scores[0].axis_id == "linear_vs_painterly"
+        assert scores[0].axis_id == "linear_painterly"
         assert scores[0].score == -0.7
 
     def test_scores_have_reasoning(self):
@@ -139,6 +139,30 @@ class TestParseAxisScores:
         c = load_critic(CRITICS_DIR / "wolfflin.json")
         with pytest.raises(ScoreParseError, match="Invalid JSON"):
             parse_axis_scores("```json\n{broken\n```", c)
+
+    def test_missing_axes_raises(self):
+        """Incomplete axis set should raise, not silently average a subset."""
+        c = load_critic(CRITICS_DIR / "wolfflin.json")
+        partial = '```json\n{"axis_scores": [{"axis_id": "linear_painterly", "score": 1.0, "reasoning": "x"}]}\n```'
+        with pytest.raises(ScoreParseError, match="Missing axis scores"):
+            parse_axis_scores(partial, c)
+
+    def test_unknown_axis_id_raises(self):
+        c = load_critic(CRITICS_DIR / "wolfflin.json")
+        bad_id = '```json\n{"axis_scores": [{"axis_id": "made_up", "score": 0.5, "reasoning": "x"}]}\n```'
+        with pytest.raises(ScoreParseError, match="Unknown axis_id"):
+            parse_axis_scores(bad_id, c)
+
+    def test_duplicate_axis_id_raises(self):
+        c = load_critic(CRITICS_DIR / "wolfflin.json")
+        duped = (
+            '```json\n{"axis_scores": ['
+            '{"axis_id": "linear_painterly", "score": 0.5, "reasoning": "x"},'
+            '{"axis_id": "linear_painterly", "score": 0.3, "reasoning": "y"}'
+            ']}\n```'
+        )
+        with pytest.raises(ScoreParseError, match="Duplicate"):
+            parse_axis_scores(duped, c)
 
 
 # ---------------------------------------------------------------------------

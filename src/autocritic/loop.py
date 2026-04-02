@@ -17,7 +17,7 @@ from collections.abc import Callable
 from typing import Any
 
 from autocritic.critic import CriticCard, load_critic
-from autocritic.scoring import ScoredCritique, compare_scores, is_bipolar, score_critique
+from autocritic.scoring import ScoreParseError, ScoredCritique, compare_scores, is_bipolar, score_critique
 from autocritic.translator import (
     ParamSpace,
     TranslationResult,
@@ -213,11 +213,28 @@ def run_loop(
 
         # 2. Score critique (one LLM vision call)
         print(f"  Critiquing via {critic.critic_id} ({config.model})...")
-        scored = score_critique(
-            critic, image_path,
-            model=config.model,
-            intent=config.intent,
-        )
+        try:
+            scored = score_critique(
+                critic, image_path,
+                model=config.model,
+                intent=config.intent,
+            )
+        except ScoreParseError as e:
+            print(f"  Warning: score parse failed: {e}")
+            print(f"  Skipping this iteration.")
+            parse_errors += 1
+            consecutive_rejections += 1
+            record = IterationRecord(
+                iteration=i,
+                params=dict(params),
+                image_path=str(image_path),
+                composite_score=0.0,
+                accepted=False,
+                lens_summary=f"Score parse error: {e}",
+            )
+            iterations.append(record)
+            _save_iteration(run_dir, record)
+            continue
         print(f"  Composite score: {scored.composite_score:.3f}")
         for s in scored.axis_scores:
             print(f"    {s.label}: {s.score:.2f} — {s.reasoning[:60]}")

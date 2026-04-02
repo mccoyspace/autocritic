@@ -89,6 +89,14 @@
       "items": {
         "type": "object",
         "required": ["label", "definition"],
+        "anyOf": [
+          { "required": ["criterion_id"] },
+          { "required": ["concept_id"] },
+          { "required": ["element_id"] },
+          { "required": ["impulse_id"] },
+          { "required": ["principle_id"] },
+          { "required": ["dimension_id"] }
+        ],
         "properties": {
           "label": {
             "type": "string",
@@ -99,6 +107,12 @@
             "minLength": 20,
             "description": "What this item assesses, in the theorist's own terms."
           },
+          "criterion_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "concept_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "element_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "impulse_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "principle_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "dimension_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
           "diagnostic_questions": {
             "type": "array",
             "items": { "type": "string" },

@@ -130,10 +130,10 @@ python3 -m autocritic report runs/rewriter_1774718482/
 
 | Card | Theorist | Book | Type |
 |------|----------|------|------|
-| `albers` | Josef Albers | *Interaction of Color* | 4 core concepts (unipolar) |
+| `albers` | Josef Albers | *Interaction of Color* | 5 core concepts (unipolar) |
 | `arnheim` | Rudolf Arnheim | *Art and Visual Perception* | 4 principles (unipolar) |
 | `dow` | Arthur Wesley Dow | *Composition* | 3 elements + 5 principles (unipolar) |
-| `gombrich` | Ernst Gombrich | *The Sense of Order* | 4 core concepts (unipolar) |
+| `gombrich` | Ernst Gombrich | *The Sense of Order* | 5 core concepts (unipolar) |
 | `hildebrand` | Adolf Hildebrand | *The Problem of Form* | 5 core concepts (unipolar) |
 | `kandinsky` | Wassily Kandinsky | *Point and Line to Plane* | 3 elements + 4 principles (unipolar) |
 | `klee` | Paul Klee | *Pedagogical Sketchbook* | 5 core concepts (unipolar) |

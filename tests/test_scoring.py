@@ -164,6 +164,35 @@ class TestParseAxisScores:
         with pytest.raises(ScoreParseError, match="Duplicate"):
             parse_axis_scores(duped, c)
 
+    def test_bipolar_score_out_of_range_raises(self):
+        """Bipolar scores outside [-1, 1] should be rejected."""
+        c = load_critic(CRITICS_DIR / "wolfflin.json")
+        oob = (
+            '```json\n{"axis_scores": ['
+            '{"axis_id": "linear_painterly", "score": 2.0, "reasoning": "x"},'
+            '{"axis_id": "plane_recession", "score": 0.5, "reasoning": "x"},'
+            '{"axis_id": "closed_open", "score": 0.5, "reasoning": "x"},'
+            '{"axis_id": "multiplicity_unity", "score": 0.5, "reasoning": "x"},'
+            '{"axis_id": "clearness_unclearness", "score": 0.5, "reasoning": "x"}'
+            ']}\n```'
+        )
+        with pytest.raises(ScoreParseError, match="out of range"):
+            parse_axis_scores(oob, c)
+
+    def test_unipolar_negative_score_raises(self):
+        """Unipolar scores outside [0, 1] should be rejected."""
+        c = load_critic(CRITICS_DIR / "arnheim.json")
+        # Get actual axis IDs from the card
+        from autocritic.scoring import _get_item_id
+        ids = [_get_item_id(item) for item in c.all_items]
+        entries = ", ".join(
+            f'{{"axis_id": "{aid}", "score": {-0.5 if i == 0 else 0.5}, "reasoning": "x"}}'
+            for i, aid in enumerate(ids)
+        )
+        oob = f'```json\n{{"axis_scores": [{entries}]}}\n```'
+        with pytest.raises(ScoreParseError, match="out of range"):
+            parse_axis_scores(oob, c)
+
 
 # ---------------------------------------------------------------------------
 # Composite score
@@ -189,10 +218,11 @@ class TestCompositeScore:
     def test_empty_returns_zero(self):
         assert compute_composite_score([], bipolar=True) == 0.0
 
-    def test_unipolar_clamps(self):
-        scores = [AxisScore("a", "A", 1.5, "")]
+    def test_unipolar_boundary_values(self):
+        """Scores at boundary (0.0 and 1.0) are valid; out-of-range is caught at parse time."""
+        scores = [AxisScore("a", "A", 1.0, ""), AxisScore("b", "B", 0.0, "")]
         composite = compute_composite_score(scores, bipolar=False)
-        assert composite == 1.0
+        assert composite == 0.5
 
 
 # ---------------------------------------------------------------------------

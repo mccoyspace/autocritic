@@ -291,7 +291,10 @@ def run_loop(
         )
 
         # 4. Check stopping conditions
-        if scored.composite_score > 0.9:
+        # high_score is only meaningful for unipolar critics where composite
+        # represents quality. For bipolar critics, composite measures pole
+        # commitment — a high value is not a reason to stop.
+        if not bipolar and scored.composite_score > 0.9:
             record.deltas = {}
             iterations.append(record)
             _save_iteration(run_dir, record)
@@ -378,6 +381,11 @@ def run_loop(
     # Save trajectory
     _save_trajectory(run_dir, iterations)
 
+    # For bipolar critics, "best by composite" is meaningless since
+    # composite measures pole commitment, not quality. Return the
+    # terminal accepted params instead.
+    final_params = accepted_params if bipolar else best_params
+
     # Save final summary
     summary = {
         "run_id": run_id,
@@ -386,7 +394,7 @@ def run_loop(
         "best_iteration": best_iteration,
         "best_score": best_score,
         "parse_errors": parse_errors,
-        "final_params": best_params,
+        "final_params": final_params,
         "score_progression": [r.composite_score for r in iterations],
     }
     (run_dir / "summary.json").write_text(json.dumps(summary, indent=2))
@@ -402,16 +410,19 @@ def run_loop(
 
     print(f"\n{'='*60}")
     print(f"Loop complete: {stop_reason}")
-    print(f"Best score: {best_score:.3f} at iteration {best_iteration}")
+    if bipolar:
+        print(f"Highest pole commitment: {best_score:.3f} at iteration {best_iteration}")
+    else:
+        print(f"Best score: {best_score:.3f} at iteration {best_iteration}")
     if parse_errors:
-        print(f"Translation parse errors: {parse_errors}")
+        print(f"Parse errors: {parse_errors}")
     print(f"Artifacts: {run_dir}")
     print(f"{'='*60}")
 
     return LoopResult(
         run_id=run_id,
         iterations=iterations,
-        final_params=best_params,
+        final_params=final_params,
         best_iteration=best_iteration,
         best_score=best_score,
         output_dir=run_dir,

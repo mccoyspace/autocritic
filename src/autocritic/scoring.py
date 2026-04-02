@@ -228,6 +228,7 @@ def parse_axis_scores(
 
     # Build expected axis set from critic card
     expected = _expected_axis_ids(critic)
+    bipolar = is_bipolar(critic)
 
     # Parse returned scores, checking for unknown and duplicate IDs
     scores = []
@@ -241,10 +242,21 @@ def parse_axis_scores(
             raise ScoreParseError(
                 f"Unknown axis_id '{axis_id}' — expected one of: {sorted(expected.keys())}"
             )
+        score = float(entry.get("score", 0.0))
+        if bipolar and not (-1.0 <= score <= 1.0):
+            raise ScoreParseError(
+                f"Bipolar score out of range for '{axis_id}': {score} "
+                f"(must be -1.0 to 1.0)"
+            )
+        if not bipolar and not (0.0 <= score <= 1.0):
+            raise ScoreParseError(
+                f"Unipolar score out of range for '{axis_id}': {score} "
+                f"(must be 0.0 to 1.0)"
+            )
         scores.append(AxisScore(
             axis_id=axis_id,
             label=expected.get(axis_id, axis_id),
-            score=float(entry.get("score", 0.0)),
+            score=score,
             reasoning=str(entry.get("reasoning", "")),
         ))
 
@@ -265,18 +277,19 @@ def compute_composite_score(
 ) -> float:
     """Compute a 0-1 composite score from axis scores.
 
-    For bipolar axes: abs(score) measures commitment to either pole.
+    For bipolar axes: abs(score) measures pole commitment, not quality.
     For unipolar axes: score is already 0-1.
+
+    Score ranges are enforced at parse time, so values are guaranteed
+    to be in [-1, 1] (bipolar) or [0, 1] (unipolar).
     """
     if not axis_scores:
         return 0.0
 
-    values = []
-    for s in axis_scores:
-        if bipolar:
-            values.append(abs(s.score))
-        else:
-            values.append(max(0.0, min(1.0, s.score)))
+    if bipolar:
+        values = [abs(s.score) for s in axis_scores]
+    else:
+        values = [s.score for s in axis_scores]
 
     return sum(values) / len(values)
 

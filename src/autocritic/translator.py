@@ -74,6 +74,17 @@ class ParamSpace:
 
 
 # ---------------------------------------------------------------------------
+# Exceptions
+# ---------------------------------------------------------------------------
+
+class TranslationParseError(ValueError):
+    """Raised when the translator response cannot be parsed."""
+    def __init__(self, message: str, raw_text: str):
+        super().__init__(message)
+        self.raw_text = raw_text
+
+
+# ---------------------------------------------------------------------------
 # Translation result
 # ---------------------------------------------------------------------------
 
@@ -215,13 +226,6 @@ def translate_critique_to_params(
         reasoning=reasoning,
         raw_text=raw,
     )
-
-
-class TranslationParseError(ValueError):
-    """Raised when the translator response cannot be parsed."""
-    def __init__(self, message: str, raw_text: str):
-        super().__init__(message)
-        self.raw_text = raw_text
 
 
 def _parse_translation(raw: str) -> tuple[dict[str, Any], str]:

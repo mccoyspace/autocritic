@@ -47,7 +47,13 @@ class IterationRecord:
 
 @dataclass
 class LoopConfig:
-    """Configuration for an improvement loop run."""
+    """Configuration for an improvement loop run.
+
+    Note: ``min_improvement`` and ``max_consecutive_rejections`` only
+    apply to unipolar critics.  Bipolar critics accept all iterations
+    (pole movement is not monotonic improvement) and converge via
+    plateau detection or ``max_iterations``.
+    """
     critic_card_path: Path
     model: str = "claude-sonnet-4-20250514"
     max_iterations: int = 10
@@ -188,6 +194,7 @@ def run_loop(
     accepted_score = -1.0
     accepted_params = dict(params)
     consecutive_rejections = 0
+    parse_errors = 0
     last_deltas: dict[str, Any] = {}
     stop_reason = "max_iterations"
 
@@ -284,29 +291,30 @@ def run_loop(
                 print(f"  Plateaued — stopping")
                 break
 
-        # 5. Handle rejections
-        if not accepted and consecutive_rejections >= config.max_consecutive_rejections:
-            # Revert to best and get fresh deltas
-            print(f"  Max rejections reached — reverting to best (iter {best_iteration})")
-            params = dict(best_params)
-            consecutive_rejections = 0
-            last_deltas = {}
-            # Fall through to translation with reverted params
-        elif not accepted and last_deltas:
-            # Halve the previous deltas and revert
-            print(f"  Reverting and halving deltas")
-            params = dict(accepted_params)
-            # Don't translate again — just retry with dampened deltas
-            dampened = apply_deltas(
-                params, last_deltas, param_space,
-                damping=config.damping * 0.5,
-            )
-            record.deltas = last_deltas
-            record.delta_reasoning = "Halved previous deltas after rejection"
-            iterations.append(record)
-            _save_iteration(run_dir, record)
-            params = dampened
-            continue
+        # 5. Handle rejections (unipolar only — bipolar critics accept all)
+        if not bipolar:
+            if not accepted and consecutive_rejections >= config.max_consecutive_rejections:
+                # Revert to best and get fresh deltas
+                print(f"  Max rejections reached — reverting to best (iter {best_iteration})")
+                params = dict(best_params)
+                consecutive_rejections = 0
+                last_deltas = {}
+                # Fall through to translation with reverted params
+            elif not accepted and last_deltas:
+                # Halve the previous deltas and revert
+                print(f"  Reverting and halving deltas")
+                params = dict(accepted_params)
+                # Don't translate again — just retry with dampened deltas
+                dampened = apply_deltas(
+                    params, last_deltas, param_space,
+                    damping=config.damping * 0.5,
+                )
+                record.deltas = last_deltas
+                record.delta_reasoning = "Halved previous deltas after rejection"
+                iterations.append(record)
+                _save_iteration(run_dir, record)
+                params = dampened
+                continue
 
         # 6. Translate critique to parameter changes (one LLM text call)
         if i < config.max_iterations - 1:  # skip translation on last iteration
@@ -322,6 +330,8 @@ def run_loop(
             except TranslationParseError as e:
                 print(f"  Warning: translation parse failed: {e}")
                 print(f"  Skipping parameter update this iteration.")
+                parse_errors += 1
+                consecutive_rejections += 1
                 record.deltas = {}
                 record.delta_reasoning = f"Parse error: {e}"
                 iterations.append(record)
@@ -356,6 +366,7 @@ def run_loop(
         "total_iterations": len(iterations),
         "best_iteration": best_iteration,
         "best_score": best_score,
+        "parse_errors": parse_errors,
         "final_params": best_params,
         "score_progression": [r.composite_score for r in iterations],
     }
@@ -373,6 +384,8 @@ def run_loop(
     print(f"\n{'='*60}")
     print(f"Loop complete: {stop_reason}")
     print(f"Best score: {best_score:.3f} at iteration {best_iteration}")
+    if parse_errors:
+        print(f"Translation parse errors: {parse_errors}")
     print(f"Artifacts: {run_dir}")
     print(f"{'='*60}")
 

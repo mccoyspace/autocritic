@@ -119,6 +119,86 @@ EXPECTATIONS: list[CritiqueExpectation] = [
         description="Pattern with intentional variation. "
                     "Should note effective monotony/variety balance.",
     ),
+    # Albers: color interaction
+    CritiqueExpectation(
+        critic_id="albers",
+        image_name="simultaneous_contrast",
+        expected_terms=["simultaneous contrast", "ground", "relativity", "boundary"],
+        description="Same gray on two different grounds — should identify "
+                    "simultaneous contrast, the subtraction principle, and "
+                    "context-dependent color perception.",
+    ),
+    CritiqueExpectation(
+        critic_id="albers",
+        image_name="color_no_interaction",
+        expected_terms=["isolated", "interact", "context", "separated"],
+        description="Isolated color swatches on white with no adjacency. "
+                    "Should note the absence of color interaction.",
+    ),
+
+    # Klee: movement and energy
+    CritiqueExpectation(
+        critic_id="klee",
+        image_name="active_line_walk",
+        expected_terms=["active", "movement", "arrow", "energy"],
+        description="Wandering line, arrow, spiral, pendulum. "
+                    "Should read active line, genesis, directed energy.",
+    ),
+    CritiqueExpectation(
+        critic_id="klee",
+        image_name="passive_static_grid",
+        expected_terms=["passive", "static", "symmetry", "repetition"],
+        description="Rigid grid with points at rest. "
+                    "Should note passive line, dead symmetry, no movement.",
+    ),
+
+    # Ruskin: gradation and mystery
+    CritiqueExpectation(
+        critic_id="ruskin",
+        image_name="continuous_gradation",
+        expected_terms=["gradation", "roundness", "mystery", "delicacy"],
+        description="Soft radial gradation, no outlines, partial visibility. "
+                    "Should identify continuous gradation and mystery.",
+    ),
+    CritiqueExpectation(
+        critic_id="ruskin",
+        image_name="flat_outlined_shapes",
+        expected_terms=["outline", "flat", "gradation", "absent"],
+        description="Flat-filled shapes with hard outlines. "
+                    "Should diagnose absence of gradation and mystery.",
+    ),
+
+    # Hildebrand: spatial unity
+    CritiqueExpectation(
+        critic_id="hildebrand",
+        image_name="coherent_relief",
+        expected_terms=["relief", "plane", "spatial", "depth"],
+        description="Clear front-to-back layered relief. "
+                    "Should praise plane unity and coherent visual projection.",
+    ),
+    CritiqueExpectation(
+        critic_id="hildebrand",
+        image_name="spatial_chaos",
+        expected_terms=["no coherent", "undeveloped", "plane", "spatial"],
+        description="Contradictory depth cues, piercing diagonal. "
+                    "Should diagnose failure of spatial unity.",
+    ),
+
+    # Worringer: empathy vs abstraction
+    CritiqueExpectation(
+        critic_id="worringer",
+        image_name="organic_empathy",
+        expected_terms=["empathy", "organic", "vitality", "depth"],
+        description="Organic curvilinear forms with spatial depth. "
+                    "Should identify the empathy impulse.",
+    ),
+    CritiqueExpectation(
+        critic_id="worringer",
+        image_name="crystalline_abstraction",
+        expected_terms=["abstraction", "geometric", "planar", "crystalline"],
+        description="Rigid hexagonal tessellation, flat plane. "
+                    "Should identify the abstraction impulse.",
+    ),
 ]
 
 # Quick lookup by (critic_id, image_name)

@@ -287,9 +287,12 @@ class TestRubricData:
                 f"{exp.critic_id}/{exp.image_name}: needs at least 3 expected terms"
             )
 
-    def test_expectations_cover_five_critics(self):
+    def test_expectations_cover_all_critics(self):
         critics = set(e.critic_id for e in EXPECTATIONS)
-        assert critics == {"wolfflin", "dow", "kandinsky", "arnheim", "gombrich"}
+        assert critics == {
+            "wolfflin", "dow", "kandinsky", "arnheim", "gombrich",
+            "albers", "klee", "ruskin", "hildebrand", "worringer",
+        }
 
     def test_each_critic_has_two_images(self):
         from collections import Counter

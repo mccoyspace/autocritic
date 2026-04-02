@@ -1,8 +1,8 @@
 # autocritic
 
-Critic-card-driven image evaluation using art theory and multimodal LLMs.
+Critic-card-driven image evaluation using historical art theory and multimodal LLMs.
 
-Load a **critic card** distilled from an art theory book. The critic evaluates images through that theorist's lens, producing structured qualitative feedback with numeric scores. An optional **improvement loop** feeds critiques back into a generative system, steering parameter changes through LLM-driven translation — no hardcoded mapping tables.
+Load a **critic card** distilled from a given art theory book. The critic evaluates images through that theorist's lens, producing structured qualitative feedback with numeric scores. An optional **improvement loop** feeds critiques back into a generative system, steering parameter changes through LLM-driven translation — no hardcoded mapping tables.
 
 ## How it works
 
@@ -14,7 +14,7 @@ Load a **critic card** distilled from an art theory book. The critic evaluates i
                     │  ─ indicators│
                     └──────┬───────┘
                            │
-    ┌─────────┐    ┌───────▼───────┐    ┌──────────────┐
+    ┌─────────┐    ┌───────▼───────┐    ┌───────────────┐
     │  Image  │───▶│  LLM Vision   │───▶│ ScoredCritique│
     └─────────┘    │  (critique)   │    │ ─ axis scores │
                    └───────────────┘    │ ─ directives  │
@@ -187,4 +187,4 @@ tests/               # Test suite
 
 MIT. See [LICENSE](LICENSE).
 
-The critic cards in `critics/` are derived from published art theory texts. The cards contain original analysis and selected citations under fair use. The source texts themselves are not included in this repository.
+The critic cards in `critics/` are derived from published art history and theory texts. The cards contain original analysis and selected citations under fair use. The source texts themselves are not included in this repository.

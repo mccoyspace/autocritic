@@ -399,11 +399,12 @@ def _parse_critique(raw: str) -> dict[str, Any]:
 
 
 def _extract_bullet_list(text: str) -> list[str]:
-    """Extract bullet points from a section of text.
+    """Extract items from a section of text.
 
-    Only recognises explicit bullet markers (-, *, •, →, or numbered
-    like ``1.``).  Prose lines without markers are ignored — callers
-    handle the empty-list case rather than receiving noisy data.
+    Tries explicit bullet markers first (-, *, •, →, or numbered like
+    ``1.``).  If none are found, falls back to treating non-empty
+    paragraphs as individual items — this handles LLMs that write prose
+    paragraphs under section headers instead of bullet lists.
     """
     items = []
     for line in text.split("\n"):
@@ -413,7 +414,19 @@ def _extract_bullet_list(text: str) -> list[str]:
         elif len(stripped) > 3 and stripped[0].isdigit() and ". " in stripped[:5]:
             # Numbered list items like "1. Do this"
             items.append(stripped.split(". ", 1)[1].strip())
-    return items
+    if items:
+        return items
+
+    # Fallback: treat non-empty paragraphs as items
+    paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
+    # Only use paragraph fallback if we get a reasonable number of items
+    # (a single giant block of text is not a useful list)
+    if 1 < len(paragraphs) <= 20:
+        return paragraphs
+    # Single paragraph: return it as one item if it's substantive
+    if len(paragraphs) == 1 and len(paragraphs[0]) > 20:
+        return paragraphs
+    return []
 
 
 def _extract_criterion_notes(text: str) -> list[dict[str, str]]:

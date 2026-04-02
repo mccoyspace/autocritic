@@ -116,6 +116,33 @@ python3 -m autocritic run --critic arnheim --generator rewriter --model openai:g
 
 Results are saved to `runs/` with a contact sheet and narrative summary.
 
+### Evaluate critic cards
+
+The eval harness measures critic card quality and critique usefulness without manual inspection.
+
+```bash
+# Programmatic checks: structure, vocabulary, ground truth (fast, no API key)
+python3 -m autocritic eval
+
+# Usefulness checks: completeness, lens vocabulary, expected terms, coherence
+# (requires cached fixtures — first run generates them via API)
+python3 -m autocritic eval --suite usefulness --model openai:gpt-5.4
+
+# Re-run usefulness evals against cached fixtures (instant, no API calls)
+python3 -m autocritic eval --suite usefulness
+
+# Regenerate fixtures after changing a critic card
+python3 -m autocritic eval --suite usefulness --refresh --model openai:gpt-5.4
+
+# Run all suites for a single critic
+python3 -m autocritic eval --suite all --critic wolfflin
+
+# Include LLM-as-judge evals (actionability + anti-generic checks)
+python3 -m autocritic eval --suite usefulness --judge --model openai:gpt-5.4
+```
+
+Results are saved as timestamped JSON in `evals/results/`. See `python3 -m autocritic eval --help` for all options.
+
 ### Other commands
 
 ```bash
@@ -124,6 +151,9 @@ python3 -m autocritic validate critics/*.json
 
 # Generate a contact sheet for an existing run
 python3 -m autocritic report runs/rewriter_1774718482/
+
+# List available critic cards
+python3 -m autocritic list
 ```
 
 ## Available critics
@@ -162,15 +192,22 @@ src/autocritic/
 ├── loop.py          # Generate → critique → translate → adjust → repeat
 ├── report.py        # Contact sheets and narrative summaries
 ├── validate.py      # Critic card validation against schema
+├── llm.py           # Multi-provider LLM routing (OpenAI, Anthropic, etc.)
 ├── __main__.py      # CLI entry point
 └── adapters/
     └── rewriter.py  # rewriteDrawer HTTP client and parameter space
 
 critics/             # 10 critic cards (JSON)
 schemas/             # JSON schema and template for authoring
-evals/               # Evaluation harness and ground truth
+evals/
+├── judge.py         # LLM-as-judge and programmatic eval primitives
+├── runner.py        # Eval suite runner and result persistence
+├── usefulness.py    # Usefulness eval suite (fixture-based)
+├── ground_truth/    # Per-theorist ground truth (10 modules)
+├── fixtures/        # Test images and cached critique fixtures
+└── rubrics/         # Eval rubric definitions
 scripts/             # Distillation scripts (book → critic card)
-tests/               # Test suite
+tests/               # 654+ tests (loop, scoring, validation, evals)
 ```
 
 ## Key concepts

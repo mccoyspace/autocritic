@@ -69,10 +69,83 @@ class EvalResult:
 # ---------------------------------------------------------------------------
 
 def _parse_judge_response(raw: str) -> dict[str, Any]:
-    """Extract JSON from an LLM response, handling markdown fences."""
+    """Extract JSON from an LLM response, trying multiple strategies.
+
+    Strategy order:
+    1. Fenced ```json ... ``` block
+    2. Fenced ``` ... ``` block (no language tag)
+    3. First bare JSON object found via brace-matching
+    4. Whole response as JSON
+    """
+    # Strategy 1 & 2: fenced code blocks
     match = re.search(r"```(?:json)?\s*\n(.*?)\n```", raw, re.DOTALL)
-    text = match.group(1) if match else raw
-    return json.loads(text)
+    if match:
+        try:
+            return json.loads(match.group(1))
+        except json.JSONDecodeError:
+            pass
+
+    # Strategy 3: find { ... } objects in the response (try each candidate)
+    search_from = 0
+    while True:
+        start = raw.find("{", search_from)
+        if start == -1:
+            break
+        depth = 0
+        for i in range(start, len(raw)):
+            if raw[i] == "{":
+                depth += 1
+            elif raw[i] == "}":
+                depth -= 1
+                if depth == 0:
+                    try:
+                        return json.loads(raw[start : i + 1])
+                    except json.JSONDecodeError:
+                        pass
+                    break
+        search_from = start + 1
+
+    # Strategy 4: whole response
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        pass
+
+    raise json.JSONDecodeError("No JSON object found in LLM response", raw, 0)
+
+
+def _match_dimension(dim_key: str, rubric_dimensions: list[str]) -> str | None:
+    """Fuzzy-match a dimension key from the LLM response to our rubric dimensions.
+
+    The LLM may return shortened keys like "specificity" instead of
+    "specificity: directives reference visible features, not abstractions".
+    We match on the prefix before the colon, or on substring containment.
+    """
+    dim_lower = dim_key.lower().strip()
+
+    # Exact match first
+    for dim in rubric_dimensions:
+        if dim.lower() == dim_lower:
+            return dim
+
+    # Prefix match: "specificity" matches "specificity: ..."
+    for dim in rubric_dimensions:
+        prefix = dim.split(":")[0].strip().lower()
+        if prefix == dim_lower:
+            return dim
+
+    # Substring containment: dimension key appears in rubric dimension
+    for dim in rubric_dimensions:
+        if dim_lower in dim.lower():
+            return dim
+
+    # Reverse: rubric prefix appears in dimension key
+    for dim in rubric_dimensions:
+        prefix = dim.split(":")[0].strip().lower()
+        if prefix in dim_lower:
+            return dim
+
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -108,15 +181,28 @@ def run_judge(
     )
     failures_block = "\n".join(f"  - {fm}" for fm in failure_modes)
 
+    # Build short keys for the JSON template so the LLM uses them
+    dim_short_keys = [dim.split(":")[0].strip() for dim in rubric_dimensions]
+
+    json_template = json.dumps({
+        "dimensions": {
+            key: {"score": 0, "evidence": "..."}
+            for key in dim_short_keys
+        },
+        "failure_evidence": ["..."],
+        "reasoning": "...",
+    }, indent=2)
+
     system = (
         "You are an evaluation judge for an art-theory critic system. "
         "Your job is to score artifacts against a rubric with precision and evidence. "
         "Be strict. Generic or vague artifacts should score low. "
         "Artifacts that demonstrate specific, grounded knowledge of the theorist should score high.\n\n"
-        "Return ONLY a JSON object with this exact structure:\n"
-        '{"dimensions": {"dimension_name": {"score": N, "evidence": "..."}}, '
-        '"failure_evidence": ["...", "..."], '
-        '"reasoning": "..."}'
+        "You MUST respond with a fenced JSON block and nothing else.\n\n"
+        "```json\n"
+        f"{json_template}\n"
+        "```\n\n"
+        "Replace each score with 0-4 and each evidence with a specific quote or observation."
     )
 
     user = (
@@ -124,19 +210,39 @@ def run_judge(
         f"## Rubric Dimensions\n{dimensions_block}\n\n"
         f"## Known Failure Modes (check for these specifically)\n{failures_block}\n\n"
         f"## Artifact\n{artifact_content}\n\n"
-        f"Score this artifact now. Be specific in your evidence."
+        f"Score this artifact now. Respond ONLY with the JSON block above, filled in."
     )
 
     raw = _call_llm(model, system, user)
-    parsed = _parse_judge_response(raw)
+    try:
+        parsed = _parse_judge_response(raw)
+    except json.JSONDecodeError:
+        # Total parse failure — return a failing result with the raw response
+        return EvalResult(
+            eval_name=eval_name,
+            scores=[DimensionScore(dim, 0, "JSON parse failure") for dim in rubric_dimensions],
+            failure_evidence=[f"Could not parse JSON from LLM response ({len(raw)} chars)"],
+            judge_reasoning=raw[:500],
+            passed=False,
+        )
 
+    # Fuzzy-match dimension keys from the response to our rubric dimensions
+    raw_dims = parsed.get("dimensions", {})
     scores = []
     for dim in rubric_dimensions:
-        dim_data = parsed.get("dimensions", {}).get(dim, {})
+        # Try exact match first, then fuzzy
+        dim_data = raw_dims.get(dim, {})
+        if not dim_data:
+            # Try to find a matching key in the response
+            for resp_key, resp_val in raw_dims.items():
+                matched = _match_dimension(resp_key, [dim])
+                if matched:
+                    dim_data = resp_val
+                    break
         scores.append(DimensionScore(
             dimension=dim,
-            score=min(4, max(0, int(dim_data.get("score", 0)))),
-            evidence=dim_data.get("evidence", "no evidence provided"),
+            score=min(4, max(0, int(dim_data.get("score", 0)))) if isinstance(dim_data, dict) else 0,
+            evidence=dim_data.get("evidence", "no evidence provided") if isinstance(dim_data, dict) else "no evidence provided",
         ))
 
     failure_evidence = parsed.get("failure_evidence", [])
@@ -169,15 +275,28 @@ def run_comparative_judge(
         for i, dim in enumerate(comparison_dimensions)
     )
 
+    # Build short keys for the JSON template
+    dim_short_keys = [dim.split(":")[0].strip() for dim in comparison_dimensions]
+
+    json_template = json.dumps({
+        "dimensions": {
+            key: {"score": 0, "evidence": "..."}
+            for key in dim_short_keys
+        },
+        "failure_evidence": ["..."],
+        "reasoning": "...",
+    }, indent=2)
+
     system = (
         "You are an evaluation judge comparing two artifacts for meaningful "
         "difference. Score how DISTINCT artifact A is from artifact B along "
         "each dimension. High scores mean A says things B could never say. "
         "Low scores mean A could be swapped for B without anyone noticing.\n\n"
-        "Return ONLY a JSON object with this exact structure:\n"
-        '{"dimensions": {"dimension_name": {"score": N, "evidence": "..."}}, '
-        '"failure_evidence": ["...", "..."], '
-        '"reasoning": "..."}'
+        "You MUST respond with a fenced JSON block and nothing else.\n\n"
+        "```json\n"
+        f"{json_template}\n"
+        "```\n\n"
+        "Replace each score with 0-4 and each evidence with a specific quote or observation."
     )
 
     user = (
@@ -185,19 +304,36 @@ def run_comparative_judge(
         f"## Dimensions of Distinction\n{dimensions_block}\n\n"
         f"## Artifact A\n{artifact_a}\n\n"
         f"## Artifact B\n{artifact_b}\n\n"
-        f"Score how distinct A is from B. Be specific."
+        f"Score how distinct A is from B. Respond ONLY with the JSON block above, filled in."
     )
 
     raw = _call_llm(model, system, user)
-    parsed = _parse_judge_response(raw)
+    try:
+        parsed = _parse_judge_response(raw)
+    except json.JSONDecodeError:
+        return EvalResult(
+            eval_name=eval_name,
+            scores=[DimensionScore(dim, 0, "JSON parse failure") for dim in comparison_dimensions],
+            failure_evidence=[f"Could not parse JSON from LLM response ({len(raw)} chars)"],
+            judge_reasoning=raw[:500],
+            passed=False,
+        )
 
+    # Fuzzy-match dimension keys
+    raw_dims = parsed.get("dimensions", {})
     scores = []
     for dim in comparison_dimensions:
-        dim_data = parsed.get("dimensions", {}).get(dim, {})
+        dim_data = raw_dims.get(dim, {})
+        if not dim_data:
+            for resp_key, resp_val in raw_dims.items():
+                matched = _match_dimension(resp_key, [dim])
+                if matched:
+                    dim_data = resp_val
+                    break
         scores.append(DimensionScore(
             dimension=dim,
-            score=min(4, max(0, int(dim_data.get("score", 0)))),
-            evidence=dim_data.get("evidence", "no evidence provided"),
+            score=min(4, max(0, int(dim_data.get("score", 0)))) if isinstance(dim_data, dict) else 0,
+            evidence=dim_data.get("evidence", "no evidence provided") if isinstance(dim_data, dict) else "no evidence provided",
         ))
 
     failure_evidence = parsed.get("failure_evidence", [])

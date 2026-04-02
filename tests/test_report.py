@@ -223,12 +223,9 @@ class TestInferBipolar:
     def test_explicit_flag_false(self):
         assert _infer_bipolar({"bipolar": False}) is False
 
-    def test_legacy_summary_wolfflin_inferred_bipolar(self):
-        """A legacy summary (no bipolar key) for wolfflin should infer True."""
+    def test_legacy_summary_with_critic_id(self):
+        """A legacy summary with critic_id (no bipolar key) should infer from card."""
         assert _infer_bipolar({"critic_id": "wolfflin"}) is True
-
-    def test_legacy_summary_arnheim_inferred_unipolar(self):
-        """A legacy summary (no bipolar key) for arnheim should infer False."""
         assert _infer_bipolar({"critic_id": "arnheim"}) is False
 
     def test_legacy_summary_unknown_critic_defaults_false(self):
@@ -237,22 +234,43 @@ class TestInferBipolar:
     def test_empty_summary_defaults_false(self):
         assert _infer_bipolar({}) is False
 
-    def test_legacy_bipolar_narrative_uses_pole_language(self, tmp_path):
-        """End-to-end: a legacy wolfflin summary without bipolar key should produce bipolar narrative."""
+    def test_falls_back_to_config_json(self, tmp_path):
+        """Real legacy shape: critic_id is only in config.json, not summary.json."""
         run_dir = tmp_path / "legacy_run"
         run_dir.mkdir()
-        # Simulate a pre-bipolar-field summary
+        # summary has no critic_id and no bipolar
+        (run_dir / "summary.json").write_text(json.dumps({"run_id": "test"}))
+        # config.json has the critic_id
+        (run_dir / "config.json").write_text(json.dumps({"critic_id": "wolfflin"}))
+        assert _infer_bipolar({}, run_dir) is True
+
+    def test_config_json_unipolar(self, tmp_path):
+        run_dir = tmp_path / "legacy_run"
+        run_dir.mkdir()
+        (run_dir / "config.json").write_text(json.dumps({"critic_id": "arnheim"}))
+        assert _infer_bipolar({}, run_dir) is False
+
+    def test_no_config_json_defaults_false(self, tmp_path):
+        run_dir = tmp_path / "empty_run"
+        run_dir.mkdir()
+        assert _infer_bipolar({}, run_dir) is False
+
+    def test_end_to_end_legacy_config_only(self, tmp_path):
+        """End-to-end: legacy run with critic_id only in config.json gets bipolar narrative."""
+        run_dir = tmp_path / "legacy_run"
+        run_dir.mkdir()
+        # Summary has NO critic_id and NO bipolar — the real legacy shape
         summary = {
             "run_id": "legacy_wolfflin_123",
             "stop_reason": "max_iterations",
             "total_iterations": 2,
             "best_iteration": 0,
             "best_score": 0.8,
-            # No "bipolar" key — legacy format
-            "critic_id": "wolfflin",
             "score_progression": [0.8, 0.5],
         }
         (run_dir / "summary.json").write_text(json.dumps(summary))
+        # critic_id lives in config.json only
+        (run_dir / "config.json").write_text(json.dumps({"critic_id": "wolfflin"}))
         for i in range(2):
             iter_dir = run_dir / f"iter_{i:03d}"
             iter_dir.mkdir()

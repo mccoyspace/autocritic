@@ -53,21 +53,30 @@ def _load_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
     return ImageFont.load_default()
 
 
-def _infer_bipolar(summary: dict) -> bool:
+def _infer_bipolar(summary: dict, run_dir: Path | None = None) -> bool:
     """Determine whether a run used a bipolar critic.
 
     Reads the explicit ``bipolar`` flag if present (runs after this field
-    was added).  For legacy summaries that lack it, falls back to loading
-    the critic card by ``critic_id``.
+    was added).  For legacy summaries that lack it, resolves ``critic_id``
+    from the summary or from ``config.json`` in the run directory, then
+    loads the critic card to check.
     """
     if "bipolar" in summary:
         return summary["bipolar"]
+    # Resolve critic_id: summary first, then config.json
     critic_id = summary.get("critic_id")
+    if not critic_id and run_dir is not None:
+        config_path = run_dir / "config.json"
+        if config_path.exists():
+            try:
+                config = json.loads(config_path.read_text())
+                critic_id = config.get("critic_id")
+            except Exception:
+                pass
     if critic_id:
         try:
             from autocritic.critic import load_critic
             from autocritic.scoring import is_bipolar
-            # Search bundled critics
             candidates = [
                 Path(__file__).resolve().parent / "critics" / f"{critic_id}.json",
                 Path(f"critics/{critic_id}.json"),
@@ -119,7 +128,7 @@ def build_narrative(run_dir: Path) -> str:
     total = summary.get("total_iterations", 0)
     best_iter = summary.get("best_iteration", 0)
     best_score = summary.get("best_score", 0)
-    bipolar = _infer_bipolar(summary)
+    bipolar = _infer_bipolar(summary, run_dir)
     scores = summary.get("score_progression", [])
 
     # Load critique summaries for each iteration
@@ -230,7 +239,7 @@ def generate_contact_sheet(run_dir: Path, output_path: Path | None = None) -> Pa
     summary = json.loads(summary_path.read_text())
     total = summary.get("total_iterations", 0)
     best_iter = summary.get("best_iteration", 0)
-    bipolar = _infer_bipolar(summary)
+    bipolar = _infer_bipolar(summary, run_dir)
     scores = summary.get("score_progression", [])
 
     if total == 0:

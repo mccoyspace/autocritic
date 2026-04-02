@@ -389,6 +389,7 @@ def run_loop(
     # Save final summary
     summary = {
         "run_id": run_id,
+        "critic_id": critic.critic_id,
         "stop_reason": stop_reason,
         "total_iterations": len(iterations),
         "best_iteration": best_iteration,

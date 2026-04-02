@@ -148,12 +148,12 @@ class TestCheckServer:
 # SVG to PNG (requires cairosvg)
 # ---------------------------------------------------------------------------
 
+cairosvg = pytest.importorskip("cairosvg", reason="cairosvg not installed")
+
+
 class TestSvgToPng:
     def test_converts_minimal_svg(self):
-        try:
-            from autocritic.adapters.rewriter import svg_to_png
-        except ImportError:
-            pytest.skip("cairosvg not installed")
+        from autocritic.adapters.rewriter import svg_to_png
 
         svg = b'<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="black"/></svg>'
         png = svg_to_png(svg, width=64)

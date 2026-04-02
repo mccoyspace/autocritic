@@ -1,6 +1,6 @@
 [project]
 name = "autocritic"
-version = "0.2.0"
+version = "0.2.1"
 description = "Critic-card-driven image evaluation using art theory and multimodal LLMs"
 requires-python = ">=3.11"
 license = "MIT"

@@ -15,8 +15,12 @@ from pathlib import Path
 from typing import Any
 
 
-class ScoreParseError(Exception):
+class ScoreParseError(ValueError):
     """Raised when axis score JSON cannot be parsed from LLM output."""
+
+    def __init__(self, message: str, raw_text: str = ""):
+        super().__init__(message)
+        self.raw_text = raw_text
 
 from autocritic.critic import (
     CriticCard,
@@ -211,19 +215,26 @@ def parse_axis_scores(
     matches = re.findall(pattern, raw_text, re.DOTALL)
 
     if not matches:
-        raise ScoreParseError("No fenced ```json``` block found in LLM response")
+        raise ScoreParseError(
+            "No fenced ```json``` block found in LLM response",
+            raw_text=raw_text,
+        )
 
     # Use the last match (scoring block comes after critique)
     raw_json = matches[-1].strip()
     try:
         data = json.loads(raw_json)
     except json.JSONDecodeError as e:
-        raise ScoreParseError(f"Invalid JSON in axis scores block: {e}") from e
+        raise ScoreParseError(
+            f"Invalid JSON in axis scores block: {e}",
+            raw_text=raw_text,
+        ) from e
 
     scores_data = data.get("axis_scores", [])
     if not isinstance(scores_data, list):
         raise ScoreParseError(
-            f"Expected 'axis_scores' to be a list, got {type(scores_data).__name__}"
+            f"Expected 'axis_scores' to be a list, got {type(scores_data).__name__}",
+            raw_text=raw_text,
         )
 
     # Build expected axis set from critic card
@@ -236,22 +247,28 @@ def parse_axis_scores(
     for entry in scores_data:
         axis_id = entry.get("axis_id", "")
         if axis_id in seen_ids:
-            raise ScoreParseError(f"Duplicate axis_id in response: '{axis_id}'")
+            raise ScoreParseError(
+                f"Duplicate axis_id in response: '{axis_id}'",
+                raw_text=raw_text,
+            )
         seen_ids.add(axis_id)
         if axis_id not in expected:
             raise ScoreParseError(
-                f"Unknown axis_id '{axis_id}' — expected one of: {sorted(expected.keys())}"
+                f"Unknown axis_id '{axis_id}' — expected one of: {sorted(expected.keys())}",
+                raw_text=raw_text,
             )
         score = float(entry.get("score", 0.0))
         if bipolar and not (-1.0 <= score <= 1.0):
             raise ScoreParseError(
                 f"Bipolar score out of range for '{axis_id}': {score} "
-                f"(must be -1.0 to 1.0)"
+                f"(must be -1.0 to 1.0)",
+                raw_text=raw_text,
             )
         if not bipolar and not (0.0 <= score <= 1.0):
             raise ScoreParseError(
                 f"Unipolar score out of range for '{axis_id}': {score} "
-                f"(must be 0.0 to 1.0)"
+                f"(must be 0.0 to 1.0)",
+                raw_text=raw_text,
             )
         scores.append(AxisScore(
             axis_id=axis_id,
@@ -265,7 +282,8 @@ def parse_axis_scores(
     if missing:
         raise ScoreParseError(
             f"Missing axis scores: {sorted(missing)} "
-            f"(got {len(scores)}/{len(expected)})"
+            f"(got {len(scores)}/{len(expected)})",
+            raw_text=raw_text,
         )
 
     return scores

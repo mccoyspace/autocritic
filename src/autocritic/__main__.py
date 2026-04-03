@@ -133,8 +133,6 @@ def cmd_list(args: argparse.Namespace) -> None:
         print("No critic cards found.")
         return
 
-    print(f"{'ID':<14} {'Theorist':<24} {'Book':<36} {'Items'}")
-    print("-" * 90)
     for card_path in cards:
         try:
             critic = load_critic(card_path)
@@ -142,9 +140,22 @@ def cmd_list(args: argparse.Namespace) -> None:
             items_desc = f"{n_total} {critic.items_key}"
             if critic.secondary_items:
                 items_desc += f" (+{', '.join(critic.secondary_items.keys())})"
-            print(f"{critic.critic_id:<14} {critic.theorist:<24} {critic.book:<36} {items_desc}")
+
+            # Truncate thesis to a one-liner
+            thesis = critic.thesis
+            if isinstance(thesis, list):
+                thesis = thesis[0] if thesis else ""
+            if len(thesis) > 100:
+                thesis = thesis[:97] + "..."
+
+            print(f"  {critic.critic_id:<12} {critic.theorist}")
+            print(f"               {critic.book}")
+            print(f"               {thesis}")
+            print(f"               {items_desc}")
+            print()
         except Exception as e:
-            print(f"{card_path.stem:<14} ERROR: {e}")
+            print(f"  {card_path.stem:<12} ERROR: {e}")
+            print()
 
 
 def cmd_eval(args: argparse.Namespace) -> None:
@@ -328,6 +339,10 @@ def _run_stable_diffusion(args: argparse.Namespace, card_path: Path) -> None:
         initial_params["negative_prompt"] = args.negative_prompt
     if args.sd_seed is not None:
         initial_params["seed"] = args.sd_seed
+    if args.sd_width is not None:
+        initial_params["width"] = args.sd_width
+    if args.sd_height is not None:
+        initial_params["height"] = args.sd_height
 
     print(f"Critic: {args.critic}")
     print(f"Model: {args.model}")
@@ -338,8 +353,18 @@ def _run_stable_diffusion(args: argparse.Namespace, card_path: Path) -> None:
     if args.intent:
         print(f"Intent: {args.intent}")
 
+    _first_acquire = True
+
     def acquire(params, output_path):
-        return acquire_image(params, output_path, base_url=base_url)
+        nonlocal _first_acquire
+        gen_params = dict(params)
+        if _first_acquire:
+            # First iteration uses the user's seed (or -1 for random)
+            _first_acquire = False
+        else:
+            # Subsequent iterations always get fresh noise
+            gen_params["seed"] = random.randint(0, 2**32 - 1)
+        return acquire_image(gen_params, output_path, base_url=base_url)
 
     result = run_loop(
         config=config,
@@ -443,6 +468,8 @@ def main() -> None:
     run_parser.add_argument("--prompt", default=None, help="Initial generation prompt (required for SD generator).")
     run_parser.add_argument("--negative-prompt", default=None, help="Negative prompt for SD (terms to avoid).")
     run_parser.add_argument("--sd-seed", type=int, default=None, help="SD random seed (-1 = random).")
+    run_parser.add_argument("--sd-width", type=int, default=None, help="SD image width (default: 512, use 1024 for SDXL).")
+    run_parser.add_argument("--sd-height", type=int, default=None, help="SD image height (default: 512, use 1024 for SDXL).")
     run_parser.set_defaults(func=cmd_run)
 
     # --- eval ---

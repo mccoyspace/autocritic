@@ -117,7 +117,10 @@ def _build_translator_system_prompt() -> str:
         "- Stay within parameter ranges\n"
         "- For numeric parameters, output the NEW target value (not a delta)\n"
         "- For enum parameters, output the new value\n"
-        "- For string parameters, output the complete new string value\n"
+        "- For string parameters, output the complete new string value. "
+        "Prefer targeted edits — keep what is working and add, remove, or "
+        "replace specific terms. Do not rewrite from scratch unless the "
+        "critique indicates a fundamental change in direction\n"
         "- Think step by step about which critique points map to which parameters\n"
         "- If the critique is mostly positive, make small adjustments or none"
     )

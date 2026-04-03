@@ -26,11 +26,13 @@ SD_PARAM_SPACE = ParamSpace(specs=[
     ParamSpec(
         "prompt", "string", (), "",
         "The Stable Diffusion generation prompt. Use natural language to "
-        "describe the desired image. SD supports emphasis syntax: (word:1.3) "
-        "increases weight, (word:0.7) decreases it. Terms earlier in the "
-        "prompt have more influence. Keep the prompt concise — SD has a ~75 "
-        "token effective limit. Replace or restructure terms rather than "
-        "always appending.",
+        "describe the desired image. Long descriptive prompts are fine — "
+        "the server automatically chunks them. SD supports emphasis syntax: "
+        "(word:1.3) increases weight, (word:0.7) decreases it. Terms earlier "
+        "in the prompt have more influence. IMPORTANT: When modifying this "
+        "prompt, keep the existing terms that are working and make targeted "
+        "additions or substitutions. Do not rewrite the entire prompt — "
+        "preserve the base that produced the current image and build on it.",
     ),
     ParamSpec(
         "negative_prompt", "string", (), "",
@@ -84,7 +86,7 @@ DEFAULT_SD_PARAMS = SD_PARAM_SPACE.defaults()
 def _post_json(
     url: str,
     data: dict[str, Any],
-    timeout: float = 120.0,
+    timeout: float = 300.0,
 ) -> dict[str, Any]:
     """POST JSON to a URL and return parsed JSON response."""
     body = json.dumps(data).encode("utf-8")

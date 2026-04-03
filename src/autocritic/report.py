@@ -97,14 +97,25 @@ def _swap_dark_bg(img: Image.Image, threshold: int = 40) -> Image.Image:
     return Image.fromarray(arr)
 
 
-def _thumbnail(img_path: Path, size: tuple[int, int]) -> Image.Image:
-    """Load and resize image to fit within size, centered on white bg."""
+def _thumbnail(
+    img_path: Path,
+    size: tuple[int, int],
+    swap_dark: bool = True,
+) -> Image.Image:
+    """Load and resize image to fit within size, centered on white bg.
+
+    Args:
+        swap_dark: Replace near-black pixels with white. Useful for
+            rewriteDrawer SVG-origin images with black backgrounds,
+            but should be False for photographic/SD images.
+    """
     thumb = Image.new("RGB", size, BG_COLOR)
     try:
         src = Image.open(img_path).convert("RGB")
     except Exception:
         return thumb
-    src = _swap_dark_bg(src)
+    if swap_dark:
+        src = _swap_dark_bg(src)
     src.thumbnail(size, Image.LANCZOS)
     x = (size[0] - src.width) // 2
     y = (size[1] - src.height) // 2
@@ -245,6 +256,17 @@ def generate_contact_sheet(run_dir: Path, output_path: Path | None = None) -> Pa
     if total == 0:
         raise ValueError("No iterations to report")
 
+    # Detect generator — only swap dark bg for rewriter (SVG-origin) images
+    generator = summary.get("run_id", "").split("_")[0]  # e.g. "rewriter" or "stable"
+    config_path = run_dir / "config.json"
+    if config_path.exists():
+        try:
+            config = json.loads(config_path.read_text())
+            generator = config.get("run_id", generator).split("_")[0]
+        except Exception:
+            pass
+    swap_dark = generator == "rewriter"
+
     # Load fonts
     font = _load_font(FONT_SIZE)
     font_small = _load_font(FONT_SIZE_SMALL)
@@ -277,7 +299,7 @@ def generate_contact_sheet(run_dir: Path, output_path: Path | None = None) -> Pa
 
         # Image thumbnail
         iter_img_path = run_dir / f"iter_{i:03d}" / "image.png"
-        thumb = _thumbnail(iter_img_path, (THUMB_W, THUMB_H))
+        thumb = _thumbnail(iter_img_path, (THUMB_W, THUMB_H), swap_dark=swap_dark)
         img.paste(thumb, (x, y))
 
         # Label

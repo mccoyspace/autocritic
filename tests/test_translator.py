@@ -26,21 +26,24 @@ SAMPLE_SPACE = ParamSpace(specs=[
     ParamSpec("speed", "float", (0.0, 10.0), 5.0, "Movement speed"),
     ParamSpec("count", "int", (1, 100), 10, "Number of items"),
     ParamSpec("mode", "enum", ("fast", "slow", "balanced"), "balanced", "Operation mode"),
+    ParamSpec("label", "string", (), "", "Descriptive label"),
 ])
 
 
 class TestParamSpace:
     def test_defaults(self):
         d = SAMPLE_SPACE.defaults()
-        assert d == {"speed": 5.0, "count": 10, "mode": "balanced"}
+        assert d == {"speed": 5.0, "count": 10, "mode": "balanced", "label": ""}
 
     def test_describe_format(self):
         desc = SAMPLE_SPACE.describe()
         assert "speed" in desc
         assert "count" in desc
         assert "mode" in desc
+        assert "label" in desc
         assert "range:" in desc
         assert "options:" in desc
+        assert "free-text" in desc
 
     def test_clamp_float_high(self):
         result = SAMPLE_SPACE.clamp({"speed": 15.0, "count": 10, "mode": "fast"})
@@ -62,6 +65,10 @@ class TestParamSpace:
         result = SAMPLE_SPACE.clamp({"speed": 5.0, "count": 10, "mode": "fast"})
         assert result["mode"] == "fast"
 
+    def test_clamp_string_passthrough(self):
+        result = SAMPLE_SPACE.clamp({"speed": 5.0, "count": 10, "mode": "fast", "label": "anything goes"})
+        assert result["label"] == "anything goes"
+
 
 # ---------------------------------------------------------------------------
 # apply_deltas
@@ -69,32 +76,32 @@ class TestParamSpace:
 
 class TestApplyDeltas:
     def test_full_damping(self):
-        current = {"speed": 5.0, "count": 10, "mode": "balanced"}
+        current = {"speed": 5.0, "count": 10, "mode": "balanced", "label": ""}
         deltas = {"speed": 8.0}
         result = apply_deltas(current, deltas, SAMPLE_SPACE, damping=1.0)
         assert result["speed"] == 8.0
 
     def test_half_damping(self):
-        current = {"speed": 5.0, "count": 10, "mode": "balanced"}
+        current = {"speed": 5.0, "count": 10, "mode": "balanced", "label": ""}
         deltas = {"speed": 9.0}
         result = apply_deltas(current, deltas, SAMPLE_SPACE, damping=0.5)
         # 5.0 + 0.5 * (9.0 - 5.0) = 7.0
         assert result["speed"] == pytest.approx(7.0)
 
     def test_enum_ignores_damping(self):
-        current = {"speed": 5.0, "count": 10, "mode": "balanced"}
+        current = {"speed": 5.0, "count": 10, "mode": "balanced", "label": ""}
         deltas = {"mode": "fast"}
         result = apply_deltas(current, deltas, SAMPLE_SPACE, damping=0.5)
         assert result["mode"] == "fast"
 
     def test_clamped_after_apply(self):
-        current = {"speed": 9.0, "count": 10, "mode": "balanced"}
+        current = {"speed": 9.0, "count": 10, "mode": "balanced", "label": ""}
         deltas = {"speed": 15.0}
         result = apply_deltas(current, deltas, SAMPLE_SPACE, damping=1.0)
         assert result["speed"] == 10.0
 
     def test_int_rounded(self):
-        current = {"speed": 5.0, "count": 10, "mode": "balanced"}
+        current = {"speed": 5.0, "count": 10, "mode": "balanced", "label": ""}
         deltas = {"count": 15}
         result = apply_deltas(current, deltas, SAMPLE_SPACE, damping=0.7)
         # 10 + 0.7 * (15 - 10) = 13.5 → rounds to 14
@@ -102,15 +109,21 @@ class TestApplyDeltas:
         assert isinstance(result["count"], int)
 
     def test_unknown_param_ignored(self):
-        current = {"speed": 5.0, "count": 10, "mode": "balanced"}
+        current = {"speed": 5.0, "count": 10, "mode": "balanced", "label": ""}
         deltas = {"nonexistent": 42}
         result = apply_deltas(current, deltas, SAMPLE_SPACE, damping=1.0)
-        assert "nonexistent" not in result or result == current
+        assert "nonexistent" not in result
 
     def test_empty_deltas(self):
-        current = {"speed": 5.0, "count": 10, "mode": "balanced"}
+        current = {"speed": 5.0, "count": 10, "mode": "balanced", "label": ""}
         result = apply_deltas(current, {}, SAMPLE_SPACE, damping=1.0)
         assert result == current
+
+    def test_string_set_directly(self):
+        current = {"speed": 5.0, "count": 10, "mode": "balanced", "label": "old"}
+        deltas = {"label": "new label text"}
+        result = apply_deltas(current, deltas, SAMPLE_SPACE, damping=0.3)
+        assert result["label"] == "new label text"  # damping ignored for strings
 
 
 # ---------------------------------------------------------------------------
@@ -174,7 +187,7 @@ class TestTranslateCritiqueToParams:
         ):
             result = translate_critique_to_params(
                 scored,
-                {"speed": 5.0, "count": 10, "mode": "balanced"},
+                {"speed": 5.0, "count": 10, "mode": "balanced", "label": ""},
                 SAMPLE_SPACE,
                 model="test",
             )

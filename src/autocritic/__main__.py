@@ -209,11 +209,13 @@ def cmd_run(args: argparse.Namespace) -> None:
 
     if args.generator == "rewriter":
         _run_rewriter(args, card_path)
+    elif args.generator in ("sd", "stable-diffusion"):
+        _run_stable_diffusion(args, card_path)
     else:
         print(f"Error: unknown generator '{args.generator}'")
-        print("Available generators: rewriter")
+        print("Available generators: rewriter, sd (stable-diffusion)")
         print("\nTo add a generator, implement a ParamSpace and acquire_image function.")
-        print("See src/autocritic/adapters/rewriter.py for an example.")
+        print("See src/autocritic/adapters/ for examples.")
         sys.exit(1)
 
 
@@ -231,12 +233,14 @@ def _run_rewriter(args: argparse.Namespace, card_path: Path) -> None:
         print("Install with: pip install 'autocritic[rewriter]'")
         sys.exit(1)
 
-    if not check_server(args.server_url):
-        print(f"Error: rewriteDrawer server not reachable at {args.server_url}")
+    base_url = args.server_url or "http://127.0.0.1:8010"
+
+    if not check_server(base_url):
+        print(f"Error: rewriteDrawer server not reachable at {base_url}")
         print("Start it with: cd rewriteDrawer && python3 run_local.py")
         sys.exit(1)
 
-    print(f"rewriteDrawer server OK at {args.server_url}")
+    print(f"rewriteDrawer server OK at {base_url}")
 
     from autocritic.loop import LoopConfig, run_loop
 
@@ -248,7 +252,7 @@ def _run_rewriter(args: argparse.Namespace, card_path: Path) -> None:
         intent=args.intent,
         output_dir=Path(args.output_dir),
         generator_name="rewriter",
-        generator_base_url=args.server_url,
+        generator_base_url=base_url,
     )
 
     initial_params = dict(DEFAULT_REWRITER_PARAMS)
@@ -268,11 +272,78 @@ def _run_rewriter(args: argparse.Namespace, card_path: Path) -> None:
         print(f"Intent: {args.intent}")
 
     def acquire(params, output_path):
-        return acquire_image(params, output_path, base_url=args.server_url)
+        return acquire_image(params, output_path, base_url=base_url)
 
     result = run_loop(
         config=config,
         param_space=REWRITER_PARAM_SPACE,
+        acquire_image_fn=acquire,
+        initial_params=initial_params,
+    )
+
+    print(f"\nBest params:")
+    for k, v in result.final_params.items():
+        print(f"  {k}: {v}")
+
+
+def _run_stable_diffusion(args: argparse.Namespace, card_path: Path) -> None:
+    """Run the loop with Stable Diffusion (AUTOMATIC1111 webui) as the generator."""
+    from autocritic.adapters.stable_diffusion import (
+        SD_PARAM_SPACE,
+        DEFAULT_SD_PARAMS,
+        acquire_image,
+        check_server,
+    )
+
+    base_url = args.server_url or "http://127.0.0.1:7860"
+
+    if not check_server(base_url):
+        print(f"Error: AUTOMATIC1111 server not reachable at {base_url}")
+        print("Start it with: python3 launch.py --api")
+        sys.exit(1)
+
+    print(f"AUTOMATIC1111 server OK at {base_url}")
+
+    if not args.prompt:
+        print("Error: --prompt is required for the SD generator.")
+        print("Example: --prompt 'geometric composition, clean lines, black and white'")
+        sys.exit(1)
+
+    from autocritic.loop import LoopConfig, run_loop
+
+    config = LoopConfig(
+        critic_card_path=card_path,
+        model=args.model,
+        max_iterations=args.iterations,
+        damping=args.damping,
+        intent=args.intent,
+        output_dir=Path(args.output_dir),
+        generator_name="stable_diffusion",
+        generator_base_url=base_url,
+    )
+
+    initial_params = dict(DEFAULT_SD_PARAMS)
+    initial_params["prompt"] = args.prompt
+    if args.negative_prompt:
+        initial_params["negative_prompt"] = args.negative_prompt
+    if args.sd_seed is not None:
+        initial_params["seed"] = args.sd_seed
+
+    print(f"Critic: {args.critic}")
+    print(f"Model: {args.model}")
+    print(f"Max iterations: {args.iterations}")
+    print(f"Prompt: {initial_params['prompt']}")
+    if initial_params["negative_prompt"]:
+        print(f"Negative prompt: {initial_params['negative_prompt']}")
+    if args.intent:
+        print(f"Intent: {args.intent}")
+
+    def acquire(params, output_path):
+        return acquire_image(params, output_path, base_url=base_url)
+
+    result = run_loop(
+        config=config,
+        param_space=SD_PARAM_SPACE,
         acquire_image_fn=acquire,
         initial_params=initial_params,
     )
@@ -340,7 +411,8 @@ def main() -> None:
             "Examples:\n"
             "  autocritic run --critic wolfflin --iterations 5\n"
             "  autocritic run --critic arnheim --intent 'organic branching' --damping 0.5\n"
-            "  autocritic run --critic kandinsky --model openai:gpt-5.4 --frames 48"
+            "  autocritic run --critic kandinsky --model openai:gpt-5.4 --frames 48\n"
+            "  autocritic run --generator sd --critic wolfflin --prompt 'geometric composition'"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -358,15 +430,19 @@ def main() -> None:
     )
     run_parser.add_argument("--iterations", type=int, default=10, help="Max iterations (default: 10).")
     run_parser.add_argument("--intent", help="Project intent for the critic to factor in.")
-    run_parser.add_argument("--server-url", default="http://127.0.0.1:8010", help="Generator server URL.")
+    run_parser.add_argument("--server-url", default=None, help="Generator server URL (default: per-generator).")
     run_parser.add_argument("--output-dir", default="runs", help="Output directory (default: runs/).")
     run_parser.add_argument(
         "--damping", type=float, default=0.7,
         help="Delta damping factor 0-1. Lower = more conservative parameter changes (default: 0.7).",
     )
     run_parser.add_argument("--random-seed", type=int, default=None, help="Random seed for reproducibility (default: random).")
-    run_parser.add_argument("--frames", type=int, default=24, help="Growth steps per simulation (default: 24).")
-    run_parser.add_argument("--events-per-frame", type=int, default=30, help="Events per step (default: 30).")
+    run_parser.add_argument("--frames", type=int, default=24, help="Growth steps per simulation (default: 24, rewriter only).")
+    run_parser.add_argument("--events-per-frame", type=int, default=30, help="Events per step (default: 30, rewriter only).")
+    # SD-specific args
+    run_parser.add_argument("--prompt", default=None, help="Initial generation prompt (required for SD generator).")
+    run_parser.add_argument("--negative-prompt", default=None, help="Negative prompt for SD (terms to avoid).")
+    run_parser.add_argument("--sd-seed", type=int, default=None, help="SD random seed (-1 = random).")
     run_parser.set_defaults(func=cmd_run)
 
     # --- eval ---

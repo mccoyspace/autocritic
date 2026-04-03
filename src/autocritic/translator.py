@@ -25,8 +25,8 @@ from autocritic.scoring import ScoredCritique
 class ParamSpec:
     """Definition of a single tunable parameter."""
     name: str
-    type: str           # "int", "float", "enum"
-    range: tuple        # (min, max) for numeric, or tuple of valid values for enum
+    type: str           # "int", "float", "enum", "string"
+    range: tuple        # (min, max) for numeric, tuple of values for enum, () for string
     default: Any
     description: str    # plain English: what this does visually
 
@@ -40,7 +40,9 @@ class ParamSpace:
         """Format the parameter space for LLM consumption."""
         lines = []
         for s in self.specs:
-            if s.type == "enum":
+            if s.type == "string":
+                range_str = "free-text"
+            elif s.type == "enum":
                 range_str = f"options: {', '.join(str(v) for v in s.range)}"
             else:
                 range_str = f"range: {s.range[0]} to {s.range[1]}"
@@ -58,7 +60,9 @@ class ParamSpace:
             if name not in spec_map:
                 continue
             spec = spec_map[name]
-            if spec.type == "enum":
+            if spec.type == "string":
+                continue  # strings pass through unclamped
+            elif spec.type == "enum":
                 if value not in spec.range:
                     clamped[name] = spec.default
             elif spec.type in ("int", "float"):
@@ -113,6 +117,7 @@ def _build_translator_system_prompt() -> str:
         "- Stay within parameter ranges\n"
         "- For numeric parameters, output the NEW target value (not a delta)\n"
         "- For enum parameters, output the new value\n"
+        "- For string parameters, output the complete new string value\n"
         "- Think step by step about which critique points map to which parameters\n"
         "- If the critique is mostly positive, make small adjustments or none"
     )
@@ -286,7 +291,9 @@ def apply_deltas(
             continue
         spec = spec_map[name]
 
-        if spec.type == "enum":
+        if spec.type == "string":
+            result[name] = str(target)
+        elif spec.type == "enum":
             if target in spec.range:
                 result[name] = target
         elif spec.type in ("int", "float"):
